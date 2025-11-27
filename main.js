@@ -462,7 +462,7 @@ function getPathDepth() {
 // Adjust relative links based on current page depth
 function adjustRelativeLinks() {
   const depth = getPathDepth();
-  const prefix = '../'.repeat(depth);
+  const prefix = ''.repeat(depth);
   
   document.querySelectorAll('a[href^="./"]').forEach(link => {
     const href = link.getAttribute('href');
