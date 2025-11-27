@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Integrating DLP solutions with SIEM platforms including Microsoft Sentinel, Splunk, and other security tools.">
+  <title>SIEM Integration | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Operations</div>
+          <a href="dlp-operations.html" class="nav-link" data-product="operations">Operations Overview</a>
+          <a href="incident-response.html" class="nav-link" data-product="operations">Incident Response</a>
+          <a href="siem-integration.html" class="nav-link active" data-product="operations">SIEM Integration</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="dlp-operations.html">Operations</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>SIEM Integration</span>
+        </nav>
+        
+        <h1>SIEM Integration</h1>
+        
+        <p>Integrating DLP alerts with your SIEM enables centralized monitoring, correlation with other security events, and automated response workflows.</p>
+        
+        <h2 id="integration-overview">Integration Overview</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        DLP → SIEM INTEGRATION FLOW                               │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────────────┐  │
+│  │  PURVIEW    │   │  SYMANTEC   │   │  TRELLIX    │   │    OTHER DLP        │  │
+│  │   DLP       │   │    DLP      │   │    DLP      │   │    SOLUTIONS        │  │
+│  └──────┬──────┘   └──────┬──────┘   └──────┬──────┘   └──────────┬──────────┘  │
+│         │                 │                 │                     │             │
+│         │   <span class="accent-cyan">API/Connector</span>   │    <span class="accent-orange">Syslog/CEF</span>    │      <span class="accent-green">API/Syslog</span>        │             │
+│         │                 │                 │                     │             │
+│         ▼                 ▼                 ▼                     ▼             │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                              <span class="accent-purple">SIEM PLATFORM</span>                               │    │
+│  │                                                                          │    │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────────┐  │    │
+│  │  │   Parsing    │  │  Correlation │  │   Alerting   │  │  Dashboards │  │    │
+│  │  │   & Ingestion│  │   Rules      │  │   & Cases    │  │  & Reports  │  │    │
+│  │  └──────────────┘  └──────────────┘  └──────────────┘  └─────────────┘  │    │
+│  │                                                                          │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="microsoft-sentinel">Microsoft Sentinel Integration</h2>
+        
+        <p>Microsoft Purview DLP integrates natively with Microsoft Sentinel through the Microsoft 365 Defender connector.</p>
+        
+        <h3>Enable the Connector</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Open Sentinel</strong>
+            <p>Navigate to Azure Portal → Microsoft Sentinel → Your Workspace</p>
+          </li>
+          <li>
+            <strong>Add Data Connector</strong>
+            <p>Go to Data connectors → Search "Microsoft 365 Defender"</p>
+          </li>
+          <li>
+            <strong>Configure Connection</strong>
+            <p>Enable Microsoft Purview Information Protection connector</p>
+          </li>
+          <li>
+            <strong>Select Tables</strong>
+            <p>Enable relevant tables: CloudAppEvents, EmailEvents, DeviceEvents</p>
+          </li>
+        </ol>
+        
+        <h3>DLP KQL Queries for Sentinel</h3>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - DLP Alert Overview</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// DLP Policy Matches - Last 24 Hours
+CloudAppEvents
+| where Timestamp > ago(24h)
+| where ActionType has "Dlp"
+| summarize 
+    MatchCount = count(),
+    UniqueUsers = dcount(AccountUpn)
+    by PolicyName = tostring(RawEventData.PolicyName),
+       Severity = tostring(RawEventData.Severity)
+| order by MatchCount desc</code></pre>
+        </div>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - High Severity DLP Incidents</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// High Severity DLP Events for SOC Investigation
+let HighSeverityDLP = CloudAppEvents
+| where Timestamp > ago(7d)
+| where ActionType has "Dlp"
+| extend 
+    Severity = tostring(RawEventData.Severity),
+    PolicyName = tostring(RawEventData.PolicyName),
+    SensitiveInfoType = tostring(RawEventData.SensitiveInfoTypeData),
+    ActionTaken = tostring(RawEventData.ActionTaken)
+| where Severity == "High";
+//
+HighSeverityDLP
+| project
+    Timestamp,
+    User = AccountUpn,
+    PolicyName,
+    SensitiveInfoType,
+    ActionTaken,
+    Application,
+    IPAddress
+| order by Timestamp desc</code></pre>
+        </div>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - Endpoint DLP Events</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// Endpoint DLP - USB and File Copy Activities
+DeviceEvents
+| where Timestamp > ago(24h)
+| where ActionType in ("UsbDriveMount", "FileCreated", "FileCopiedToRemovableMedia")
+| extend 
+    DLPAction = tostring(AdditionalFields.DlpAction),
+    PolicyMatched = tostring(AdditionalFields.PolicyMatched)
+| where isnotempty(PolicyMatched)
+| summarize 
+    Events = count(),
+    Devices = dcount(DeviceName)
+    by User = InitiatingProcessAccountName,
+       ActionType,
+       PolicyMatched,
+       DLPAction
+| order by Events desc</code></pre>
+        </div>
+        
+        <h3>Sentinel Analytics Rules</h3>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - Analytics Rule: Repeated DLP Violations</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// Alert: User with 5+ DLP violations in 1 hour (potential data exfiltration)
+CloudAppEvents
+| where Timestamp > ago(1h)
+| where ActionType has "Dlp"
+| summarize 
+    ViolationCount = count(),
+    Policies = make_set(tostring(RawEventData.PolicyName)),
+    FirstSeen = min(Timestamp),
+    LastSeen = max(Timestamp)
+    by User = AccountUpn
+| where ViolationCount >= 5
+| extend AlertSeverity = case(
+    ViolationCount >= 20, "High",
+    ViolationCount >= 10, "Medium",
+    "Low"
+)</code></pre>
+        </div>
+        
+        <h2 id="splunk">Splunk Integration</h2>
+        
+        <h3>Symantec DLP to Splunk</h3>
+        
+        <p>Symantec DLP sends events via Syslog in CEF format:</p>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Syslog Configuration (Enforce Server)</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Symantec DLP Syslog Configuration
+# Location: Enforce Console > System > Settings > Syslog
+
+Syslog Server: splunk-hec.company.com
+Port: 514 (UDP) or 6514 (TCP/TLS)
+Format: CEF (Common Event Format)
+Facility: Local0
+Severity Mapping:
+  - High → Alert
+  - Medium → Warning  
+  - Low → Notice
+  - Info → Informational
+
+# Events to Send:
+☑ Policy violations
+☑ System alerts
+☑ Agent status changes
+☐ Debug events</code></pre>
+        </div>
+        
+        <h3>Splunk Searches for DLP</h3>
+        
+        <div class="code-block" data-language="spl">
+          <div class="code-header">
+            <span class="code-lang">SPL - DLP Incidents Overview</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>index=dlp sourcetype="symantec:dlp:cef"
+| stats count as incidents 
+    dc(src_user) as unique_users 
+    dc(policy_name) as policies_triggered
+    by severity
+| sort - incidents</code></pre>
+        </div>
+        
+        <div class="code-block" data-language="spl">
+          <div class="code-header">
+            <span class="code-lang">SPL - Top DLP Violators</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>index=dlp sourcetype="symantec:dlp:cef" earliest=-7d
+| stats 
+    count as total_incidents,
+    dc(policy_name) as unique_policies,
+    values(severity) as severities,
+    latest(_time) as last_incident
+    by src_user
+| where total_incidents > 5
+| sort - total_incidents
+| head 20
+| eval last_incident=strftime(last_incident, "%Y-%m-%d %H:%M")</code></pre>
+        </div>
+        
+        <div class="code-block" data-language="spl">
+          <div class="code-header">
+            <span class="code-lang">SPL - DLP Trend Analysis</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>index=dlp sourcetype="symantec:dlp:cef" earliest=-30d
+| timechart span=1d count by severity
+| eval _time=strftime(_time, "%Y-%m-%d")</code></pre>
+        </div>
+        
+        <h3>Purview to Splunk via Microsoft Graph API</h3>
+        
+        <div class="code-block" data-language="python">
+          <div class="code-header">
+            <span class="code-lang">Python - Purview to Splunk HEC</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>import requests
+import json
+from datetime import datetime, timedelta
+
+# Microsoft Graph API - Get DLP Alerts
+def get_purview_dlp_alerts(access_token):
+    """Fetch DLP alerts from Microsoft Graph Security API"""
+    url = "https://graph.microsoft.com/v1.0/security/alerts_v2"
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json"
+    }
+    params = {
+        "$filter": "serviceSource eq 'microsoftDataLossPrevention'",
+        "$top": 100,
+        "$orderby": "createdDateTime desc"
+    }
+    response = requests.get(url, headers=headers, params=params)
+    return response.json().get("value", [])
+
+# Send to Splunk HEC
+def send_to_splunk(events, hec_url, hec_token):
+    """Send events to Splunk HTTP Event Collector"""
+    headers = {
+        "Authorization": f"Splunk {hec_token}",
+        "Content-Type": "application/json"
+    }
+    for event in events:
+        payload = {
+            "event": event,
+            "sourcetype": "purview:dlp:alerts",
+            "index": "dlp"
+        }
+        requests.post(hec_url, headers=headers, json=payload)
+
+# Main execution
+if __name__ == "__main__":
+    # Get OAuth token (implement your auth flow)
+    token = get_access_token()
+    
+    # Fetch and forward alerts
+    alerts = get_purview_dlp_alerts(token)
+    send_to_splunk(
+        alerts,
+        "https://splunk-hec.company.com:8088/services/collector",
+        "YOUR-HEC-TOKEN"
+    )</code></pre>
+        </div>
+        
+        <h2 id="correlation-rules">Correlation Rules</h2>
+        
+        <p>Correlate DLP events with other security data for enhanced detection:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Correlation Scenario</th><th>DLP Event + Additional Signal</th><th>Risk Level</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Insider Threat</td>
+                <td>DLP violation + HR termination notice</td>
+                <td>Critical</td>
+              </tr>
+              <tr>
+                <td>Compromised Account</td>
+                <td>DLP violation + Impossible travel alert</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td>Data Staging</td>
+                <td>Multiple DLP warnings + Large cloud upload</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td>Policy Evasion</td>
+                <td>DLP block + VPN to personal device</td>
+                <td>Medium</td>
+              </tr>
+              <tr>
+                <td>Accidental Exposure</td>
+                <td>Single DLP warning + No prior history</td>
+                <td>Low</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="dashboards">Dashboard Examples</h2>
+        
+        <h3>Executive DLP Dashboard Metrics</h3>
+        
+        <ul>
+          <li>Total incidents (daily/weekly/monthly trend)</li>
+          <li>Incidents by severity (High/Medium/Low breakdown)</li>
+          <li>Top triggered policies</li>
+          <li>Top data types detected (SIN, Credit Card, etc.)</li>
+          <li>Incidents by channel (Email, Endpoint, Web)</li>
+          <li>Top 10 users by incident count</li>
+          <li>Mean time to triage/close</li>
+          <li>False positive rate trend</li>
+        </ul>
+        
+        <h3>SOC Operational Dashboard Metrics</h3>
+        
+        <ul>
+          <li>Open incidents queue (by age)</li>
+          <li>Incidents requiring review</li>
+          <li>Recent high-severity alerts</li>
+          <li>User risk scores (if UEBA integrated)</li>
+          <li>Policy match breakdown (last 24h)</li>
+          <li>Blocked vs. allowed actions</li>
+          <li>Agent health status</li>
+        </ul>
+        
+        <nav class="page-nav">
+          <a href="incident-response.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Incident Response</span>
+          </a>
+          <a href="../troubleshooting/troubleshooting-overview.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Troubleshooting</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

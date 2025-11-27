@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DLP user training and awareness including policy communication, user guides, and reducing policy violations through education.">
+  <title>User Training | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Operations</div>
+          <a href="dlp-operations.html" class="nav-link" data-product="operations">Operations Overview</a>
+          <a href="user-training.html" class="nav-link active" data-product="operations">User Training</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="dlp-operations.html">Operations</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>User Training</span>
+        </nav>
+        
+        <h1>DLP User Training & Awareness</h1>
+        
+        <p>Effective user training reduces policy violations, improves data handling practices, and creates a security-conscious culture. Users who understand <em>why</em> DLP exists are more likely to comply.</p>
+        
+        <h2 id="training-strategy">Training Strategy</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                       DLP TRAINING APPROACH                                      │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌──────────────────────────────────────────────────────────────────────────┐   │
+│  │                         TRAINING PYRAMID                                  │   │
+│  │                                                                           │   │
+│  │                            ┌─────────┐                                    │   │
+│  │                           /│ TARGETED │\                                  │   │
+│  │                          / │ TRAINING │ \     High-risk roles            │   │
+│  │                         /  │  (Deep)  │  \    (HR, Finance, Legal)       │   │
+│  │                        /   └─────────┘   \                                │   │
+│  │                       ┌───────────────────┐                               │   │
+│  │                      /│   ROLE-BASED      │\                              │   │
+│  │                     / │   TRAINING        │ \   Department-specific       │   │
+│  │                    /  │   (Moderate)      │  \  scenarios                 │   │
+│  │                   /   └───────────────────┘   \                           │   │
+│  │                  ┌─────────────────────────────┐                          │   │
+│  │                 /│     GENERAL AWARENESS       │\                         │   │
+│  │                / │     (All Employees)         │ \   Basic data handling  │   │
+│  │               /  │     (Brief)                 │  \  and policy overview  │   │
+│  │              /   └─────────────────────────────┘   \                      │   │
+│  │                                                                           │   │
+│  └──────────────────────────────────────────────────────────────────────────┘   │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="training-content">Training Content by Audience</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">All Employees</button>
+            <button class="tab-button" role="tab">Managers</button>
+            <button class="tab-button" role="tab">High-Risk Roles</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>General Awareness (All Employees)</h3>
+            <p><strong>Duration:</strong> 15-30 minutes | <strong>Frequency:</strong> Annual + onboarding</p>
+            
+            <h4>Topics to Cover:</h4>
+            <ul>
+              <li>What is sensitive data? (PII, financial, health, confidential)</li>
+              <li>Why data protection matters (legal, reputation, personal)</li>
+              <li>Understanding policy tips and what they mean</li>
+              <li>How to respond when blocked (justification, alternatives)</li>
+              <li>Reporting false positives and getting help</li>
+              <li>Sensitivity labels basics (when to apply, what they mean)</li>
+            </ul>
+            
+            <h4>Key Messages:</h4>
+            <ul>
+              <li>"DLP protects you and the company from data breaches"</li>
+              <li>"When you see a policy tip, pause and think before proceeding"</li>
+              <li>"It's okay to ask for help if you're unsure"</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Manager Training</h3>
+            <p><strong>Duration:</strong> 45-60 minutes | <strong>Frequency:</strong> Annual + new manager onboarding</p>
+            
+            <h4>Additional Topics:</h4>
+            <ul>
+              <li>Reviewing team member DLP incidents</li>
+              <li>Coaching repeat violators</li>
+              <li>When to escalate vs. handle locally</li>
+              <li>Approving legitimate business exceptions</li>
+              <li>Understanding team-specific data risks</li>
+              <li>Leading by example with data handling</li>
+            </ul>
+            
+            <h4>Key Messages:</h4>
+            <ul>
+              <li>"Your team looks to you for guidance on data handling"</li>
+              <li>"Address violations as coaching opportunities, not punishment"</li>
+              <li>"Know your team's sensitive data and where it should go"</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>High-Risk Role Training</h3>
+            <p><strong>Duration:</strong> 60-90 minutes | <strong>Frequency:</strong> Semi-annual</p>
+            <p><strong>Audiences:</strong> HR, Finance, Legal, IT Admin, Executive Assistants</p>
+            
+            <h4>Additional Topics:</h4>
+            <ul>
+              <li>Specific regulations affecting their role (PIPEDA, PCI, etc.)</li>
+              <li>High-risk scenarios and proper handling</li>
+              <li>Secure alternatives for sharing sensitive data</li>
+              <li>Working with external parties (lawyers, auditors, vendors)</li>
+              <li>Understanding encryption and access controls</li>
+              <li>Incident response responsibilities</li>
+            </ul>
+            
+            <h4>Role-Specific Scenarios:</h4>
+            <ul>
+              <li><strong>HR:</strong> Sharing employee records, termination processes</li>
+              <li><strong>Finance:</strong> Payment data, financial reports, tax documents</li>
+              <li><strong>Legal:</strong> M&A data, litigation holds, attorney-client privilege</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="policy-tips">Effective Policy Tips</h2>
+        
+        <p>Policy tips are your primary user education tool at the moment of action:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Type</th><th>Poor Example</th><th>Better Example</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Warning</strong></td>
+                <td>"DLP policy violation detected."</td>
+                <td>"This document may contain credit card numbers. Verify you're authorized to share this externally."</td>
+              </tr>
+              <tr>
+                <td><strong>Block</strong></td>
+                <td>"Action blocked by policy."</td>
+                <td>"External sharing of files with SINs is blocked. Use the secure file transfer portal instead: [link]"</td>
+              </tr>
+              <tr>
+                <td><strong>Override</strong></td>
+                <td>"Enter justification to continue."</td>
+                <td>"This action requires business justification. Examples: 'Client requested for audit' or 'Legal review required'"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Configure Helpful Policy Tips</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Set User-Friendly Policy Tips</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Set clear, actionable policy tip text
+Set-DlpComplianceRule -Identity "Block External PII" `
+    -NotifyPolicyTipCustomText @"
+⚠️ This content contains personal information (SIN/Credit Card).
+
+External sharing is blocked to protect customer privacy.
+
+✅ Approved alternatives:
+• Use SecureShare portal: https://secureshare.company.com
+• Request exception from your manager
+• Remove sensitive data before sharing
+
+❓ Need help? Contact <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4330262036312a373a03202c2e33222d3a6d202c2e">[email&#160;protected]</a>
+"@</code></pre>
+        </div>
+        
+        <h2 id="communication">Communication Templates</h2>
+        
+        <h3>DLP Rollout Announcement</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Email Template - DLP Launch</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>Subject: New Data Protection Tools Rolling Out [Date]
+
+Hi Team,
+
+Starting [date], you may notice new notifications when working with 
+sensitive information like credit card numbers, Social Insurance Numbers, 
+or confidential documents.
+
+WHAT'S HAPPENING:
+We're enabling Data Loss Prevention (DLP) tools to help protect our 
+customers' and employees' personal information.
+
+WHAT YOU'LL SEE:
+• Yellow banners in Outlook, Word, and Excel when sensitive data is detected
+• Prompts asking you to confirm before sharing certain files externally
+• In some cases, blocks on high-risk actions (with alternatives provided)
+
+WHAT TO DO:
+• When you see a prompt, read it carefully and follow the guidance
+• If you believe something was blocked in error, click "Report False Positive"
+• Questions? Contact <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a0d3c5c3d5d2c9d4d9e0c3cfcdd0c1ced98ec3cfcd">[email&#160;protected]</a> or visit [intranet link]
+
+WHY THIS MATTERS:
+This protects our customers, our reputation, and keeps us compliant with 
+privacy regulations like PIPEDA.
+
+Thanks for helping keep our data safe!
+
+[Security Team]</code></pre>
+        </div>
+        
+        <h3>Repeat Violator Coaching Email</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Email Template - Coaching</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>Subject: Quick Chat About Data Protection
+
+Hi [Name],
+
+I noticed you've received several data protection alerts recently. 
+This isn't a problem - it usually means our tools are doing their job! 
+But I wanted to check in and see if you have any questions.
+
+Common reasons for alerts:
+• Working with customer data as part of your normal job
+• Accidentally including sensitive info in external emails
+• Using personal email/storage for work files
+
+Can we schedule 15 minutes this week to review? I can show you some 
+tips to work efficiently while keeping data protected.
+
+If the alerts are interfering with legitimate work, let me know - 
+we may need to adjust the policies or set up an exception for your role.
+
+Thanks,
+[Manager/Security Team]</code></pre>
+        </div>
+        
+        <h2 id="measuring">Measuring Training Effectiveness</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Metric</th><th>How to Measure</th><th>Target</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Training Completion Rate</strong></td>
+                <td>LMS completion tracking</td>
+                <td>&gt; 95% within 30 days</td>
+              </tr>
+              <tr>
+                <td><strong>Policy Violation Trend</strong></td>
+                <td>DLP incident count over time</td>
+                <td>Decreasing trend post-training</td>
+              </tr>
+              <tr>
+                <td><strong>Repeat Violator Rate</strong></td>
+                <td>Users with 3+ incidents / total violators</td>
+                <td>&lt; 10%</td>
+              </tr>
+              <tr>
+                <td><strong>Override Usage</strong></td>
+                <td>% of incidents using override</td>
+                <td>Stable or decreasing</td>
+              </tr>
+              <tr>
+                <td><strong>False Positive Reports</strong></td>
+                <td>User-reported FP count</td>
+                <td>Reviewed within 48 hours</td>
+              </tr>
+              <tr>
+                <td><strong>Help Desk Tickets</strong></td>
+                <td>DLP-related support requests</td>
+                <td>Decreasing after initial spike</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="resources">Training Resources</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Quick Reference Card</h4>
+            <p>One-page guide on what to do when you see a DLP policy tip. Print and distribute.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Video Tutorials</h4>
+            <p>3-5 minute videos showing common scenarios and proper handling.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">FAQ Document</h4>
+            <p>Answers to common questions about DLP policies and exceptions.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Intranet Portal</h4>
+            <p>Self-service portal for policy lookup, exception requests, and help.</p>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="dlp-operations.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Operations Overview</span>
+          </a>
+          <a href="dlp-alerts.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">DLP Alerts</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

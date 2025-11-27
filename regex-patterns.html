@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Regex patterns for DLP sensitive data detection including Canadian PII, financial data, healthcare information, and custom patterns.">
+  <title>Regex Patterns | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Reference</div>
+          <a href="kql-library.html" class="nav-link" data-product="purview">KQL Query Library</a>
+          <a href="regex-patterns.html" class="nav-link active" data-product="reference">Regex Patterns</a>
+          <a href="powershell-scripts.html" class="nav-link" data-product="reference">PowerShell Scripts</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Regex Patterns</span>
+        </nav>
+        
+        <h1>Regex Patterns for DLP</h1>
+        
+        <p>Ready-to-use regular expression patterns for detecting sensitive data in DLP policies. These patterns can be used in Microsoft Purview custom SITs, Symantec DCM rules, and other DLP solutions.</p>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Testing Required
+          </div>
+          <p>Always test regex patterns with real sample data before deploying to production. Patterns may need adjustment based on your specific data formats and false positive tolerance.</p>
+        </div>
+        
+        <h2 id="canadian-pii">Canadian PII Patterns</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Social Insurance Number (SIN)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Format:</strong> XXX-XXX-XXX or XXX XXX XXX or XXXXXXXXX</p>
+                <p><strong>Validation:</strong> Luhn algorithm (mod 10 checksum)</p>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Basic Pattern</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b\d{3}[-\s]?\d{3}[-\s]?\d{3}\b</code></pre>
+                </div>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - With Keyword Context</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>(?i)(?:sin|social\s*insurance|nas|numéro\s*d'assurance\s*sociale)[\s:#]*(\d{3}[-\s]?\d{3}[-\s]?\d{3})</code></pre>
+                </div>
+                
+                <p><strong>Test Values:</strong></p>
+                <ul>
+                  <li>Valid: 046-454-286, 046 454 286, 046454286</li>
+                  <li>Invalid: 123-456-789 (fails Luhn)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Ontario Health Card (OHIP)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Format:</strong> XXXX-XXX-XXX or 10 digits</p>
+                <p><strong>Version Code:</strong> Optional 2-letter suffix (e.g., AB)</p>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - OHIP Number</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b\d{4}[-\s]?\d{3}[-\s]?\d{3}(?:[-\s]?[A-Z]{2})?\b</code></pre>
+                </div>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - With Keywords</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>(?i)(?:ohip|ontario\s*health|health\s*card|carte\s*santé)[\s:#]*(\d{4}[-\s]?\d{3}[-\s]?\d{3}(?:[-\s]?[A-Z]{2})?)</code></pre>
+                </div>
+                
+                <p><strong>Test Values:</strong> 1234-567-890, 1234567890, 1234-567-890-AB</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Canadian Passport Number
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Format:</strong> 2 letters + 6 digits (e.g., AB123456)</p>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Canadian Passport</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b[A-Z]{2}\d{6}\b</code></pre>
+                </div>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - With Context</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>(?i)(?:passport|passeport)[\s:#]*([A-Z]{2}\d{6})</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Canadian Postal Code
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Format:</strong> A1A 1A1 (letter-digit-letter space digit-letter-digit)</p>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Canadian Postal Code</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z][-\s]?\d[ABCEGHJ-NPRSTV-Z]\d\b</code></pre>
+                </div>
+                
+                <p><strong>Notes:</strong> Excludes D, F, I, O, Q, U, W, Z in first position. Excludes D, F, I, O, Q, U in third/fifth position.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Canadian Driver's License (Ontario)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Format:</strong> Letter + 4 digits + 5 digits + 5 digits (e.g., A1234-56789-01234)</p>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Ontario Driver's License</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b[A-Z]\d{4}[-\s]?\d{5}[-\s]?\d{5}\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="financial">Financial Data Patterns</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Credit Card Numbers
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Validation:</strong> Luhn algorithm required for accuracy</p>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - All Major Cards</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b(?:4\d{3}|5[1-5]\d{2}|6011|3[47]\d{2})[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b</code></pre>
+                </div>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - By Card Type</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Visa (starts with 4)
+\b4\d{3}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b
+
+# MasterCard (starts with 51-55 or 2221-2720)
+\b(?:5[1-5]\d{2}|222[1-9]|22[3-9]\d|2[3-6]\d{2}|27[01]\d|2720)[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b
+
+# American Express (starts with 34 or 37, 15 digits)
+\b3[47]\d{2}[-\s]?\d{6}[-\s]?\d{5}\b
+
+# Discover (starts with 6011, 644-649, 65)
+\b(?:6011|64[4-9]\d|65\d{2})[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Canadian Bank Account Number
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Format:</strong> Transit (5 digits) + Institution (3 digits) + Account (7-12 digits)</p>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Canadian Bank Account</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b\d{5}[-\s]?\d{3}[-\s]?\d{7,12}\b</code></pre>
+                </div>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - With Keywords</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>(?i)(?:transit|institution|account|bank|routing)[\s:#]*(\d{5}[-\s]?\d{3}[-\s]?\d{7,12})</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              IBAN (International Bank Account)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - IBAN (Generic)</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b[A-Z]{2}\d{2}[-\s]?[A-Z0-9]{4}[-\s]?[A-Z0-9]{4}[-\s]?[A-Z0-9]{4}[-\s]?[A-Z0-9]{0,14}\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="us-pii">US PII Patterns</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Social Security Number (SSN)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Format:</strong> XXX-XX-XXXX</p>
+                <p><strong>Validation:</strong> Area number rules (not 000, 666, 900-999)</p>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - US SSN</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b(?!000|666|9\d{2})\d{3}[-\s]?(?!00)\d{2}[-\s]?(?!0000)\d{4}\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              US Phone Number
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - US Phone</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b(?:\+1[-.\s]?)?(?:\([2-9]\d{2}\)|[2-9]\d{2})[-.\s]?\d{3}[-.\s]?\d{4}\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="network">Network & Technical Patterns</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              IP Addresses
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - IPv4 Address</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)){3}\b</code></pre>
+                </div>
+                
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Private IP Ranges</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># 10.0.0.0/8
+\b10(?:\.\d{1,3}){3}\b
+
+# 172.16.0.0/12
+\b172\.(?:1[6-9]|2\d|3[01])(?:\.\d{1,3}){2}\b
+
+# 192.168.0.0/16
+\b192\.168(?:\.\d{1,3}){2}\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Email Addresses
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Email Address</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              API Keys & Secrets
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Common API Key Patterns</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># AWS Access Key
+\b(AKIA|ABIA|ACCA)[A-Z0-9]{16}\b
+
+# AWS Secret Key (with context)
+(?i)aws.{0,20}secret.{0,20}['"][A-Za-z0-9/+=]{40}['"]
+
+# Azure Storage Account Key
+(?i)(?:DefaultEndpointsProtocol|AccountKey)=[^;]{20,}
+
+# Generic API Key pattern
+(?i)(?:api[_-]?key|apikey|secret[_-]?key|access[_-]?token)[\s:=]+['"]?[A-Za-z0-9_\-]{20,}['"]?
+
+# GitHub Personal Access Token
+\bghp_[A-Za-z0-9]{36}\b
+
+# Slack Token
+\bxox[baprs]-[A-Za-z0-9-]{10,}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="custom-enterprise">Custom Enterprise Patterns</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Employee ID Pattern
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Employee ID Examples</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Format: EMP + 6 digits (e.g., EMP123456)
+\bEMP\d{6}\b
+
+# Format: E + 7 digits (e.g., E1234567)
+\bE\d{7}\b
+
+# Format: XX-NNNNNN (e.g., HR-123456)
+\b[A-Z]{2}-\d{6}\b
+
+# With keyword context
+(?i)(?:employee\s*(?:id|number|#)|emp\s*id)[\s:#]*([A-Z]{2,3}[-]?\d{5,8})</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Project Code Pattern
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Regex - Project Codes</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Format: PRJ-YYYY-NNNN (e.g., PRJ-2024-0001)
+\bPRJ-20\d{2}-\d{4}\b
+
+# Format: DEPT-PROJECT-VERSION (e.g., FIN-BUDGET-V2)
+\b[A-Z]{2,4}-[A-Z]{3,10}-V\d+\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="testing">Testing Your Patterns</h2>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Regex Tester</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Test regex pattern against sample content
+function Test-DLPRegex {
+    param(
+        [string]$Pattern,
+        [string]$Content
+    )
+    
+    $regex = [regex]::new($Pattern, [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+    $matches = $regex.Matches($Content)
+    
+    if ($matches.Count -gt 0) {
+        Write-Host "Found $($matches.Count) matches:" -ForegroundColor Green
+        foreach ($match in $matches) {
+            Write-Host "  - '$($match.Value)' at position $($match.Index)" -ForegroundColor Cyan
+        }
+    } else {
+        Write-Host "No matches found" -ForegroundColor Yellow
+    }
+}
+
+# Example usage
+$sinPattern = '\b\d{3}[-\s]?\d{3}[-\s]?\d{3}\b'
+$testContent = "Employee SIN: 046-454-286 and another one 123 456 789"
+Test-DLPRegex -Pattern $sinPattern -Content $testContent</code></pre>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="kql-library.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">KQL Query Library</span>
+          </a>
+          <a href="../../index.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Home</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

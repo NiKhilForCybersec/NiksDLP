@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Data classification methods for DLP including regex, keywords, fingerprinting, EDM, and machine learning classifiers.">
+  <title>Data Classification | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Fundamentals</div>
+          <a href="dlp-fundamentals.html" class="nav-link">DLP Fundamentals</a>
+          <a href="data-classification.html" class="nav-link active">Data Classification</a>
+          <a href="dlp-architecture.html" class="nav-link">DLP Architecture</a>
+          <a href="compliance-frameworks.html" class="nav-link">Compliance Frameworks</a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Microsoft Purview</div>
+          <a href="../purview/purview-overview.html" class="nav-link" data-product="purview">Overview</a>
+          <a href="../purview/purview-sensitive-info-types.html" class="nav-link" data-product="purview">Sensitive Info Types</a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="../symantec/symantec-detection.html" class="nav-link" data-product="symantec">Detection Methods</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="dlp-fundamentals.html">Fundamentals</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Data Classification</span>
+        </nav>
+        
+        <h1>Data Classification Methods</h1>
+        
+        <p>Data classification is the foundation of effective DLP. Without knowing what data is sensitive and how to identify it, DLP policies cannot accurately detect and protect critical information. This guide covers the classification methods used by enterprise DLP solutions.</p>
+        
+        <h2 id="classification-overview">Classification Method Overview</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Best For</th>
+                <th>Accuracy</th>
+                <th>Setup Effort</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Regular Expressions</td>
+                <td>Structured data (SSN, CC, phone)</td>
+                <td>High (with validation)</td>
+                <td>Low-Medium</td>
+              </tr>
+              <tr>
+                <td>Keywords/Dictionaries</td>
+                <td>Classification labels, terms</td>
+                <td>Medium</td>
+                <td>Low</td>
+              </tr>
+              <tr>
+                <td>Document Fingerprinting</td>
+                <td>Templates, source documents</td>
+                <td>High</td>
+                <td>Medium</td>
+              </tr>
+              <tr>
+                <td>Exact Data Match (EDM)</td>
+                <td>Database records, PII lists</td>
+                <td>Very High</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td>Machine Learning</td>
+                <td>Unstructured documents</td>
+                <td>High (after training)</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td>File Metadata</td>
+                <td>File types, properties</td>
+                <td>Medium</td>
+                <td>Low</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="regex">Regular Expressions (Regex)</h2>
+        
+        <p>Regular expressions match patterns in text using character classes, quantifiers, and grouping. They're ideal for structured data with predictable formats like credit card numbers, social insurance numbers, and phone numbers.</p>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Pro Tip
+          </div>
+          <p>Always combine regex with validation logic (Luhn check for credit cards, checksum for SINs) to reduce false positives. Pattern matching alone catches many non-sensitive number sequences.</p>
+        </div>
+        
+        <h3>Common Regex Patterns</h3>
+        
+        <div class="code-block" data-language="regex">
+          <div class="code-header">
+            <span class="code-lang">Regex</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Canadian Social Insurance Number (SIN)
+# Format: XXX-XXX-XXX or XXX XXX XXX or XXXXXXXXX
+\b[0-9]{3}[-\s]?[0-9]{3}[-\s]?[0-9]{3}\b
+
+# Credit Card Numbers (Major brands)
+# Visa: starts with 4
+\b4[0-9]{12}(?:[0-9]{3})?\b
+
+# Mastercard: starts with 51-55 or 2221-2720
+\b(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}\b
+
+# American Express: starts with 34 or 37
+\b3[47][0-9]{13}\b
+
+# Ontario Health Card (OHIP)
+# Format: XXXX-XXX-XXX or 10 digits
+\b[0-9]{4}[-]?[0-9]{3}[-]?[0-9]{3}\b
+
+# Canadian Passport Number
+# Format: 2 letters + 6 digits
+\b[A-Z]{2}[0-9]{6}\b
+
+# Email Address (basic)
+\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b
+
+# Phone Number (North American)
+\b(?:\+?1[-.\s]?)?(?:\([0-9]{3}\)|[0-9]{3})[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}\b
+
+# IP Address (IPv4)
+\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b</code></pre>
+        </div>
+        
+        <h3>Regex with Validation</h3>
+        
+        <p>Pattern matching catches many false positives. Always implement validation logic for financial and government identifiers:</p>
+        
+        <div class="code-block" data-language="python">
+          <div class="code-header">
+            <span class="code-lang">Python</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Luhn Algorithm for Credit Card Validation
+def luhn_check(card_number: str) -> bool:
+    """Validate credit card number using Luhn algorithm."""
+    digits = [int(d) for d in card_number if d.isdigit()]
+    if len(digits) < 13:
+        return False
+    
+    checksum = 0
+    for i, digit in enumerate(reversed(digits)):
+        if i % 2 == 1:
+            digit *= 2
+            if digit > 9:
+                digit -= 9
+        checksum += digit
+    
+    return checksum % 10 == 0
+
+# Canadian SIN Validation (Luhn mod 10)
+def validate_sin(sin: str) -> bool:
+    """Validate Canadian Social Insurance Number."""
+    digits = [int(d) for d in sin if d.isdigit()]
+    if len(digits) != 9:
+        return False
+    
+    # SIN cannot start with 0 or 8
+    if digits[0] in [0, 8]:
+        return False
+    
+    return luhn_check(sin)
+
+# Example usage
+test_cc = "4532015112830366"
+print(f"CC Valid: {luhn_check(test_cc)}")  # True
+
+test_sin = "046-454-286"
+print(f"SIN Valid: {validate_sin(test_sin)}")  # True</code></pre>
+        </div>
+        
+        <h2 id="keywords">Keywords and Dictionaries</h2>
+        
+        <p>Keyword-based detection matches specific terms, phrases, or classification labels. Effective for project code names, confidentiality markers, and domain-specific terminology.</p>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Classification Labels</h4>
+            <ul style="font-size: 0.9rem;">
+              <li>CONFIDENTIAL</li>
+              <li>INTERNAL USE ONLY</li>
+              <li>RESTRICTED</li>
+              <li>TOP SECRET</li>
+              <li>PROPRIETARY</li>
+            </ul>
+          </div>
+          
+          <div class="card">
+            <h4 style="margin-top: 0;">Healthcare (HIPAA)</h4>
+            <ul style="font-size: 0.9rem;">
+              <li>Patient name</li>
+              <li>Medical record</li>
+              <li>Diagnosis</li>
+              <li>Treatment plan</li>
+              <li>PHI</li>
+            </ul>
+          </div>
+          
+          <div class="card">
+            <h4 style="margin-top: 0;">Financial (PCI)</h4>
+            <ul style="font-size: 0.9rem;">
+              <li>Cardholder data</li>
+              <li>CVV / CVC</li>
+              <li>PIN block</li>
+              <li>Magnetic stripe</li>
+              <li>PAN</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Warning
+          </div>
+          <p>Keywords alone generate high false positive rates. Combine with proximity rules (keywords near other indicators), document context, or additional classifiers for better accuracy.</p>
+        </div>
+        
+        <h3>Proximity-Based Detection</h3>
+        
+        <p>Require keywords to appear within a certain distance of other indicators:</p>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         PROXIMITY DETECTION EXAMPLE                              │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│    Document: "Please find attached the patient medical record for John Smith.   │
+│               His SSN is 123-45-6789 and DOB is 01/15/1980."                    │
+│                                                                                  │
+│    ┌─────────────────────────────────────────────────────────────────────────┐  │
+│    │  <span class="accent-green">Keyword: "medical record"</span>                                            │  │
+│    │                     ↓                                                    │  │
+│    │            [within 50 words]                                            │  │
+│    │                     ↓                                                    │  │
+│    │  <span class="accent-orange">Regex: SSN pattern</span>  +  <span class="accent-cyan">Regex: Date pattern</span>                           │  │
+│    │                     ↓                                                    │  │
+│    │            <span class="accent-purple">HIGH CONFIDENCE MATCH</span>                                      │  │
+│    └─────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                  │
+│    Without proximity, each indicator alone would generate more false positives. │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="fingerprinting">Document Fingerprinting</h2>
+        
+        <p>Document fingerprinting (called IDM in Symantec, Document Fingerprinting in Purview) creates hash signatures of source documents. DLP then detects documents that match or partially match these fingerprints.</p>
+        
+        <h3>How Fingerprinting Works</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Index Source Documents</strong>
+            <p>Upload templates, contracts, source code, or other sensitive documents to the DLP system for fingerprinting.</p>
+          </li>
+          <li>
+            <strong>Generate Fingerprints</strong>
+            <p>DLP breaks documents into segments and creates hash values. The algorithm handles minor variations (formatting, whitespace, headers/footers).</p>
+          </li>
+          <li>
+            <strong>Detection</strong>
+            <p>When content is transmitted or stored, DLP compares it against fingerprint database. Partial matches (10%+ overlap) can trigger alerts.</p>
+          </li>
+        </ol>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Purview</button>
+            <button class="tab-button" role="tab">Symantec</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h4>Microsoft Purview Document Fingerprinting</h4>
+            <p>Create fingerprints from the Microsoft Purview compliance portal:</p>
+            
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code># Connect to Security & Compliance PowerShell
+Connect-IPPSSession -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d3b2b7bebabd93b0bcbda7bca0bcfdb0bcbe">[email&#160;protected]</a>
+
+# Create document fingerprint from template
+$template = [System.IO.File]::ReadAllBytes("C:\Templates\NDA_Template.docx")
+$fingerprint = New-DlpFingerprint -FileData $template `
+    -Description "Standard NDA Template"
+
+# Create SIT using the fingerprint
+New-DlpSensitiveInformationType -Name "NDA Documents" `
+    -Description "Detects NDA documents based on template" `
+    -Fingerprints $fingerprint `
+    -ThresholdConfig @{low=5; medium=10; high=15}</code></pre>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Symantec IDM (Indexed Document Matching)</h4>
+            <p>Configure IDM through the Enforce Server console:</p>
+            
+            <ol>
+              <li>Navigate to <strong>Manage &gt; Policies &gt; Content Profiles</strong></li>
+              <li>Select <strong>Indexed Document Matching (IDM)</strong></li>
+              <li>Create a new IDM profile and specify source document location</li>
+              <li>Configure indexing schedule and match threshold (default: 80%)</li>
+              <li>Reference the IDM profile in your policy rules</li>
+            </ol>
+            
+            <div class="callout info">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Note
+              </div>
+              <p>IDM requires the single-tier or two-tier detection server architecture. Indexing large document sets requires significant storage and memory.</p>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="edm">Exact Data Match (EDM)</h2>
+        
+        <p>EDM matches specific data records from databases or CSV files—customer names, employee IDs, patient records. Unlike fingerprinting, EDM detects exact field values rather than document similarity.</p>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                            EXACT DATA MATCH FLOW                                 │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────┐                      ┌────────────────────────────┐    │
+│  │  <span class="accent-cyan">SOURCE DATABASE</span>    │                      │  <span class="accent-orange">CONTENT BEING SCANNED</span>    │    │
+│  │                     │                      │                            │    │
+│  │  Name    | SSN      │                      │  "Employee: John Smith     │    │
+│  │  --------|--------- │                      │   SSN: 123-45-6789         │    │
+│  │  John    | 123-45-  │                      │   Department: Finance"     │    │
+│  │  Smith   | 6789     │                      │                            │    │
+│  │  Jane    | 987-65-  │                      └─────────────┬──────────────┘    │
+│  │  Doe     | 4321     │                                    │                   │
+│  └──────────┬──────────┘                                    │                   │
+│             │                                               │                   │
+│             ▼                                               ▼                   │
+│  ┌─────────────────────┐                      ┌────────────────────────────┐    │
+│  │  <span class="accent-green">HASH & TOKENIZE</span>    │                      │  <span class="accent-green">HASH & TOKENIZE</span>          │    │
+│  │  (One-way hash)     │                      │  (Same algorithm)          │    │
+│  └──────────┬──────────┘                      └─────────────┬──────────────┘    │
+│             │                                               │                   │
+│             └───────────────────┬───────────────────────────┘                   │
+│                                 ▼                                               │
+│                   ┌──────────────────────────┐                                  │
+│                   │   <span class="accent-purple">COMPARE HASHES</span>         │                                  │
+│                   │   Match found!           │                                  │
+│                   │   → Trigger DLP policy   │                                  │
+│                   └──────────────────────────┘                                  │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3>Microsoft Purview EDM Setup</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Step 1: Define EDM Schema
+# Create schema XML file defining columns
+$schemaXml = @"
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;EdmSchema xmlns="http://schemas.microsoft.com/office/2018/edm"&gt;
+  &lt;DataStore name="EmployeeData" description="Employee PII"&gt;
+    &lt;Field name="EmployeeID" searchable="true" /&gt;
+    &lt;Field name="FirstName" searchable="true" /&gt;
+    &lt;Field name="LastName" searchable="true" /&gt;
+    &lt;Field name="SSN" searchable="true" /&gt;
+    &lt;Field name="Email" searchable="true" /&gt;
+  &lt;/DataStore&gt;
+&lt;/EdmSchema&gt;
+"@
+$schemaXml | Out-File "EmployeeSchema.xml"
+
+# Step 2: Create EDM Schema in Purview
+New-DlpEdmSchema -FileData ([System.IO.File]::ReadAllBytes("EmployeeSchema.xml"))
+
+# Step 3: Hash the sensitive data (run on secure workstation)
+# Using EDM Upload Agent
+EdmUploadAgent.exe /CreateHash /DataFile "employees.csv" `
+    /HashLocation "C:\EDMHash" /Schema "EmployeeData"
+
+# Step 4: Upload hashed data
+EdmUploadAgent.exe /UploadHash /DataStoreName "EmployeeData" `
+    /HashFile "C:\EDMHash\employees.EdmHash"
+
+# Step 5: Create SIT using EDM
+New-DlpSensitiveInformationType -Name "Employee PII (EDM)" `
+    -Description "Matches employee records from HR database" `
+    -EdmSchemaId (Get-DlpEdmSchema -Identity "EmployeeData").Id</code></pre>
+        </div>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Important
+          </div>
+          <p>EDM requires regular data refreshes as source databases change. Automate the hash/upload process to run daily or weekly. Stale EDM data leads to missed detections.</p>
+        </div>
+        
+        <h2 id="ml-classification">Machine Learning Classification</h2>
+        
+        <p>ML classifiers detect sensitive content in unstructured documents where patterns and keywords aren't sufficient. Microsoft calls these "Trainable Classifiers"; Symantec calls it "VML" (Vector Machine Learning).</p>
+        
+        <h3>How ML Classification Works</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Seed Content</strong>
+            <p>Provide the classifier with 50-500 examples of the content type you want to detect (e.g., legal contracts, financial statements).</p>
+          </li>
+          <li>
+            <strong>Training</strong>
+            <p>The system analyzes linguistic patterns, document structure, and vocabulary to build a detection model.</p>
+          </li>
+          <li>
+            <strong>Testing</strong>
+            <p>Test with known positive and negative samples. Review false positive/negative rates and retrain as needed.</p>
+          </li>
+          <li>
+            <strong>Deployment</strong>
+            <p>Apply the trained classifier in DLP policies. Monitor performance and periodically retrain with new examples.</p>
+          </li>
+        </ol>
+        
+        <h3>Microsoft Purview Trainable Classifiers</h3>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Pre-Trained</button>
+            <button class="tab-button" role="tab">Custom Training</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h4>Pre-Trained Classifiers (Ready to Use)</h4>
+            <p>Microsoft provides pre-trained classifiers for common content types:</p>
+            
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Classifier</th>
+                    <th>Detects</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Source Code</td>
+                    <td>Programming code in 25+ languages</td>
+                  </tr>
+                  <tr>
+                    <td>Resumes</td>
+                    <td>CV and resume documents</td>
+                  </tr>
+                  <tr>
+                    <td>Harassment</td>
+                    <td>Offensive/harassing language</td>
+                  </tr>
+                  <tr>
+                    <td>Threat</td>
+                    <td>Threatening language</td>
+                  </tr>
+                  <tr>
+                    <td>Profanity</td>
+                    <td>Profane language</td>
+                  </tr>
+                  <tr>
+                    <td>Discrimination</td>
+                    <td>Discriminatory language</td>
+                  </tr>
+                  <tr>
+                    <td>Financial Documents</td>
+                    <td>Financial statements, reports</td>
+                  </tr>
+                  <tr>
+                    <td>Legal Affairs</td>
+                    <td>Contracts, legal documents</td>
+                  </tr>
+                  <tr>
+                    <td>Healthcare</td>
+                    <td>Medical records, clinical notes</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Creating Custom Trainable Classifiers</h4>
+            
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code># Create seed content SharePoint site
+# Upload 50-500 positive examples to a SharePoint library
+
+# Create the trainable classifier
+New-TrainableClassifier -Name "Merger & Acquisition Docs" `
+    -Description "Detects M&A related documents" `
+    -SeedSiteUrl "https://contoso.sharepoint.com/sites/DLPTraining/MA_Seed"
+
+# Wait for training to complete (1-24 hours)
+Get-TrainableClassifier -Name "Merger & Acquisition Docs"
+
+# Add test content for validation
+Add-TrainableClassifierTestSite `
+    -Name "Merger & Acquisition Docs" `
+    -TestSiteUrl "https://contoso.sharepoint.com/sites/DLPTraining/MA_Test"
+
+# Review results and publish when ready
+Publish-TrainableClassifier -Name "Merger & Acquisition Docs"</code></pre>
+            </div>
+            
+            <div class="callout tip">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Training Tips
+              </div>
+              <p>Quality matters more than quantity. Use diverse examples representing all variations of the content type. Include examples from different authors, time periods, and formats.</p>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="file-metadata">File Metadata Classification</h2>
+        
+        <p>Sometimes sensitivity is determined by file properties rather than content:</p>
+        
+        <ul>
+          <li><strong>File Extension</strong> — .pst, .ost, .mdb, .bak often contain sensitive data</li>
+          <li><strong>File Size</strong> — Unusually large files may indicate data aggregation</li>
+          <li><strong>Author/Owner</strong> — Files from executives, HR, or legal may be sensitive</li>
+          <li><strong>Creation/Modified Date</strong> — Recent files during M&A may require protection</li>
+          <li><strong>Classification Tags</strong> — Microsoft sensitivity labels, file tags</li>
+          <li><strong>Digital Signatures</strong> — Signed documents may require special handling</li>
+        </ul>
+        
+        <h2 id="combining-methods">Combining Classification Methods</h2>
+        
+        <p>The most effective DLP policies combine multiple classification methods to maximize accuracy and minimize false positives:</p>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                       MULTI-LAYER CLASSIFICATION                                 │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  Example: Detecting Customer PII in Outbound Email                              │
+│                                                                                  │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐         │
+│  │   <span class="accent-green">Layer 1</span>   │   │   <span class="accent-cyan">Layer 2</span>   │   │   <span class="accent-orange">Layer 3</span>   │   │   <span class="accent-purple">Layer 4</span>   │         │
+│  │   Regex     │ + │   EDM       │ + │   Keyword   │ + │   Context   │         │
+│  │             │   │             │   │             │   │             │         │
+│  │ SSN pattern │   │ Customer DB │   │ "Customer"  │   │ External    │         │
+│  │ CC pattern  │   │ match       │   │ "Account"   │   │ recipient   │         │
+│  └──────┬──────┘   └──────┬──────┘   └──────┬──────┘   └──────┬──────┘         │
+│         │                 │                 │                 │                 │
+│         └────────────┬────┴────────┬────────┴────────┬────────┘                 │
+│                      │             │                 │                          │
+│                      ▼             ▼                 ▼                          │
+│               ┌──────────────────────────────────────────┐                      │
+│               │          CONFIDENCE SCORING              │                      │
+│               │                                          │                      │
+│               │  1 match:  LOW     → Monitor only        │                      │
+│               │  2 matches: MEDIUM → Notify user         │                      │
+│               │  3+ matches: HIGH  → Block + Alert       │                      │
+│               └──────────────────────────────────────────┘                      │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="dlp-fundamentals.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">DLP Fundamentals</span>
+          </a>
+          <a href="dlp-architecture.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">DLP Architecture</span>
+               </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

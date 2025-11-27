@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DLP Troubleshooting | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <div class="sidebar-overlay"></div>
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header"><a href="../../index.html" class="sidebar-logo"><svg viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/></svg>DLP Docs</a></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Troubleshooting</div>
+          <a href="troubleshooting-overview.html" class="nav-link active">Overview</a>
+          <a href="troubleshooting-purview.html" class="nav-link" data-product="purview">Purview Issues</a>
+          <a href="troubleshooting-symantec.html" class="nav-link" data-product="symantec">Symantec Issues</a>
+        </div>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs"><a href="../../index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Troubleshooting</span></nav>
+        <h1>DLP Troubleshooting Overview</h1>
+        <p>This section provides diagnostic approaches for common DLP issues across platforms.</p>
+        
+        <h2>General Troubleshooting Approach</h2>
+        <ol class="steps">
+          <li><strong>Define the Problem</strong><p>What's the expected behavior vs. actual behavior? When did it start?</p></li>
+          <li><strong>Check Recent Changes</strong><p>Policy updates, agent deployments, infrastructure changes?</p></li>
+          <li><strong>Verify Agent Health</strong><p>Is the agent installed, running, and communicating?</p></li>
+          <li><strong>Review Logs</strong><p>Check application logs, event logs, and service status.</p></li>
+          <li><strong>Test in Isolation</strong><p>Can you reproduce with a simple test case?</p></li>
+        </ol>
+        
+        <h2>Common Issue Categories</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Category</th><th>Symptoms</th><th>First Steps</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Agent Issues</strong></td><td>Not reporting, offline, high CPU</td><td>Check service status, connectivity</td></tr>
+              <tr><td><strong>Policy Issues</strong></td><td>Not triggering, too many FPs</td><td>Verify policy scope, test content</td></tr>
+              <tr><td><strong>Detection Issues</strong></td><td>Missing detections, wrong SIT</td><td>Test with known sensitive data</td></tr>
+              <tr><td><strong>Performance Issues</strong></td><td>Slow endpoints, timeouts</td><td>Check exclusions, agent version</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2>Platform-Specific Guides</h2>
+        <div class="card-grid">
+          <div class="card" data-product="purview">
+            <h3>Microsoft Purview</h3>
+            <p>Onboarding failures, policy sync issues, Activity Explorer gaps</p>
+            <a href="troubleshooting-purview.html" class="card-link text-purview">Purview Troubleshooting →</a>
+          </div>
+          <div class="card" data-product="symantec">
+            <h3>Symantec DLP</h3>
+            <p>Agent communication, Enforce Server, Oracle database issues</p>
+            <a href="troubleshooting-symantec.html" class="card-link text-symantec">Symantec Troubleshooting →</a>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="../../index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
+          <a href="troubleshooting-purview.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Purview Issues</span></a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

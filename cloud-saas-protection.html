@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SaaS application DLP protection including Microsoft 365, Google Workspace, Salesforce, and other cloud applications.">
+  <title>SaaS Protection | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Cloud DLP</div>
+          <a href="cloud-dlp-overview.html" class="nav-link" data-product="cloud">Overview</a>
+          <a href="cloud-casb-integration.html" class="nav-link" data-product="cloud">CASB Integration</a>
+          <a href="cloud-saas-protection.html" class="nav-link active" data-product="cloud">SaaS Protection</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="cloud-dlp-overview.html">Cloud DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>SaaS Protection</span>
+        </nav>
+        
+        <h1>SaaS Application Protection</h1>
+        
+        <p>This guide covers DLP protection strategies for popular SaaS applications including Microsoft 365, Google Workspace, Salesforce, and collaboration tools.</p>
+        
+        <h2 id="microsoft-365">Microsoft 365 Protection</h2>
+        
+        <h3>Coverage Overview</h3>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    MICROSOFT 365 DLP COVERAGE                                    │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                  │
+│  │ <span class="accent-cyan">EXCHANGE ONLINE</span> │  │ <span class="accent-green">SHAREPOINT</span>      │  │ <span class="accent-orange">ONEDRIVE</span>        │                  │
+│  │                 │  │                 │  │                 │                  │
+│  │ • Email body    │  │ • Documents     │  │ • Personal files│                  │
+│  │ • Attachments   │  │ • Lists         │  │ • Sync client   │                  │
+│  │ • Calendar      │  │ • Site content  │  │ • Web uploads   │                  │
+│  │ • Transport     │  │ • External      │  │ • Sharing       │                  │
+│  │   rules         │  │   sharing       │  │   controls      │                  │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘                  │
+│                                                                                  │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐                  │
+│  │ <span class="accent-purple">TEAMS</span>           │  │ <span class="accent-cyan">POWER PLATFORM</span> │  │ <span class="accent-green">COPILOT</span>         │                  │
+│  │                 │  │                 │  │                 │                  │
+│  │ • Chat messages │  │ • Power BI      │  │ • Prompts       │                  │
+│  │ • Channel posts │  │ • Power Apps    │  │ • Responses     │                  │
+│  │ • File sharing  │  │ • Power         │  │ • Data access   │                  │
+│  │ • Meeting chat  │  │   Automate      │  │   controls      │                  │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘                  │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3>Exchange Online DLP</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Exchange DLP Transport Rule</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Create transport rule for external email with sensitive data
+New-TransportRule -Name "Block External PII" `
+    -SentToScope "NotInOrganization" `
+    -MessageContainsDataClassifications @(
+        @{Name="Credit Card Number"; minCount="1"},
+        @{Name="Canada Social Insurance Number"; minCount="1"}
+    ) `
+    -RejectMessageReasonText "This message contains sensitive information that cannot be sent externally." `
+    -RejectMessageEnhancedStatusCode "5.7.1" `
+    -Mode "Enforce"
+
+# Create rule to encrypt sensitive emails
+New-TransportRule -Name "Encrypt Sensitive External Email" `
+    -SentToScope "NotInOrganization" `
+    -ApplyRightsProtectionTemplate "Encrypt" `
+    -MessageContainsDataClassifications @(
+        @{Name="Canada Social Insurance Number"; minCount="1"}
+    ) `
+    -Mode "Enforce"</code></pre>
+        </div>
+        
+        <h3>SharePoint/OneDrive DLP</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Protection Type</th><th>Configuration</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Block External Sharing</strong></td>
+                <td>DLP policy with external sharing restriction</td>
+                <td>Prevent sensitive files from being shared outside org</td>
+              </tr>
+              <tr>
+                <td><strong>Block Download</strong></td>
+                <td>Session policy via MDCA</td>
+                <td>Allow view but prevent download on unmanaged devices</td>
+              </tr>
+              <tr>
+                <td><strong>Auto-Label</strong></td>
+                <td>Auto-labeling policy</td>
+                <td>Automatically classify sensitive documents</td>
+              </tr>
+              <tr>
+                <td><strong>Site Classification</strong></td>
+                <td>Container labels</td>
+                <td>Apply default protection to entire site</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Teams DLP</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Teams DLP Policy</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Create DLP policy for Teams chat and channels
+New-DlpCompliancePolicy -Name "Teams - Sensitive Data Protection" `
+    -TeamsLocation "All" `
+    -Mode "Enable"
+
+# Add rule to block credit card sharing in Teams
+New-DlpComplianceRule -Name "Block Credit Cards in Teams" `
+    -Policy "Teams - Sensitive Data Protection" `
+    -ContentContainsSensitiveInformation @(
+        @{Name="Credit Card Number"; minCount="1"; confidenceLevel="High"}
+    ) `
+    -BlockAccess $true `
+    -NotifyUser "LastModifier" `
+    -NotifyPolicyTipCustomText "Credit card numbers cannot be shared in Teams messages."</code></pre>
+        </div>
+        
+        <h2 id="google-workspace">Google Workspace Protection</h2>
+        
+        <h3>DLP for Google Drive</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Google Admin Console - DLP Rule</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Google Workspace DLP Rule Configuration
+# Admin Console > Security > Data Protection > Manage Rules
+
+Rule Name: Block External Sharing of PII
+Scope: Entire organization
+
+Conditions:
+  Content matches: 
+    - Canada Social Insurance Number
+    - Credit Card Number
+  AND
+  Sharing: Shared externally
+
+Actions:
+  - Block external sharing
+  - Warn on attempt to share
+  - Notify admin (<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1665737563647f626f5675797b6677786f3875797b">[email&#160;protected]</a>)
+  - Log event in Alert Center
+
+Triggers:
+  ☑ Google Drive
+  ☑ Shared drives
+  ☐ Gmail (separate rule)</code></pre>
+        </div>
+        
+        <h3>Gmail DLP</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Gmail Content Compliance Rule</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Gmail Content Compliance
+# Admin Console > Apps > Google Workspace > Gmail > Compliance
+
+Rule: External PII Protection
+Applies to: Outbound messages only
+
+Expressions to match:
+  - Predefined: Credit card numbers
+  - Predefined: Canada Social Insurance Number
+  - Custom regex: \b\d{4}[-\s]?\d{3}[-\s]?\d{3}\b (OHIP)
+
+If expressions match:
+  Action: Reject message
+  Custom rejection notice: "This email contains sensitive personal 
+    information that cannot be sent externally. Please remove the 
+    sensitive data and try again."
+  
+  Alternatively:
+  Action: Quarantine message
+  Quarantine: Security review queue</code></pre>
+        </div>
+        
+        <h2 id="salesforce">Salesforce DLP</h2>
+        
+        <h3>Salesforce Shield Event Monitoring</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Salesforce DLP Configuration</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Salesforce Data Protection Options
+
+1. FIELD-LEVEL SECURITY
+   - Restrict access to sensitive fields (SSN, CC#)
+   - Setup > Object Manager > [Object] > Fields > Set Field-Level Security
+
+2. VALIDATION RULES
+   - Prevent sensitive data entry in wrong fields
+   - Regex validation on text fields
+
+3. SHIELD PLATFORM ENCRYPTION
+   - Encrypt sensitive fields at rest
+   - Setup > Platform Encryption > Encryption Policy
+
+4. CASB INTEGRATION (Recommended)
+   - Connect Salesforce to MDCA or CloudSOC
+   - Enable API connector for file scanning
+   - Real-time activity monitoring
+
+5. EVENT MONITORING
+   - Track data exports and downloads
+   - Monitor report runs with sensitive fields
+   - Alert on bulk data access</code></pre>
+        </div>
+        
+        <h3>CASB Policies for Salesforce</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">MDCA - Salesforce Policy</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Microsoft Defender for Cloud Apps - Salesforce Policies
+
+Policy 1: Bulk Data Export Alert
+  Type: Activity Policy
+  Filters:
+    - App: Salesforce
+    - Activity: Export report, Export data
+    - Records: > 1000
+  Action: Alert admin, require justification
+
+Policy 2: Sensitive Field Access
+  Type: Activity Policy  
+  Filters:
+    - App: Salesforce
+    - Activity: View record
+    - Object: Contains SIN, SSN, Credit Card fields
+    - User: Not in "Authorized PII Access" group
+  Action: Alert, log for audit
+
+Policy 3: External Sharing
+  Type: File Policy
+  Filters:
+    - App: Salesforce
+    - File sharing: External
+    - Content inspection: Matches PII patterns
+  Action: Remove sharing, notify owner</code></pre>
+        </div>
+        
+        <h2 id="collaboration">Collaboration Tools</h2>
+        
+        <h3>Slack DLP</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Method</th><th>Capability</th><th>Requirements</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Slack Enterprise DLP</strong></td>
+                <td>Native message scanning, custom rules</td>
+                <td>Enterprise Grid plan</td>
+              </tr>
+              <tr>
+                <td><strong>CASB Integration</strong></td>
+                <td>API scanning, file inspection</td>
+                <td>MDCA/Netskope connector</td>
+              </tr>
+              <tr>
+                <td><strong>Slack Connect DLP</strong></td>
+                <td>Control external channel sharing</td>
+                <td>Enterprise Grid</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Slack Enterprise DLP Rule</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Slack Admin Dashboard > Security > DLP
+
+Rule: Credit Card Detection
+Pattern Type: Predefined - Credit Card Number
+Scope: All workspaces
+Channels: All channels including DMs
+
+Actions:
+  ☑ Tombstone message (replace with notice)
+  ☑ Notify user
+  ☑ Alert admin
+  ☑ Log to SIEM
+
+Tombstone message:
+  "This message was removed because it contained 
+   payment card information. Please use secure 
+   channels for sharing financial data."</code></pre>
+        </div>
+        
+        <h3>Box DLP</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Box Shield Configuration</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Box Shield - Smart Access Policies
+
+Policy: Restrict PII File Sharing
+Classification: Confidential - PII
+
+Auto-Classification Rules:
+  - Credit card numbers detected → Tag as PII
+  - SIN numbers detected → Tag as PII
+  - Custom regex for OHIP → Tag as PII
+
+Access Restrictions:
+  When file tagged as PII:
+    ☑ Block external sharing
+    ☑ Block shared links
+    ☑ Require watermark on download
+    ☑ Disable download for external collaborators
+    ☑ Block FTP access
+    
+Alerts:
+  - Alert on classification change
+  - Alert on sharing attempt (blocked)
+  - Weekly summary to compliance team</code></pre>
+        </div>
+        
+        <h2 id="best-practices">SaaS DLP Best Practices</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Unified Policies</h4>
+            <p>Use the same classification taxonomy across all SaaS apps. Map sensitivity labels from Purview to other platforms where possible.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">API-First Approach</h4>
+            <p>Prioritize API connectors for sanctioned apps. They provide deepest visibility and retroactive scanning of existing content.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">User Education</h4>
+            <p>SaaS DLP often feels intrusive to users. Invest in training and clear policy tip messages explaining why actions are blocked.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Shadow IT Discovery</h4>
+            <p>Before protecting sanctioned apps, discover what unsanctioned apps users are actually using. You can't protect what you don't know about.</p>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="cloud-casb-integration.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">CASB Integration</span>
+          </a>
+          <a href="../discovery/data-discovery.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Data Discovery</span>
+            </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

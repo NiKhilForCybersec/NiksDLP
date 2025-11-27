@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Comprehensive comparison of Endpoint DLP solutions including Microsoft Purview, Symantec, Trellix, Digital Guardian, and Forcepoint.">
+  <title>Endpoint DLP Vendor Comparison | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Endpoint DLP</div>
+          <a href="edlp-concepts.html" class="nav-link" data-product="endpoint">Concepts</a>
+          <a href="edlp-channels.html" class="nav-link" data-product="endpoint">Channels</a>
+          <a href="edlp-comparison.html" class="nav-link active" data-product="endpoint">Vendor Comparison</a>
+          <a href="edlp-concepts.html" class="nav-link" data-product="endpoint">Deployment</a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Platform Specific</div>
+          <a href="../purview/purview-endpoint-dlp.html" class="nav-link" data-product="purview">Purview Endpoint DLP</a>
+          <a href="../symantec/symantec-endpoint.html" class="nav-link" data-product="symantec">Symantec Endpoint</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="edlp-concepts.html">Endpoint DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Vendor Comparison</span>
+        </nav>
+        
+        <h1>Endpoint DLP Vendor Comparison</h1>
+        
+        <p>This comprehensive comparison evaluates leading Endpoint DLP solutions across key capabilities including channel coverage, detection methods, management options, and platform support. Use this guide to inform your vendor selection or migration planning.</p>
+        
+        <div class="callout info">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Last Updated
+          </div>
+          <p>This comparison reflects capabilities as of 2024. Features change frequently—verify current capabilities with vendors before making procurement decisions.</p>
+        </div>
+        
+        <h2 id="vendors-overview">Vendors Overview</h2>
+        
+        <div class="card-grid">
+          <div class="card" data-product="purview">
+            <h3 class="text-purview">Microsoft Purview</h3>
+            <p>Cloud-native DLP integrated with Microsoft 365. Best for organizations heavily invested in the Microsoft ecosystem.</p>
+            <ul style="font-size: 0.875rem; margin-top: 0.5rem;">
+              <li>Native M365 integration</li>
+              <li>No additional agent (uses MDE)</li>
+              <li>Unified compliance portal</li>
+            </ul>
+          </div>
+          
+          <div class="card" data-product="symantec">
+            <h3 class="text-symantec">Symantec DLP</h3>
+            <p>Enterprise DLP with mature detection technology. Now owned by Broadcom with on-prem and cloud options.</p>
+            <ul style="font-size: 0.875rem; margin-top: 0.5rem;">
+              <li>Advanced detection (IDM, EDM, VML)</li>
+              <li>Linux endpoint support</li>
+              <li>Comprehensive network DLP</li>
+            </ul>
+          </div>
+          
+          <div class="card" data-product="network">
+            <h3 class="text-network">Trellix DLP</h3>
+            <p>Formerly McAfee DLP, now part of Trellix (merger of McAfee Enterprise and FireEye). Strong XDR integration.</p>
+            <ul style="font-size: 0.875rem; margin-top: 0.5rem;">
+              <li>Trellix XDR integration</li>
+              <li>ePO management</li>
+              <li>Device control built-in</li>
+            </ul>
+          </div>
+          
+          <div class="card" data-product="cloud">
+            <h3 class="text-cloud">Digital Guardian</h3>
+            <p>Data-centric security platform with strong endpoint visibility. Known for user behavior analytics.</p>
+            <ul style="font-size: 0.875rem; margin-top: 0.5rem;">
+              <li>Deep endpoint visibility</li>
+              <li>User behavior analytics</li>
+              <li>Managed service option</li>
+            </ul>
+          </div>
+          
+          <div class="card">
+            <h3>Forcepoint DLP</h3>
+            <p>Risk-adaptive DLP with behavior analytics. Part of broader Forcepoint security platform.</p>
+            <ul style="font-size: 0.875rem; margin-top: 0.5rem;">
+              <li>Risk-adaptive protection</li>
+              <li>Unified web/cloud/endpoint</li>
+              <li>Behavioral analytics</li>
+            </ul>
+          </div>
+          
+          <div class="card">
+            <h3>Proofpoint ITM</h3>
+            <p>Insider Threat Management with DLP capabilities. Strong focus on user monitoring and investigation.</p>
+            <ul style="font-size: 0.875rem; margin-top: 0.5rem;">
+              <li>Insider threat focus</li>
+              <li>Screen recording</li>
+              <li>User activity monitoring</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="channel-comparison">Channel Coverage Comparison</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th class="text-purview">Purview</th>
+                <th class="text-symantec">Symantec</th>
+                <th class="text-network">Trellix</th>
+                <th class="text-cloud">Digital Guardian</th>
+                <th>Forcepoint</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>USB/Removable Storage</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Print (Local)</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Print (Network)</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Clipboard</strong></td>
+                <td><span class="status-badge partial">Audit only</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Screen Capture</strong></td>
+                <td><span class="status-badge partial">Audit only</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Browser Upload</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cloud Sync (OneDrive)</strong></td>
+                <td><span class="status-badge supported">✓ Native</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cloud Sync (Dropbox/GDrive)</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Network Share (UNC)</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Email Client (Outlook)</strong></td>
+                <td><span class="status-badge supported">✓ Native</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Bluetooth Transfer</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>RDP Clipboard</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+              <tr>
+                <td><strong>Application Restrictions</strong></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+                <td><span class="status-badge supported">✓ Full</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="detection-comparison">Detection Methods Comparison</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Detection Method</th>
+                <th class="text-purview">Purview</th>
+                <th class="text-symantec">Symantec</th>
+                <th class="text-network">Trellix</th>
+                <th class="text-cloud">Digital Guardian</th>
+                <th>Forcepoint</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Regex Patterns</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Keywords/Dictionaries</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Document Fingerprinting</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓ IDM</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Exact Data Match</strong></td>
+                <td><span class="status-badge supported">✓ EDM</span></td>
+                <td><span class="status-badge supported">✓ EDM</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Machine Learning</strong></td>
+                <td><span class="status-badge supported">Trainable Classifiers</span></td>
+                <td><span class="status-badge supported">VML</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>OCR (Image Text)</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Pre-built Data Types</strong></td>
+                <td>300+</td>
+                <td>60+</td>
+                <td>100+</td>
+                <td>100+</td>
+                <td>300+</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="platform-comparison">Platform & Management Comparison</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th class="text-purview">Purview</th>
+                <th class="text-symantec">Symantec</th>
+                <th class="text-network">Trellix</th>
+                <th class="text-cloud">Digital Guardian</th>
+                <th>Forcepoint</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Windows Support</strong></td>
+                <td>10, 11</td>
+                <td>10, 11, Server</td>
+                <td>10, 11, Server</td>
+                <td>10, 11, Server</td>
+                <td>10, 11, Server</td>
+              </tr>
+              <tr>
+                <td><strong>macOS Support</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Linux Support</strong></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+              </tr>
+              <tr>
+                <td><strong>Management Console</strong></td>
+                <td>Cloud (Purview Portal)</td>
+                <td>On-prem/Cloud (ICDm)</td>
+                <td>On-prem (ePO) / Cloud</td>
+                <td>Cloud / On-prem</td>
+                <td>Cloud / On-prem</td>
+              </tr>
+              <tr>
+                <td><strong>Agent Footprint</strong></td>
+                <td>Shared (MDE)</td>
+                <td>Dedicated agent</td>
+                <td>Shared (Trellix)</td>
+                <td>Dedicated agent</td>
+                <td>Dedicated agent</td>
+              </tr>
+              <tr>
+                <td><strong>Offline Protection</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Network DLP Integration</strong></td>
+                <td>Via Defender/MCAS</td>
+                <td>Native</td>
+                <td>Native</td>
+                <td>Separate</td>
+                <td>Native</td>
+              </tr>
+              <tr>
+                <td><strong>CASB Integration</strong></td>
+                <td>MCAS (Native)</td>
+                <td>CloudSOC</td>
+                <td>Skyhigh</td>
+                <td>Via API</td>
+                <td>Native</td>
+              </tr>
+              <tr>
+                <td><strong>SIEM Integration</strong></td>
+                <td>Sentinel, Splunk</td>
+                <td>Splunk, QRadar, ArcSight</td>
+                <td>Trellix XDR, Splunk</td>
+                <td>Splunk, QRadar</td>
+                <td>Splunk, QRadar</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="pricing-model">Pricing Model Comparison</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Vendor</th>
+                <th>Licensing Model</th>
+                <th>Included With</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-purview"><strong>Microsoft Purview</strong></td>
+                <td>Per-user subscription</td>
+                <td>M365 E5 or E5 Compliance add-on</td>
+                <td>Most cost-effective for M365 shops</td>
+              </tr>
+              <tr>
+                <td class="text-symantec"><strong>Symantec</strong></td>
+                <td>Per-user + server licenses</td>
+                <td>Standalone product</td>
+                <td>Oracle DB licensing adds cost</td>
+              </tr>
+              <tr>
+                <td class="text-network"><strong>Trellix</strong></td>
+                <td>Per-endpoint subscription</td>
+                <td>Trellix security suite</td>
+                <td>Bundle discounts available</td>
+              </tr>
+              <tr>
+                <td class="text-cloud"><strong>Digital Guardian</strong></td>
+                <td>Per-endpoint subscription</td>
+                <td>Standalone product</td>
+                <td>Managed service option premium</td>
+              </tr>
+              <tr>
+                <td><strong>Forcepoint</strong></td>
+                <td>Per-user subscription</td>
+                <td>Forcepoint ONE or standalone</td>
+                <td>Bundle with web/CASB for savings</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="selection-guide">Selection Guide</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Microsoft Shop</button>
+            <button class="tab-button" role="tab">Mixed Environment</button>
+            <button class="tab-button" role="tab">Linux/Specialized</button>
+            <button class="tab-button" role="tab">Insider Threat Focus</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>Best for Microsoft-Centric Organizations</h3>
+            <p><strong>Recommended: Microsoft Purview DLP</strong></p>
+            
+            <div class="callout success">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                Why Purview
+              </div>
+              <p>Native M365 integration, no additional agent if using MDE, unified compliance portal, included in E5 licensing.</p>
+            </div>
+            
+            <p>Consider Purview if you:</p>
+            <ul>
+              <li>Already have Microsoft 365 E5 or E5 Compliance</li>
+              <li>Use Microsoft Defender for Endpoint</li>
+              <li>Want unified policy management with Exchange/SharePoint/Teams</li>
+              <li>Don't need Linux endpoint coverage</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Best for Heterogeneous Environments</h3>
+            <p><strong>Recommended: Symantec DLP or Forcepoint</strong></p>
+            
+            <p>Consider these if you:</p>
+            <ul>
+              <li>Have significant on-premises infrastructure</li>
+              <li>Need comprehensive network DLP</li>
+              <li>Require advanced detection methods (IDM, VML)</li>
+              <li>Have mature DLP program with complex policies</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Best for Linux/Specialized Workloads</h3>
+            <p><strong>Recommended: Symantec DLP or Digital Guardian</strong></p>
+            
+            <p>Consider these if you:</p>
+            <ul>
+              <li>Have Linux endpoints requiring DLP</li>
+              <li>Need deep visibility into endpoint activity</li>
+              <li>Require air-gapped or disconnected operation</li>
+              <li>Have specialized compliance requirements</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Best for Insider Threat Programs</h3>
+            <p><strong>Recommended: Digital Guardian or Proofpoint ITM</strong></p>
+            
+            <p>Consider these if you:</p>
+            <ul>
+              <li>Focus on insider threat detection</li>
+              <li>Need user activity monitoring</li>
+              <li>Require screen recording capabilities</li>
+              <li>Want behavior analytics and risk scoring</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="migration-considerations">Migration Considerations</h2>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Migration Planning
+          </div>
+          <p>DLP migrations typically take 3-6 months. Plan for a coexistence period where both solutions run simultaneously.</p>
+        </div>
+        
+        <p>Key migration factors:</p>
+        <ul>
+          <li><strong>Policy Mapping</strong> — Document all policies and map to target platform equivalents</li>
+          <li><strong>Detection Parity</strong> — Verify detection methods are available in target platform</li>
+          <li><strong>Channel Coverage</strong> — Ensure all required channels are supported</li>
+          <li><strong>User Experience</strong> — Plan for new policy tips and notifications</li>
+          <li><strong>Integration Points</strong> — Update SIEM, SOAR, and ticketing integrations</li>
+        </ul>
+        
+        <p>For detailed migration guidance, see <a href="../migration/migration-symantec-to-purview.html">Symantec to Purview Migration Guide</a>.</p>
+        
+        <nav class="page-nav">
+          <a href="edlp-channels.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Endpoint Channels</span>
+          </a>
+          <a href="edlp-concepts.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Deployment Strategies</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

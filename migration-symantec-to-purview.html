@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Step-by-step guide for migrating from Symantec DLP to Microsoft Purview including policy mapping, detection conversion, and phased rollout.">
+  <title>Symantec to Purview Migration | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Migration</div>
+          <a href="migration-planning.html" class="nav-link">Planning</a>
+          <a href="migration-symantec-to-purview.html" class="nav-link active">Symantec → Purview</a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Related</div>
+          <a href="../purview/purview-endpoint-dlp.html" class="nav-link" data-product="purview">Purview Endpoint DLP</a>
+          <a href="../purview/purview-sensitive-info-types.html" class="nav-link" data-product="purview">Purview SITs</a>
+          <a href="../symantec/symantec-detection.html" class="nav-link" data-product="symantec">Symantec Detection</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="migration-planning.html">Migration</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Symantec → Purview</span>
+        </nav>
+        
+        <h1>Symantec DLP to Microsoft Purview Migration</h1>
+        
+        <p>Migrating from Symantec DLP to Microsoft Purview requires careful planning, policy mapping, and a phased approach. This guide provides a comprehensive methodology for a successful migration while maintaining data protection coverage throughout the transition.</p>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Important
+          </div>
+          <p>Plan for a 3-6 month coexistence period where both Symantec and Purview run simultaneously. This allows validation of Purview coverage before decommissioning Symantec.</p>
+        </div>
+        
+        <h2 id="migration-overview">Migration Overview</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    SYMANTEC → PURVIEW MIGRATION TIMELINE                         │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  <span class="accent-purple">PHASE 1</span>          <span class="accent-blue">PHASE 2</span>          <span class="accent-green">PHASE 3</span>          <span class="accent-orange">PHASE 4</span>          <span class="accent-cyan">PHASE 5</span>   │
+│  Assessment      Setup            Coexistence      Cutover          Decommission│
+│  [2-4 weeks]     [2-4 weeks]      [8-16 weeks]     [2-4 weeks]      [2-4 weeks] │
+│                                                                                  │
+│  ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐   │
+│  │ Inventory│     │ Purview │     │ Monitor │     │ Enable  │     │ Remove  │   │
+│  │ policies │────▶│ config  │────▶│ compare │────▶│ enforce │────▶│ Symantec│   │
+│  │ & gaps  │     │ & SITs  │     │ tune    │     │ cutover │     │ agents  │   │
+│  └─────────┘     └─────────┘     └─────────┘     └─────────┘     └─────────┘   │
+│                                                                                  │
+│  Deliverables:   Deliverables:   Deliverables:   Deliverables:   Deliverables: │
+│  • Policy list   • Purview SITs  • Detection     • Purview       • Agent removal│
+│  • Gap analysis  • Test policies • comparison    • primary       • Server       │
+│  • Mapping doc   • Pilot devices • FP analysis   • Symantec off  • decommission │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="inventory">Phase 1: Policy Inventory & Assessment</h2>
+        
+        <p>Before migrating, create a complete inventory of your Symantec DLP configuration.</p>
+        
+        <h3 id="policy-export">Exporting Symantec Policies</h3>
+        
+        <div class="code-block" data-language="sql">
+          <div class="code-header">
+            <span class="code-lang">SQL - Enforce Database Query</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>-- Export all active policies from Symantec Enforce database
+-- Connect to Oracle database hosting Enforce
+
+-- List all policies with status
+SELECT 
+    p.policy_id,
+    p.policy_name,
+    p.description,
+    p.policy_type,
+    pg.policy_group_name,
+    CASE p.is_enabled WHEN 1 THEN 'Active' ELSE 'Disabled' END as status,
+    p.creation_date,
+    p.modification_date
+FROM 
+    policies p
+    JOIN policy_groups pg ON p.policy_group_id = pg.policy_group_id
+WHERE 
+    p.is_deleted = 0
+ORDER BY 
+    pg.policy_group_name, p.policy_name;
+
+-- Export detection rules per policy
+SELECT 
+    p.policy_name,
+    r.rule_name,
+    r.rule_type,
+    r.severity,
+    r.description
+FROM 
+    policies p
+    JOIN rules r ON p.policy_id = r.policy_id
+WHERE 
+    p.is_enabled = 1 
+    AND p.is_deleted = 0
+ORDER BY 
+    p.policy_name, r.rule_name;
+
+-- Export response rules
+SELECT 
+    p.policy_name,
+    rr.response_rule_name,
+    rr.response_action,
+    rr.notification_template
+FROM 
+    policies p
+    JOIN response_rules rr ON p.policy_id = rr.policy_id
+WHERE 
+    p.is_enabled = 1
+ORDER BY 
+    p.policy_name;</code></pre>
+        </div>
+        
+        <h3>Policy Inventory Template</h3>
+        
+        <p>Document each Symantec policy with these attributes:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Attribute</th>
+                <th>Symantec Policy A</th>
+                <th>Symantec Policy B</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Policy Name</strong></td>
+                <td>PCI Credit Card Protection</td>
+                <td>Employee PII Detection</td>
+              </tr>
+              <tr>
+                <td><strong>Policy Group</strong></td>
+                <td>Regulatory - PCI-DSS</td>
+                <td>HR Data Protection</td>
+              </tr>
+              <tr>
+                <td><strong>Detection Method</strong></td>
+                <td>DCM (Data Identifier: Credit Card)</td>
+                <td>EDM (Employee Database)</td>
+              </tr>
+              <tr>
+                <td><strong>Channels</strong></td>
+                <td>Endpoint, Email, Web</td>
+                <td>Endpoint, Email</td>
+              </tr>
+              <tr>
+                <td><strong>Response Actions</strong></td>
+                <td>Block, Encrypt, Notify Manager</td>
+                <td>Audit, Notify User</td>
+              </tr>
+              <tr>
+                <td><strong>Exceptions</strong></td>
+                <td>Finance group, Payment processor domain</td>
+                <td>HR department</td>
+              </tr>
+              <tr>
+                <td><strong>Incident Volume (Monthly)</strong></td>
+                <td>~500</td>
+                <td>~150</td>
+              </tr>
+              <tr>
+                <td><strong>False Positive Rate</strong></td>
+                <td>~8%</td>
+                <td>~3%</td>
+              </tr>
+              <tr>
+                <td><strong>Purview Equivalent</strong></td>
+                <td>Credit Card Number SIT</td>
+                <td>Custom EDM + Employee SITs</td>
+              </tr>
+              <tr>
+                <td><strong>Migration Priority</strong></td>
+                <td>High</td>
+                <td>Medium</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="mapping">Detection Method Mapping</h2>
+        
+        <p>Map Symantec detection methods to their Purview equivalents:</p>
+        
+        <h3>DCM to Sensitive Information Types</h3>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Symantec Data Identifier</th>
+                <th>Purview Sensitive Information Type</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Credit Card Number</td>
+                <td>Credit Card Number</td>
+                <td>Direct mapping, includes Luhn validation</td>
+              </tr>
+              <tr>
+                <td>US Social Security Number</td>
+                <td>U.S. Social Security Number (SSN)</td>
+                <td>Direct mapping</td>
+              </tr>
+              <tr>
+                <td>Canadian Social Insurance Number</td>
+                <td>Canada Social Insurance Number</td>
+                <td>Direct mapping</td>
+              </tr>
+              <tr>
+                <td>Ontario Health Card</td>
+                <td>Canada Health Service Number</td>
+                <td>May need custom SIT for full coverage</td>
+              </tr>
+              <tr>
+                <td>Canadian Passport</td>
+                <td>Canada Passport Number</td>
+                <td>Direct mapping</td>
+              </tr>
+              <tr>
+                <td>Email Address</td>
+                <td>Email (custom SIT or condition)</td>
+                <td>Use in combination with other SITs</td>
+              </tr>
+              <tr>
+                <td>ABA Routing Number</td>
+                <td>ABA Routing Number</td>
+                <td>Direct mapping</td>
+              </tr>
+              <tr>
+                <td>IBAN</td>
+                <td>International Banking Account Number (IBAN)</td>
+                <td>Direct mapping</td>
+              </tr>
+              <tr>
+                <td>SWIFT Code</td>
+                <td>SWIFT Code</td>
+                <td>Direct mapping</td>
+              </tr>
+              <tr>
+                <td>IP Address</td>
+                <td>IP Address (custom SIT)</td>
+                <td>Create custom SIT with regex</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>IDM to Document Fingerprinting</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Create Document Fingerprint</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Connect to Security & Compliance PowerShell
+Connect-IPPSSession -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c9a8ada4a0a789aaa6a7bda6baa6e7aaa6a4">[email&#160;protected]</a>
+
+# Step 1: Export source documents from Symantec IDM profile
+# Location: Enforce Server → Manage → Policies → Indexed Document Matching
+# Export the indexed documents to a folder
+
+# Step 2: Create fingerprints in Purview for each document type
+$sourceDocs = Get-ChildItem "C:\Migration\IDM_Sources\*.docx"
+
+foreach ($doc in $sourceDocs) {
+    $fileBytes = [System.IO.File]::ReadAllBytes($doc.FullName)
+    $fingerprint = New-DlpFingerprint -FileData $fileBytes `
+        -Description "Migrated from Symantec IDM: $($doc.BaseName)"
+    
+    # Create SIT using fingerprint
+    New-DlpSensitiveInformationType `
+        -Name "IDM - $($doc.BaseName)" `
+        -Description "Document fingerprint migrated from Symantec" `
+        -Fingerprints $fingerprint `
+        -ThresholdConfig @{low=5; medium=10; high=15}
+    
+    Write-Host "Created fingerprint for: $($doc.Name)" -ForegroundColor Green
+}</code></pre>
+        </div>
+        
+        <h3>EDM Migration</h3>
+        
+        <p>Both Symantec and Purview support Exact Data Match (EDM). The migration process involves recreating the schema and hashing the source data:</p>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Schema Definition</button>
+            <button class="tab-button" role="tab">Data Hashing</button>
+            <button class="tab-button" role="tab">Upload</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h4>Define EDM Schema in Purview</h4>
+            
+            <div class="code-block" data-language="xml">
+              <div class="code-header">
+                <span class="code-lang">XML - EDM Schema</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;EdmSchema xmlns="http://schemas.microsoft.com/office/2018/edm"&gt;
+  &lt;!-- Mirror your Symantec EDM profile structure --&gt;
+  &lt;DataStore name="CustomerDatabase" description="Customer PII from CRM"&gt;
+    &lt;!-- Primary fields (searchable) --&gt;
+    &lt;Field name="CustomerID" searchable="true" /&gt;
+    &lt;Field name="FirstName" searchable="true" /&gt;
+    &lt;Field name="LastName" searchable="true" /&gt;
+    &lt;Field name="Email" searchable="true" /&gt;
+    &lt;Field name="SSN" searchable="true" /&gt;
+    &lt;Field name="CreditCard" searchable="true" /&gt;
+    
+    &lt;!-- Corroborative fields (improve accuracy) --&gt;
+    &lt;Field name="PhoneNumber" searchable="false" /&gt;
+    &lt;Field name="Address" searchable="false" /&gt;
+    &lt;Field name="DateOfBirth" searchable="false" /&gt;
+  &lt;/DataStore&gt;
+&lt;/EdmSchema&gt;</code></pre>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Hash Source Data</h4>
+            
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code># Export data from Symantec EDM source (same CSV used for Symantec)
+# Ensure CSV headers match schema field names
+
+# Download EDM Upload Agent
+# https://go.microsoft.com/fwlink/?linkid=2088639
+
+# Hash the data (run on secure workstation)
+EdmUploadAgent.exe /CreateHash `
+    /DataFile "C:\EDM\CustomerData.csv" `
+    /HashLocation "C:\EDM\Hashed" `
+    /Schema "CustomerDatabase" `
+    /AllowedBadLinesPercentage 5
+
+# Verify hash output
+Get-ChildItem "C:\EDM\Hashed\*.EdmHash" | 
+    Select-Object Name, Length, LastWriteTime</code></pre>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Upload to Purview</h4>
+            
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code># Authorize the upload agent (first time only)
+EdmUploadAgent.exe /Authorize
+
+# Upload hashed data
+EdmUploadAgent.exe /UploadHash `
+    /DataStoreName "CustomerDatabase" `
+    /HashFile "C:\EDM\Hashed\CustomerData.EdmHash"
+
+# Verify upload status
+EdmUploadAgent.exe /GetDataStore /DataStoreName "CustomerDatabase"
+
+# Schedule regular updates (daily/weekly)
+# Create scheduled task to run:
+# EdmUploadAgent.exe /CreateHash ... && EdmUploadAgent.exe /UploadHash ...</code></pre>
+            </div>
+          </div>
+        </div>
+        
+        <h3>VML to Trainable Classifiers</h3>
+        
+        <p>Symantec's Vector Machine Learning (VML) maps to Microsoft's Trainable Classifiers:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Symantec VML Profile</th>
+                <th>Purview Option</th>
+                <th>Migration Approach</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Financial Documents</td>
+                <td>Pre-trained: Financial</td>
+                <td>Use built-in classifier</td>
+              </tr>
+              <tr>
+                <td>Legal Contracts</td>
+                <td>Pre-trained: Legal Affairs</td>
+                <td>Use built-in classifier</td>
+              </tr>
+              <tr>
+                <td>Source Code</td>
+                <td>Pre-trained: Source Code</td>
+                <td>Use built-in classifier</td>
+              </tr>
+              <tr>
+                <td>Custom VML Profile</td>
+                <td>Custom Trainable Classifier</td>
+                <td>Retrain with seed documents</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="response-mapping">Response Rule Mapping</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Symantec Response Action</th>
+                <th>Purview Action</th>
+                <th>Configuration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Block</td>
+                <td>Block</td>
+                <td>Direct mapping in policy rule</td>
+              </tr>
+              <tr>
+                <td>Quarantine</td>
+                <td>Block + Move to quarantine</td>
+                <td>Quarantine folder in SharePoint/OneDrive</td>
+              </tr>
+              <tr>
+                <td>Encrypt (Email)</td>
+                <td>Apply encryption</td>
+                <td>Requires sensitivity label with encryption</td>
+              </tr>
+              <tr>
+                <td>Modify/Redact</td>
+                <td>Not available</td>
+                <td>Block or warn instead</td>
+              </tr>
+              <tr>
+                <td>User Notification</td>
+                <td>Policy tip + Email notification</td>
+                <td>Configure in policy rule</td>
+              </tr>
+              <tr>
+                <td>Manager Notification</td>
+                <td>Email to manager</td>
+                <td>Requires Azure AD manager attribute</td>
+              </tr>
+              <tr>
+                <td>Incident Creation</td>
+                <td>Generate incident report</td>
+                <td>Configure in policy rule</td>
+              </tr>
+              <tr>
+                <td>SIEM Alert (Syslog)</td>
+                <td>Sentinel integration</td>
+                <td>Use Microsoft Sentinel connector</td>
+              </tr>
+              <tr>
+                <td>Custom Script/Action</td>
+                <td>Power Automate / Logic Apps</td>
+                <td>Requires custom flow development</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="phased">Phase 3: Phased Migration Approach</h2>
+        
+        <p>Deploy Purview policies in stages to minimize risk:</p>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Stage 1: Monitor Only (Weeks 1-4)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Deploy Purview policies in audit-only mode alongside active Symantec policies:</p>
+                <ul>
+                  <li>Create all mapped policies with <code>Mode = TestWithNotifications</code> or <code>TestWithoutNotifications</code></li>
+                  <li>No blocking, no user notifications from Purview</li>
+                  <li>Compare detection volumes: Purview Activity Explorer vs. Symantec Enforce reports</li>
+                  <li>Document gaps where Symantec detects but Purview doesn't (and vice versa)</li>
+                </ul>
+                
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell - Create Policy in Test Mode</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Create policy in Test mode (no notifications)
+New-DlpCompliancePolicy -Name "Migration - PCI Protection" `
+    -ExchangeLocation All `
+    -SharePointLocation All `
+    -OneDriveLocation All `
+    -Mode TestWithoutNotifications `
+    -Comment "Migrated from Symantec - Monitoring Phase"</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Stage 2: User Notification (Weeks 5-8)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Enable user notifications while Symantec still blocks:</p>
+                <ul>
+                  <li>Switch Purview policies to <code>Mode = TestWithNotifications</code></li>
+                  <li>Users see Purview policy tips but actions aren't blocked</li>
+                  <li>Collect feedback on false positives and user experience</li>
+                  <li>Tune policies based on feedback</li>
+                  <li>Train users on new policy tips appearance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Stage 3: Parallel Enforcement (Weeks 9-12)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Enable Purview blocking while Symantec remains active (brief overlap):</p>
+                <ul>
+                  <li>Switch Purview policies to <code>Mode = Enable</code></li>
+                  <li>Both systems may block the same action (double protection)</li>
+                  <li>Monitor for any "gaps" where one blocks but other doesn't</li>
+                  <li>This phase should be short (1-2 weeks) to minimize user confusion</li>
+                </ul>
+                
+                <div class="callout warning">
+                  <div class="callout-header">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                      <line x1="12" y1="9" x2="12" y2="13"></line>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    Warning
+                  </div>
+                  <p>Running both systems in block mode simultaneously can confuse users with duplicate notifications. Keep this phase as short as possible.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Stage 4: Symantec Disable (Weeks 13-16)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Disable Symantec policies while keeping agents installed (rollback capability):</p>
+                <ul>
+                  <li>Disable Symantec policies (don't delete)</li>
+                  <li>Purview is now sole enforcement</li>
+                  <li>Monitor Activity Explorer closely for any issues</li>
+                  <li>Keep Symantec agents installed for 2-4 weeks as rollback option</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Stage 5: Decommission (Week 17+)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Remove Symantec infrastructure:</p>
+                <ul>
+                  <li>Uninstall Symantec DLP agents from endpoints</li>
+                  <li>Decommission Network Prevent/Monitor appliances</li>
+                  <li>Archive Enforce database for compliance/legal requirements</li>
+                  <li>Decommission Enforce Server</li>
+                  <li>Update documentation and runbooks</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="validation">Validation Checklist</h2>
+        
+        <p>Before declaring migration complete, validate coverage:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Validation Item</th>
+                <th>Status</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>All Symantec policies mapped to Purview</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Detection volumes comparable (±20%)</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>False positive rate acceptable (&lt;10%)</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>All endpoints onboarded to MDE</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Browser extensions deployed</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>SIEM integration configured (Sentinel)</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>User notification templates updated</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Incident response procedures updated</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Help desk trained on Purview</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Compliance team sign-off</td>
+                <td><input type="checkbox"></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="decommission">Decommissioning Symantec</h2>
+        
+        <h3>Agent Removal</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Uninstall Symantec DLP Agent</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Find Symantec DLP Agent
+$agent = Get-WmiObject -Class Win32_Product | 
+    Where-Object { $_.Name -like "*Symantec*DLP*" }
+
+if ($agent) {
+    Write-Host "Found: $($agent.Name)" -ForegroundColor Yellow
+    
+    # Uninstall
+    $agent.Uninstall()
+    
+    Write-Host "Uninstall initiated" -ForegroundColor Green
+} else {
+    Write-Host "Symantec DLP Agent not found" -ForegroundColor Red
+}
+
+# Alternative: Silent uninstall via command line
+# msiexec /x {PRODUCT-GUID} /qn /norestart
+
+# Verify removal
+Get-Service -Name "Symantec*DLP*" -ErrorAction SilentlyContinue
+Get-Process -Name "*edpa*" -ErrorAction SilentlyContinue</code></pre>
+        </div>
+        
+        <h3>Server Decommission Checklist</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Export Historical Data</strong>
+            <p>Export incident reports, policy configurations, and audit logs for compliance retention.</p>
+          </li>
+          <li>
+            <strong>Database Backup</strong>
+            <p>Create final backup of Enforce Oracle database. Store according to data retention policy.</p>
+          </li>
+          <li>
+            <strong>Stop Services</strong>
+            <p>Stop all Symantec DLP services on Enforce Server and Detection Servers.</p>
+          </li>
+          <li>
+            <strong>Remove from Network</strong>
+            <p>Remove Network Prevent/Monitor from traffic path. Update firewall rules.</p>
+          </li>
+          <li>
+            <strong>Decommission VMs/Servers</strong>
+            <p>Follow standard server decommission process for your organization.</p>
+          </li>
+          <li>
+            <strong>License Cleanup</strong>
+            <p>Cancel Symantec/Broadcom DLP license renewals.</p>
+          </li>
+        </ol>
+        
+        <div class="callout success">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Migration Complete
+          </div>
+          <p>Congratulations! Your organization has successfully migrated from Symantec DLP to Microsoft Purview. Continue monitoring Activity Explorer and tuning policies as your data landscape evolves.</p>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="migration-planning.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Migration Planning</span>
+          </a>
+          <a href="../operations/dlp-operations.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Day-to-Day Operations</span>
+               </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

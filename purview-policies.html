@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Creating and managing Microsoft Purview DLP policies including conditions, actions, exceptions, and deployment strategies.">
+  <title>Purview DLP Policies | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Microsoft Purview</div>
+          <a href="purview-overview.html" class="nav-link" data-product="purview">Overview</a>
+          <a href="purview-endpoint-dlp.html" class="nav-link" data-product="purview">Endpoint DLP</a>
+          <a href="purview-sensitive-info-types.html" class="nav-link" data-product="purview">Sensitive Info Types</a>
+          <a href="purview-policies.html" class="nav-link active" data-product="purview">DLP Policies</a>
+          <a href="purview-labels.html" class="nav-link" data-product="purview">Sensitivity Labels</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="purview-overview.html">Microsoft Purview</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>DLP Policies</span>
+        </nav>
+        
+        <h1>Microsoft Purview DLP Policies</h1>
+        
+        <p>DLP policies define what sensitive data to protect, where to protect it, and what actions to take when violations occur. This guide covers policy creation, configuration, and management best practices.</p>
+        
+        <h2 id="policy-structure">Policy Structure</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         DLP POLICY STRUCTURE                                     │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                           DLP POLICY                                     │    │
+│  │  Name: PCI Credit Card Protection                                        │    │
+│  │  Mode: Enforce / Test                                                    │    │
+│  ├─────────────────────────────────────────────────────────────────────────┤    │
+│  │  <span class="accent-cyan">LOCATIONS</span>                                                              │    │
+│  │  ☑ Exchange Online    ☑ SharePoint    ☑ OneDrive    ☑ Endpoints        │    │
+│  ├─────────────────────────────────────────────────────────────────────────┤    │
+│  │  <span class="accent-green">RULES</span>                                                                  │    │
+│  │  ┌─────────────────────────────────────────────────────────────────┐    │    │
+│  │  │  Rule 1: High Volume Detection                                   │    │    │
+│  │  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐             │    │    │
+│  │  │  │  <span class="accent-orange">CONDITIONS</span>  │ │   <span class="accent-purple">ACTIONS</span>    │ │ <span class="accent-cyan">EXCEPTIONS</span>  │             │    │    │
+│  │  │  │              │ │              │ │              │             │    │    │
+│  │  │  │ Credit Card  │ │ Block access │ │ Finance dept │             │    │    │
+│  │  │  │ Count >= 10  │ │ Notify user  │ │ Encrypted    │             │    │    │
+│  │  │  │ Confidence:  │ │ Alert admin  │ │ files        │             │    │    │
+│  │  │  │ High         │ │              │ │              │             │    │    │
+│  │  │  └──────────────┘ └──────────────┘ └──────────────┘             │    │    │
+│  │  └─────────────────────────────────────────────────────────────────┘    │    │
+│  │  ┌─────────────────────────────────────────────────────────────────┐    │    │
+│  │  │  Rule 2: Low Volume Detection                                    │    │    │
+│  │  │  Credit Card Count 1-9 → Warn user, generate report              │    │    │
+│  │  └─────────────────────────────────────────────────────────────────┘    │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="create-policy">Creating a DLP Policy</h2>
+        
+        <h3>Using the Compliance Portal</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Start Policy Wizard</strong>
+            <p>Go to compliance.microsoft.com → Data loss prevention → Policies → Create policy</p>
+          </li>
+          <li>
+            <strong>Choose Template or Custom</strong>
+            <p>Select from pre-built templates (HIPAA, PCI, GDPR) or create custom policy</p>
+          </li>
+          <li>
+            <strong>Name and Describe</strong>
+            <p>Provide meaningful name and description for documentation</p>
+          </li>
+          <li>
+            <strong>Select Locations</strong>
+            <p>Choose where policy applies: Exchange, SharePoint, OneDrive, Teams, Endpoints, etc.</p>
+          </li>
+          <li>
+            <strong>Define Rules</strong>
+            <p>Add conditions (SITs, labels), actions (block, notify), and exceptions</p>
+          </li>
+          <li>
+            <strong>Test or Enforce</strong>
+            <p>Start in test mode to validate before enforcement</p>
+          </li>
+        </ol>
+        
+        <h3>PowerShell Policy Creation</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Connect to Security & Compliance PowerShell
+Connect-IPPSSession -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046560696d6a44676b6a706b776b2a676b69">[email&#160;protected]</a>
+
+# Create DLP Policy
+New-DlpCompliancePolicy -Name "PCI - Credit Card Protection" `
+    -Comment "Detects and protects credit card numbers per PCI-DSS" `
+    -ExchangeLocation All `
+    -SharePointLocation All `
+    -OneDriveLocation All `
+    -EndpointDlpLocation All `
+    -Mode TestWithNotifications
+
+# Create High-Volume Rule (10+ credit cards)
+New-DlpComplianceRule -Name "PCI - High Volume Block" `
+    -Policy "PCI - Credit Card Protection" `
+    -ContentContainsSensitiveInformation @(
+        @{Name = "Credit Card Number"; minCount = 10; confidenceLevel = "High"}
+    ) `
+    -BlockAccess $true `
+    -BlockAccessScope "All" `
+    -NotifyUser "LastModifier" `
+    -NotifyUserType "PolicyTip" `
+    -GenerateAlert $true `
+    -AlertProperties @{
+        AggregationType = "None"
+        Severity = "High"
+    }
+
+# Create Low-Volume Rule (1-9 credit cards)  
+New-DlpComplianceRule -Name "PCI - Low Volume Warn" `
+    -Policy "PCI - Credit Card Protection" `
+    -ContentContainsSensitiveInformation @(
+        @{Name = "Credit Card Number"; minCount = 1; maxCount = 9; confidenceLevel = "High"}
+    ) `
+    -NotifyUser "LastModifier" `
+    -NotifyUserType "PolicyTip" `
+    -GenerateIncidentReport $true `
+    -IncidentReportContent "All"
+
+# Add exception for Finance department
+Set-DlpComplianceRule -Identity "PCI - High Volume Block" `
+    -ExceptIfFrom "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fe9897909f909d9bbe9d91908a918d91d09d9193">[email&#160;protected]</a>" `
+    -ExceptIfMemberOf "Finance Department"</code></pre>
+        </div>
+        
+        <h2 id="conditions">Conditions</h2>
+        
+        <p>Conditions define what triggers a policy rule:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Condition Type</th><th>Description</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Sensitive Info Type</strong></td><td>Content matches SIT pattern</td><td>Credit Card Number, count ≥ 5</td></tr>
+              <tr><td><strong>Sensitivity Label</strong></td><td>Content has specific label</td><td>Label = "Confidential"</td></tr>
+              <tr><td><strong>Trainable Classifier</strong></td><td>ML classifier match</td><td>Source Code classifier</td></tr>
+              <tr><td><strong>Document Property</strong></td><td>File metadata match</td><td>Author contains "HR"</td></tr>
+              <tr><td><strong>File Extension</strong></td><td>File type match</td><td>.pst, .ost, .mdb</td></tr>
+              <tr><td><strong>File Size</strong></td><td>Size threshold</td><td>Greater than 25 MB</td></tr>
+              <tr><td><strong>Sender/Recipient</strong></td><td>Email participants</td><td>External domain</td></tr>
+              <tr><td><strong>Header Matches</strong></td><td>Email header content</td><td>Subject contains "Confidential"</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="actions">Actions</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Action</th><th>Exchange</th><th>SharePoint/OneDrive</th><th>Endpoint</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Block/Restrict</strong></td>
+                <td>Block email, reject</td>
+                <td>Block sharing, restrict access</td>
+                <td>Block copy/print/upload</td>
+              </tr>
+              <tr>
+                <td><strong>Warn User</strong></td>
+                <td>Policy tip in Outlook</td>
+                <td>Warning banner</td>
+                <td>Toast notification</td>
+              </tr>
+              <tr>
+                <td><strong>Encrypt</strong></td>
+                <td>Apply encryption</td>
+                <td>Via sensitivity label</td>
+                <td>N/A</td>
+              </tr>
+              <tr>
+                <td><strong>Notify</strong></td>
+                <td>Email to user/manager/admin</td>
+                <td>Email notification</td>
+                <td>Email notification</td>
+              </tr>
+              <tr>
+                <td><strong>Audit</strong></td>
+                <td>Log in Activity Explorer</td>
+                <td>Log in Activity Explorer</td>
+                <td>Log in Activity Explorer</td>
+              </tr>
+              <tr>
+                <td><strong>Generate Alert</strong></td>
+                <td>DLP Alerts dashboard</td>
+                <td>DLP Alerts dashboard</td>
+                <td>DLP Alerts dashboard</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="exceptions">Exceptions</h2>
+        
+        <p>Exceptions exclude specific scenarios from policy enforcement:</p>
+        
+        <ul>
+          <li><strong>User/Group Exceptions</strong> — Exclude specific users or groups (e.g., Finance team)</li>
+          <li><strong>Domain Exceptions</strong> — Exclude trusted external domains</li>
+          <li><strong>Label Exceptions</strong> — Exclude content with specific labels</li>
+          <li><strong>File Property Exceptions</strong> — Exclude based on metadata</li>
+          <li><strong>Sender/Recipient Exceptions</strong> — Exclude specific email addresses</li>
+        </ul>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Exception Warning
+          </div>
+          <p>Minimize exceptions—each exception is a potential data leak vector. Document and review exceptions regularly.</p>
+        </div>
+        
+        <h2 id="deployment-modes">Deployment Modes</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Test Without Tips</button>
+            <button class="tab-button" role="tab">Test With Tips</button>
+            <button class="tab-button" role="tab">Enforce</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>Test Without Notifications</h3>
+            <p><code>Mode = TestWithoutNotifications</code></p>
+            <ul>
+              <li>Policy evaluates content but takes no action</li>
+              <li>Users see no policy tips or notifications</li>
+              <li>Events logged in Activity Explorer</li>
+              <li>Use for initial policy testing and tuning</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Test With Notifications</h3>
+            <p><code>Mode = TestWithNotifications</code></p>
+            <ul>
+              <li>Users see policy tips but content isn't blocked</li>
+              <li>Notifications sent per policy configuration</li>
+              <li>Good for user training before enforcement</li>
+              <li>Validates policy tip messaging</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Enforce</h3>
+            <p><code>Mode = Enable</code></p>
+            <ul>
+              <li>Full enforcement—blocks, warns, encrypts as configured</li>
+              <li>All notifications and alerts active</li>
+              <li>Only enable after thorough testing</li>
+              <li>Monitor Activity Explorer closely after enabling</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="policy-priority">Policy Priority</h2>
+        
+        <p>When multiple policies match, priority determines which actions apply:</p>
+        
+        <ul>
+          <li>Lower priority number = higher precedence</li>
+          <li>Most restrictive action wins for conflicts</li>
+          <li>All matching policies generate incidents</li>
+        </ul>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Set Policy Priority</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># View current policy priorities
+Get-DlpCompliancePolicy | Select-Object Name, Priority, Mode | Sort-Object Priority
+
+# Set policy priority (lower = higher precedence)
+Set-DlpCompliancePolicy -Identity "Critical Data Protection" -Priority 0
+Set-DlpCompliancePolicy -Identity "PCI Credit Card Protection" -Priority 1
+Set-DlpCompliancePolicy -Identity "General PII Detection" -Priority 2</code></pre>
+        </div>
+        
+        <h2 id="policy-tips">Policy Tips Configuration</h2>
+        
+        <p>Policy tips inform users when they're about to violate a policy:</p>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Custom Policy Tip</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Set custom policy tip text
+Set-DlpComplianceRule -Identity "PCI - High Volume Block" `
+    -NotifyPolicyTipCustomText "This content contains credit card numbers. 
+Sharing credit card data externally violates PCI-DSS requirements. 
+If you believe this is a false positive, click 'Report' to notify compliance."
+
+# Configure override options
+Set-DlpComplianceRule -Identity "PCI - Low Volume Warn" `
+    -NotifyOverride "WithJustification" `
+    -NotifyAllowOverride "WithJustification,FalsePositive"</code></pre>
+        </div>
+        
+        <h2 id="best-practices">Policy Best Practices</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Start Simple</h4>
+            <p>Begin with 1-2 policies covering your most critical data. Expand gradually after tuning.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Test Thoroughly</h4>
+            <p>Run in test mode for 2-4 weeks. Review Activity Explorer for false positives before enforcement.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Use High Confidence</h4>
+            <p>For blocking actions, require high confidence matches. Use lower confidence for audit-only.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Document Everything</h4>
+            <p>Use policy descriptions, rule names, and comments to document purpose and ownership.</p>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="purview-sensitive-info-types.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Sensitive Info Types</span>
+          </a>
+          <a href="purview-labels.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Sensitivity Labels</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

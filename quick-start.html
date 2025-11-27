@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Quick start guide for implementing DLP with Microsoft Purview including first policy creation, testing, and deployment.">
+  <title>Quick Start Guide | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Getting Started</div>
+          <a href="quick-start.html" class="nav-link active" data-product="fundamentals">Quick Start Guide</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Quick Start Guide</span>
+        </nav>
+        
+        <h1>Quick Start Guide</h1>
+        
+        <p>Get your first DLP policy running in Microsoft Purview in under 30 minutes. This guide walks through creating, testing, and deploying a basic data protection policy.</p>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Prerequisites
+          </div>
+          <ul>
+            <li>Microsoft 365 E3/E5 or Microsoft 365 Business Premium license</li>
+            <li>Compliance Administrator or Global Administrator role</li>
+            <li>Access to compliance.microsoft.com</li>
+          </ul>
+        </div>
+        
+        <h2 id="step1">Step 1: Access the Compliance Portal</h2>
+        
+        <ol class="steps">
+          <li>
+            <strong>Navigate to Compliance Portal</strong>
+            <p>Go to <a href="https://compliance.microsoft.com" target="_blank">compliance.microsoft.com</a></p>
+          </li>
+          <li>
+            <strong>Sign in</strong>
+            <p>Use your administrator credentials</p>
+          </li>
+          <li>
+            <strong>Navigate to DLP</strong>
+            <p>Click <strong>Data loss prevention</strong> in the left navigation, then <strong>Policies</strong></p>
+          </li>
+        </ol>
+        
+        <h2 id="step2">Step 2: Create Your First Policy</h2>
+        
+        <h3>Option A: Use a Template (Recommended for Beginners)</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Click Create Policy</strong>
+            <p>Click the <strong>+ Create policy</strong> button</p>
+          </li>
+          <li>
+            <strong>Choose a Template</strong>
+            <p>Select <strong>Financial</strong> → <strong>Canada Financial Data</strong> (or your preferred template)</p>
+          </li>
+          <li>
+            <strong>Name Your Policy</strong>
+            <p>Example: "Canada Financial Data Protection - Pilot"</p>
+          </li>
+          <li>
+            <strong>Choose Locations</strong>
+            <p>Start with limited scope:</p>
+            <ul>
+              <li>☑ Exchange email</li>
+              <li>☑ SharePoint sites (select specific pilot sites)</li>
+              <li>☑ OneDrive accounts (select specific pilot users)</li>
+              <li>☐ Teams (add later)</li>
+              <li>☐ Devices (add later)</li>
+            </ul>
+          </li>
+          <li>
+            <strong>Review Default Rules</strong>
+            <p>Template includes pre-configured rules for credit card, bank account detection</p>
+          </li>
+          <li>
+            <strong>Set Mode to Test</strong>
+            <p>Select <strong>Test it out first</strong> (test mode with notifications)</p>
+          </li>
+          <li>
+            <strong>Create Policy</strong>
+            <p>Click <strong>Submit</strong> to create the policy</p>
+          </li>
+        </ol>
+        
+        <h3>Option B: Create Custom Policy</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Create First Policy</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Connect to Security & Compliance
+Connect-IPPSSession
+
+# Create policy targeting pilot users
+New-DlpCompliancePolicy -Name "Quick Start - PII Protection" `
+    -ExchangeLocation "All" `
+    -SharePointLocation "https://company.sharepoint.com/sites/pilot" `
+    -OneDriveLocation "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0772746275364764686a7766697e2964686a">[email&#160;protected]</a>", "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d8adabbdaaea98bbb7b5a8b9b6a1f6bbb7b5">[email&#160;protected]</a>" `
+    -Mode "TestWithNotifications"
+
+# Add detection rule
+New-DlpComplianceRule -Name "Detect Credit Cards" `
+    -Policy "Quick Start - PII Protection" `
+    -ContentContainsSensitiveInformation @(
+        @{Name="Credit Card Number"; minCount="1"; confidenceLevel="High"}
+    ) `
+    -NotifyUser "LastModifier" `
+    -NotifyPolicyTipCustomText "This document may contain credit card information."
+
+Write-Host "Policy created! Check Activity Explorer in 1-2 hours for results." -ForegroundColor Green</code></pre>
+        </div>
+        
+        <h2 id="step3">Step 3: Test Your Policy</h2>
+        
+        <h3>Create Test Content</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Test Document Content</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>TEST DOCUMENT - DLP Policy Verification
+========================================
+
+This document contains test credit card numbers for DLP testing.
+
+Test Credit Cards (Luhn-valid test numbers):
+- Visa: 4111 1111 1111 1111
+- MasterCard: 5500 0000 0000 0004
+- Amex: 3400 0000 0000 009
+
+Test Canadian SIN (use fake/test numbers only):
+- SIN: 046-454-286
+
+Note: These are TEST numbers only. Never use real PII for testing.</code></pre>
+        </div>
+        
+        <h3>Test Scenarios</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Scenario</th><th>Action</th><th>Expected Result</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SharePoint Upload</td>
+                <td>Upload test document to pilot SharePoint site</td>
+                <td>Policy tip appears, activity logged</td>
+              </tr>
+              <tr>
+                <td>Email External</td>
+                <td>Email test document to external address</td>
+                <td>Policy tip in Outlook, activity logged</td>
+              </tr>
+              <tr>
+                <td>OneDrive Sync</td>
+                <td>Save test document to OneDrive folder</td>
+                <td>Activity logged (may take longer)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="step4">Step 4: Review Results</h2>
+        
+        <h3>Check Activity Explorer</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Navigate to Activity Explorer</strong>
+            <p>compliance.microsoft.com → Data classification → Activity explorer</p>
+          </li>
+          <li>
+            <strong>Filter by Policy</strong>
+            <p>Filter by your policy name to see matches</p>
+          </li>
+          <li>
+            <strong>Review Details</strong>
+            <p>Click on activities to see user, file, and match details</p>
+          </li>
+        </ol>
+        
+        <h3>Check DLP Alerts</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Navigate to DLP Alerts</strong>
+            <p>compliance.microsoft.com → Data loss prevention → Alerts</p>
+          </li>
+          <li>
+            <strong>Review Alerts</strong>
+            <p>Look for alerts generated by your test activities</p>
+          </li>
+        </ol>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Patience Required
+          </div>
+          <p>DLP activities can take 1-24 hours to appear in Activity Explorer. Don't panic if you don't see results immediately.</p>
+        </div>
+        
+        <h2 id="step5">Step 5: Enable Policy</h2>
+        
+        <p>After successful testing (recommend 1-2 weeks), enable the policy:</p>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Enable Policy</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Move from test to enforce mode
+Set-DlpCompliancePolicy -Identity "Quick Start - PII Protection" -Mode "Enable"
+
+# Verify status
+Get-DlpCompliancePolicy -Identity "Quick Start - PII Protection" | 
+    Select-Object Name, Mode, Enabled</code></pre>
+        </div>
+        
+        <h2 id="next-steps">Next Steps</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Expand Coverage</h4>
+            <p>Add more locations (Teams, Devices) and users to your policy.</p>
+            <a href="../purview/purview-policies.html">Learn about policies →</a>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Add More Rules</h4>
+            <p>Create rules for other sensitive data types like SIN, health info.</p>
+            <a href="../purview/purview-sensitive-info-types.html">Explore SITs →</a>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Configure Labels</h4>
+            <p>Set up sensitivity labels for classification and encryption.</p>
+            <a href="../purview/purview-labels.html">Set up labels →</a>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Enable Endpoint DLP</h4>
+            <p>Protect data on Windows devices with endpoint DLP.</p>
+            <a href="../purview/purview-endpoint-dlp.html">Endpoint DLP →</a>
+          </div>
+        </div>
+        
+        <h2 id="common-issues">Common Issues</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Policy not detecting anything
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ul>
+                  <li>Wait 1-24 hours for policy to propagate</li>
+                  <li>Verify test content contains valid test numbers (Luhn-valid)</li>
+                  <li>Check that locations include your test site/user</li>
+                  <li>Verify policy is enabled (not disabled)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Too many false positives
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ul>
+                  <li>Increase confidence level from Medium to High</li>
+                  <li>Increase minimum match count (e.g., require 3+ credit cards)</li>
+                  <li>Add keyword requirements near matches</li>
+                  <li>Exclude specific file types or locations</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Users not seeing policy tips
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ul>
+                  <li>Ensure policy is in "Test with notifications" or "Enable" mode</li>
+                  <li>Verify NotifyUser is configured in the rule</li>
+                  <li>Check user is using supported Office version</li>
+                  <li>Policy tips may take time to appear (wait and retry)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="../../index.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Home</span>
+          </a>
+          <a href="../fundamentals/dlp-fundamentals.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">DLP Fundamentals</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

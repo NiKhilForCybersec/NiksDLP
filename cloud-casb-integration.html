@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CASB integration with DLP solutions including Microsoft Defender for Cloud Apps and Symantec CloudSOC configuration.">
+  <title>CASB Integration | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Cloud DLP</div>
+          <a href="cloud-dlp-overview.html" class="nav-link" data-product="cloud">Overview</a>
+          <a href="cloud-casb-integration.html" class="nav-link active" data-product="cloud">CASB Integration</a>
+          <a href="cloud-saas-protection.html" class="nav-link" data-product="cloud">SaaS Protection</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="cloud-dlp-overview.html">Cloud DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>CASB Integration</span>
+        </nav>
+        
+        <h1>CASB Integration</h1>
+        
+        <p>Cloud Access Security Brokers (CASBs) provide visibility and control over cloud application usage. Integrating CASB with DLP extends data protection policies to SaaS applications and cloud storage.</p>
+        
+        <h2 id="casb-pillars">CASB Four Pillars</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        CASB FOUR PILLARS                                         │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌───────────────────┐  ┌───────────────────┐  ┌───────────────────┐            │
+│  │    <span class="accent-cyan">VISIBILITY</span>     │  │ <span class="accent-green">COMPLIANCE</span>        │  │ <span class="accent-orange">DATA SECURITY</span>    │            │
+│  │                   │  │                   │  │                   │            │
+│  │ • Shadow IT       │  │ • Audit logs      │  │ • DLP policies    │            │
+│  │   discovery       │  │ • Compliance      │  │ • Encryption      │            │
+│  │ • App risk        │  │   templates       │  │ • Access controls │            │
+│  │   scoring         │  │ • Data residency  │  │ • Sharing limits  │            │
+│  │ • Usage analytics │  │ • Retention       │  │ • Classification  │            │
+│  │                   │  │                   │  │                   │            │
+│  └───────────────────┘  └───────────────────┘  └───────────────────┘            │
+│                                                                                  │
+│  ┌───────────────────┐                                                           │
+│  │ <span class="accent-purple">THREAT PROTECTION</span> │                                                           │
+│  │                   │                                                           │
+│  │ • Malware         │                                                           │
+│  │   detection       │                                                           │
+│  │ • Anomaly         │                                                           │
+│  │   detection       │                                                           │
+│  │ • Compromised     │                                                           │
+│  │   accounts        │                                                           │
+│  │                   │                                                           │
+│  └───────────────────┘                                                           │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="mdca">Microsoft Defender for Cloud Apps (MDCA)</h2>
+        
+        <p>Microsoft's CASB solution integrates natively with Microsoft 365 and Purview DLP policies.</p>
+        
+        <h3>Enable Purview DLP in MDCA</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Connect Data Sources</strong>
+            <p>Go to security.microsoft.com → Cloud Apps → App Connectors</p>
+          </li>
+          <li>
+            <strong>Enable Microsoft 365 Connector</strong>
+            <p>Connect Office 365 to enable DLP scanning of SharePoint, OneDrive, Teams</p>
+          </li>
+          <li>
+            <strong>Enable File Policies</strong>
+            <p>Create file policies that leverage Purview sensitivity labels and SITs</p>
+          </li>
+          <li>
+            <strong>Configure Session Policies</strong>
+            <p>Enable Conditional Access App Control for real-time protection</p>
+          </li>
+        </ol>
+        
+        <h3>MDCA File Policy with DLP</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">File Policy Configuration</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>Policy Name: Detect PII in Cloud Storage
+Policy Type: File Policy
+Severity: High
+
+Filters:
+  App: Office 365, Box, Dropbox, Google Workspace
+  File Type: Documents, Spreadsheets, Presentations
+  Access Level: External, Public
+
+Inspection Method:
+  ☑ Use Purview Data Classification Service
+  ☑ Include files that match sensitivity label: Confidential
+  ☑ Include files that match SIT: 
+     - Credit Card Number (count >= 1)
+     - Canada Social Insurance Number (count >= 1)
+
+Governance Actions:
+  Office 365 SharePoint:
+    - Remove external users
+    - Apply sensitivity label: Confidential
+    - Notify file owner
+  Box:
+    - Remove shared link
+    - Notify admin
+  Dropbox:
+    - Remove public access
+    - Quarantine file</code></pre>
+        </div>
+        
+        <h3>Session Control Policies</h3>
+        
+        <p>Session policies provide real-time monitoring and control during user sessions:</p>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Session Policy Example</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>Policy Name: Block Download of Sensitive Files on Unmanaged Devices
+Policy Type: Session Policy
+Session Control Type: Control file download (with inspection)
+
+Filters:
+  Device: Unmanaged devices only
+  App: SharePoint Online, OneDrive
+  Activity Type: Download
+
+Content Inspection:
+  ☑ Inspect content matching Purview DLP policy
+  Policy: PCI - Credit Card Protection
+
+Actions:
+  If content matches:
+    - Block download
+    - Display custom message: "Downloads of sensitive files 
+      are not allowed on unmanaged devices."
+    - Notify user manager
+    - Create alert</code></pre>
+        </div>
+        
+        <h3>KQL Queries for MDCA</h3>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - Cloud App DLP Alerts</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// Cloud App file policy matches
+CloudAppEvents
+| where Timestamp > ago(7d)
+| where ActionType == "FilePolicy Matched"
+| extend 
+    FileName = tostring(RawEventData.FileName),
+    PolicyName = tostring(RawEventData.PolicyName),
+    AppName = tostring(RawEventData.AppName),
+    MatchedLabels = tostring(RawEventData.SensitivityLabels)
+| summarize 
+    MatchCount = count(),
+    UniqueFiles = dcount(FileName)
+    by PolicyName, AppName
+| order by MatchCount desc</code></pre>
+        </div>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - External Sharing of Sensitive Files</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// Files shared externally that have sensitivity labels
+CloudAppEvents
+| where Timestamp > ago(24h)
+| where ActionType in ("FileSharedExternally", "SharingLinkCreated")
+| extend 
+    FileName = tostring(RawEventData.FileName),
+    SharedWith = tostring(RawEventData.TargetUserOrGroup),
+    SensitivityLabel = tostring(RawEventData.SensitivityLabel)
+| where isnotempty(SensitivityLabel)
+| project 
+    Timestamp,
+    User = AccountUpn,
+    FileName,
+    SharedWith,
+    SensitivityLabel,
+    Application</code></pre>
+        </div>
+        
+        <h2 id="symantec-cloudsoc">Symantec CloudSOC Integration</h2>
+        
+        <p>Symantec CloudSOC integrates with Symantec DLP for unified policy enforcement across cloud and on-premises.</p>
+        
+        <h3>Integration Architecture</h3>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                  SYMANTEC CLOUDSOC + DLP INTEGRATION                             │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                        SYMANTEC CLOUDSOC                                 │    │
+│  │                                                                          │    │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐    │    │
+│  │  │   Securlet  │  │   Gatelets  │  │  CAS Proxy  │  │   API       │    │    │
+│  │  │   (API)     │  │  (Traffic)  │  │  (Inline)   │  │  Gateway    │    │    │
+│  │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘    │    │
+│  │         └─────────────────┴────────────────┴────────────────┘           │    │
+│  │                                   │                                      │    │
+│  └───────────────────────────────────┼──────────────────────────────────────┘    │
+│                                      │                                           │
+│                                      ▼                                           │
+│                         ┌─────────────────────────┐                              │
+│                         │    <span class="accent-purple">SYMANTEC DLP</span>          │                              │
+│                         │    Enforce Server       │                              │
+│                         │                         │                              │
+│                         │  Same policies apply    │                              │
+│                         │  to cloud content       │                              │
+│                         └─────────────────────────┘                              │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3>Enable CloudSOC DLP Integration</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">CloudSOC Configuration</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># CloudSOC Admin Console Configuration
+
+1. Navigate to: Settings > Integrations > Symantec DLP
+
+2. Configure Connection:
+   Enforce Server URL: https://enforce.company.com:8443
+   API User: cloudsoc_integration
+   API Password: [secure password]
+   Certificate: Upload Enforce SSL cert
+
+3. Select Policy Groups to sync:
+   ☑ PCI Compliance
+   ☑ PII Protection  
+   ☑ PIPEDA Compliance
+   ☐ Source Code (endpoint only)
+
+4. Configure incident handling:
+   ☑ Send incidents to Symantec DLP
+   ☑ Use CloudSOC classification in DLP policies
+   Incident severity mapping: CloudSOC High → DLP High</code></pre>
+        </div>
+        
+        <h2 id="supported-apps">Supported SaaS Applications</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Application</th>
+                <th>MDCA</th>
+                <th>CloudSOC</th>
+                <th>API Mode</th>
+                <th>Proxy Mode</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Microsoft 365</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Google Workspace</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Box</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Dropbox</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Salesforce</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+              </tr>
+              <tr>
+                <td><strong>ServiceNow</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+              </tr>
+              <tr>
+                <td><strong>Slack</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>AWS S3</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="cloud-dlp-overview.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Cloud DLP Overview</span>
+          </a>
+          <a href="cloud-saas-protection.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">SaaS Protection</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

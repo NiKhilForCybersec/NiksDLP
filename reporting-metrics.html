@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DLP reporting and metrics including executive dashboards, operational KPIs, compliance reporting, and trend analysis.">
+  <title>DLP Reporting & Metrics | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Operations</div>
+          <a href="dlp-operations.html" class="nav-link" data-product="operations">Operations Overview</a>
+          <a href="incident-response.html" class="nav-link" data-product="operations">Incident Response</a>
+          <a href="siem-integration.html" class="nav-link" data-product="operations">SIEM Integration</a>
+          <a href="reporting-metrics.html" class="nav-link active" data-product="operations">Reporting & Metrics</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="dlp-operations.html">Operations</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Reporting & Metrics</span>
+        </nav>
+        
+        <h1>DLP Reporting & Metrics</h1>
+        
+        <p>Effective DLP reporting demonstrates program value, identifies trends, and guides policy improvements. This guide covers key metrics, report types, and visualization strategies.</p>
+        
+        <h2 id="metrics-framework">DLP Metrics Framework</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        DLP METRICS HIERARCHY                                     │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-purple">EXECUTIVE METRICS</span> (Monthly/Quarterly)                                    │    │
+│  │  • Data breaches prevented (estimated)                                   │    │
+│  │  • Compliance posture score                                              │    │
+│  │  • High-risk incidents trend                                             │    │
+│  │  • ROI / Cost per incident                                               │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                      │                                          │
+│                                      ▼                                          │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-orange">MANAGEMENT METRICS</span> (Weekly/Monthly)                                      │    │
+│  │  • Incident volume by severity                                           │    │
+│  │  • Policy effectiveness (match rate)                                     │    │
+│  │  • Top triggered policies                                                │    │
+│  │  • User risk distribution                                                │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                      │                                          │
+│                                      ▼                                          │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-cyan">OPERATIONAL METRICS</span> (Daily/Weekly)                                       │    │
+│  │  • Incidents pending triage                                              │    │
+│  │  • Mean time to triage/close                                             │    │
+│  │  • False positive rate                                                   │    │
+│  │  • Agent/system health                                                   │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="key-kpis">Key Performance Indicators</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>KPI</th><th>Formula</th><th>Target</th><th>Frequency</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>False Positive Rate</strong></td>
+                <td>(False Positives / Total Incidents) × 100</td>
+                <td>&lt; 10%</td>
+                <td>Weekly</td>
+              </tr>
+              <tr>
+                <td><strong>Mean Time to Triage (MTTT)</strong></td>
+                <td>Avg time from incident creation to first review</td>
+                <td>&lt; 4 hours</td>
+                <td>Daily</td>
+              </tr>
+              <tr>
+                <td><strong>Mean Time to Close (MTTC)</strong></td>
+                <td>Avg time from incident creation to resolution</td>
+                <td>&lt; 48 hours</td>
+                <td>Weekly</td>
+              </tr>
+              <tr>
+                <td><strong>Endpoint Coverage</strong></td>
+                <td>(Protected Endpoints / Total Endpoints) × 100</td>
+                <td>&gt; 95%</td>
+                <td>Weekly</td>
+              </tr>
+              <tr>
+                <td><strong>Policy Sync Rate</strong></td>
+                <td>(Successful Syncs / Total Syncs) × 100</td>
+                <td>&gt; 99%</td>
+                <td>Daily</td>
+              </tr>
+              <tr>
+                <td><strong>User Training Completion</strong></td>
+                <td>(Trained Users / Total Users) × 100</td>
+                <td>&gt; 90%</td>
+                <td>Monthly</td>
+              </tr>
+              <tr>
+                <td><strong>Blocked vs Allowed Ratio</strong></td>
+                <td>Blocked Incidents / Total Incidents</td>
+                <td>Context-dependent</td>
+                <td>Weekly</td>
+              </tr>
+              <tr>
+                <td><strong>Repeat Violator Rate</strong></td>
+                <td>(Users with 3+ incidents / Total Violators) × 100</td>
+                <td>&lt; 5%</td>
+                <td>Monthly</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="executive-dashboard">Executive Dashboard</h2>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Executive Dashboard Components</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>═══════════════════════════════════════════════════════════════
+              DLP EXECUTIVE DASHBOARD - Q4 2024
+═══════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│  KEY METRICS                                                │
+├─────────────┬─────────────┬─────────────┬──────────────────┤
+│  Incidents  │   Blocked   │ False Pos.  │  Est. Breaches   │
+│   12,847    │    3,241    │    8.2%     │    Prevented     │
+│   ↓ 15%     │   ↑ 23%     │   ↓ 2.1%    │       47         │
+└─────────────┴─────────────┴─────────────┴──────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│  INCIDENT TREND (12 Months)                                 │
+│                                                             │
+│  4000 │                                                     │
+│       │    ╭─╮                                              │
+│  3000 │   ╱   ╲   ╭─╮                                       │
+│       │  ╱     ╲ ╱   ╲                                      │
+│  2000 │ ╱       ╳     ╲    ╭───────╮                        │
+│       │╱               ╲──╯         ╲___                    │
+│  1000 │                                                     │
+│       └─────────────────────────────────────────────────    │
+│        J  F  M  A  M  J  J  A  S  O  N  D                   │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│  TOP DATA TYPES DETECTED                                    │
+├─────────────────────────────────────────────────────────────┤
+│  █████████████████████████████████  SIN (4,821)            │
+│  ██████████████████████            Credit Card (2,947)     │
+│  █████████████████                 Employee PII (2,341)    │
+│  ████████████                      Health Data (1,892)     │
+│  ████████                          Financial (856)         │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│  COMPLIANCE STATUS                                          │
+├─────────────────────────────────────────────────────────────┤
+│  PIPEDA     ████████████████████░░░░  85% ↑                │
+│  PCI-DSS    ██████████████████████░░  92% ↑                │
+│  HIPAA      ███████████████████░░░░░  78% →                │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+        </div>
+        
+        <h2 id="operational-reports">Operational Reports</h2>
+        
+        <h3>Daily Operations Report</h3>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - Daily Operations Summary</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// Daily DLP Operations Summary
+let today = startofday(now());
+let yesterday = startofday(ago(1d));
+//
+CloudAppEvents
+| where Timestamp between (yesterday .. today)
+| where ActionType has "Dlp"
+| extend 
+    Severity = tostring(RawEventData.Severity),
+    ActionTaken = tostring(RawEventData.ActionTaken),
+    PolicyName = tostring(RawEventData.PolicyName)
+| summarize 
+    TotalIncidents = count(),
+    HighSeverity = countif(Severity == "High"),
+    MediumSeverity = countif(Severity == "Medium"),
+    LowSeverity = countif(Severity == "Low"),
+    Blocked = countif(ActionTaken == "Block"),
+    Warned = countif(ActionTaken == "Warn"),
+    AuditOnly = countif(ActionTaken == "Audit"),
+    UniqueUsers = dcount(AccountUpn),
+    UniquePolicies = dcount(PolicyName)
+| extend Date = format_datetime(yesterday, 'yyyy-MM-dd')</code></pre>
+        </div>
+        
+        <h3>Weekly Policy Effectiveness Report</h3>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - Policy Effectiveness</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// Weekly Policy Effectiveness Analysis
+CloudAppEvents
+| where Timestamp > ago(7d)
+| where ActionType has "Dlp"
+| extend 
+    PolicyName = tostring(RawEventData.PolicyName),
+    Severity = tostring(RawEventData.Severity),
+    ActionTaken = tostring(RawEventData.ActionTaken),
+    WasOverridden = tobool(RawEventData.UserOverride)
+| summarize 
+    Matches = count(),
+    HighSev = countif(Severity == "High"),
+    Blocked = countif(ActionTaken == "Block"),
+    Overridden = countif(WasOverridden == true),
+    UniqueUsers = dcount(AccountUpn)
+    by PolicyName
+| extend 
+    BlockRate = round(100.0 * Blocked / Matches, 1),
+    OverrideRate = round(100.0 * Overridden / Matches, 1)
+| order by Matches desc
+| project 
+    PolicyName,
+    Matches,
+    HighSev,
+    BlockRate,
+    OverrideRate,
+    UniqueUsers</code></pre>
+        </div>
+        
+        <h3>User Risk Report</h3>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - User Risk Ranking</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// Monthly User Risk Analysis
+CloudAppEvents
+| where Timestamp > ago(30d)
+| where ActionType has "Dlp"
+| extend 
+    Severity = tostring(RawEventData.Severity),
+    ActionTaken = tostring(RawEventData.ActionTaken)
+| summarize 
+    TotalIncidents = count(),
+    HighSeverity = countif(Severity == "High"),
+    BlockedActions = countif(ActionTaken == "Block"),
+    FirstIncident = min(Timestamp),
+    LastIncident = max(Timestamp)
+    by User = AccountUpn
+| extend 
+    // Risk score calculation
+    RiskScore = (HighSeverity * 10) + (BlockedActions * 5) + (TotalIncidents * 1)
+| where TotalIncidents >= 3  // Only users with multiple incidents
+| order by RiskScore desc
+| take 25
+| project 
+    User,
+    TotalIncidents,
+    HighSeverity,
+    BlockedActions,
+    RiskScore,
+    DaysSinceFirst = datetime_diff('day', now(), FirstIncident),
+    LastIncident</code></pre>
+        </div>
+        
+        <h2 id="compliance-reports">Compliance Reports</h2>
+        
+        <h3>PIPEDA Compliance Report</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">PIPEDA Compliance Report Template</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>═══════════════════════════════════════════════════════════════
+        PIPEDA COMPLIANCE REPORT - November 2024
+═══════════════════════════════════════════════════════════════
+
+1. PERSONAL INFORMATION PROTECTION SUMMARY
+───────────────────────────────────────────────────────────────
+   Canadian PII Detected:           47,283 instances
+   SIN Numbers Detected:             8,492 instances
+   Health Information:               3,127 instances
+   
+   Incidents Blocked:                2,341 (100% of high-risk)
+   Incidents Warned:                 5,847
+   Audit Only:                      39,095
+
+2. DATA BREACH PREVENTION
+───────────────────────────────────────────────────────────────
+   Potential Breaches Prevented:        47
+   Data Subjects Protected:         ~12,400
+   
+   Breakdown by Channel:
+   • Email (external):                  23 blocked
+   • Cloud Upload:                      12 blocked  
+   • USB/Removable:                      8 blocked
+   • Print:                              4 blocked
+
+3. CONSENT & ACCESS CONTROLS
+───────────────────────────────────────────────────────────────
+   Files with External Access:          234
+   - Reviewed and approved:             198
+   - Pending review:                     36
+   - Remediated (access removed):        12
+   
+4. DATA RETENTION COMPLIANCE  
+───────────────────────────────────────────────────────────────
+   PII Files Older Than Policy:       4,821
+   Scheduled for Deletion:            3,200
+   Exception Approved:                1,621
+
+5. RECOMMENDATIONS
+───────────────────────────────────────────────────────────────
+   • Complete review of 36 externally shared files
+   • Implement auto-labeling for health information
+   • Conduct training for repeat violators (23 users)
+   • Archive 4,821 files exceeding retention period</code></pre>
+        </div>
+        
+        <h2 id="visualization">Visualization Best Practices</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Metric Type</th><th>Best Visualization</th><th>Update Frequency</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Incident Trend</td><td>Line chart (time series)</td><td>Real-time / Daily</td></tr>
+              <tr><td>Severity Distribution</td><td>Pie chart or donut</td><td>Weekly</td></tr>
+              <tr><td>Policy Comparison</td><td>Horizontal bar chart</td><td>Weekly</td></tr>
+              <tr><td>User Risk</td><td>Heatmap or scatter plot</td><td>Weekly</td></tr>
+              <tr><td>Channel Breakdown</td><td>Stacked bar chart</td><td>Weekly</td></tr>
+              <tr><td>Coverage Status</td><td>Gauge or progress bar</td><td>Daily</td></tr>
+              <tr><td>Geographic Distribution</td><td>Map visualization</td><td>Monthly</td></tr>
+              <tr><td>Compliance Score</td><td>Scorecard with trend</td><td>Monthly</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="automation">Report Automation</h2>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Automated Report Generation</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Weekly DLP Report Automation Script
+# Schedule via Task Scheduler or Azure Automation
+
+# Connect to services
+Connect-IPPSSession -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c8bbbeab97aca4b897baadb8a7babc88aba7a5b8a9a6b1e6aba7a5">[email&#160;protected]</a>
+
+# Get DLP activity for the week
+$startDate = (Get-Date).AddDays(-7)
+$endDate = Get-Date
+
+$dlpActivity = Search-UnifiedAuditLog `
+    -StartDate $startDate `
+    -EndDate $endDate `
+    -RecordType DLPAll `
+    -ResultSize 5000
+
+# Process and summarize
+$summary = $dlpActivity | Group-Object -Property Operations | 
+    Select-Object Name, Count | Sort-Object Count -Descending
+
+# Generate HTML report
+$htmlReport = @"
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Weekly DLP Report&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;DLP Weekly Summary: $($startDate.ToString('MMM dd')) - $($endDate.ToString('MMM dd'))&lt;/h1&gt;
+&lt;h2&gt;Activity Summary&lt;/h2&gt;
+$($summary | ConvertTo-Html -Fragment)
+&lt;/body&gt;
+&lt;/html&gt;
+"@
+
+# Save report
+$reportPath = "C:\Reports\DLP_Weekly_$(Get-Date -Format 'yyyyMMdd').html"
+$htmlReport | Out-File $reportPath
+
+# Send email notification
+Send-MailMessage `
+    -From "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6b0f071b46190e1b04191f182b0804061b0a051245080406">[email&#160;protected]</a>" `
+    -To "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7003151305021904095d0415111d30131f1d00111e095e131f1d">[email&#160;protected]</a>" `
+    -Subject "Weekly DLP Report - $(Get-Date -Format 'MMM dd, yyyy')" `
+    -Body "Weekly DLP report attached." `
+    -Attachments $reportPath `
+    -SmtpServer "smtp.company.com"</code></pre>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="siem-integration.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">SIEM Integration</span>
+          </a>
+          <a href="../reference/kql-library.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">KQL Query Library</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Symantec DLP overview, product history from Vontu to Broadcom, and current deployment options including on-premises and ICDm cloud.">
+  <title>Symantec DLP Overview | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="symantec-overview.html" class="nav-link active" data-product="symantec">Overview</a>
+          <a href="symantec-architecture.html" class="nav-link" data-product="symantec">Architecture</a>
+          <a href="symantec-endpoint.html" class="nav-link" data-product="symantec">Endpoint DLP</a>
+          <a href="symantec-network.html" class="nav-link" data-product="symantec">Network DLP</a>
+          <a href="symantec-detection.html" class="nav-link" data-product="symantec">Detection Methods</a>
+          <a href="symantec-policies.html" class="nav-link" data-product="symantec">Policies & Rules</a>
+          <a href="../operations/incident-response.html" class="nav-link" data-product="symantec">Incident Management</a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Related</div>
+          <a href="../migration/migration-symantec-to-purview.html" class="nav-link">Migration to Purview</a>
+          <a href="../endpoint/edlp-comparison.html" class="nav-link" data-product="endpoint">Vendor Comparison</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Symantec DLP Overview</span>
+        </nav>
+        
+        <h1>Symantec DLP Overview</h1>
+        
+        <p>Symantec Data Loss Prevention is an enterprise DLP solution that provides comprehensive data protection across endpoints, network, storage, and cloud. Originally developed by Vontu and acquired by Symantec in 2007, the product is now owned by Broadcom following their 2019 acquisition of Symantec's enterprise security business.</p>
+        
+        <div class="callout info">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Current Ownership
+          </div>
+          <p>Symantec DLP is now part of Broadcom's Enterprise Security portfolio. Support and licensing are handled through Broadcom. The product may also be referred to as "Broadcom DLP" in newer documentation.</p>
+        </div>
+        
+        <h2 id="product-history">Product History</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         SYMANTEC DLP PRODUCT TIMELINE                            │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  <span class="accent-cyan">2004</span>        <span class="accent-green">2007</span>           <span class="accent-orange">2016</span>           <span class="accent-purple">2019</span>           <span class="accent-blue">Present</span>       │
+│    │           │               │               │               │              │
+│    ▼           ▼               ▼               ▼               ▼              │
+│  ┌─────┐    ┌─────┐        ┌─────┐        ┌─────┐        ┌─────┐            │
+│  │Vontu│───▶│Symantec│────▶│Cloud │───────▶│Broadcom│────▶│ICDm  │            │
+│  │Founded│  │Acquires│     │(CloudSOC)│    │Acquires│     │Cloud │            │
+│  │      │  │Vontu   │     │Integration│   │Symantec│     │Console│           │
+│  └─────┘    └─────┘        └─────┘        └─────┘        └─────┘            │
+│                                                                                  │
+│  Key Milestones:                                                                │
+│  • 2004: Vontu founded, pioneers DLP market                                     │
+│  • 2007: Symantec acquires Vontu for $350M                                      │
+│  • 2010: Network Discover/Protect mature                                        │
+│  • 2016: CloudSOC (CASB) integration                                            │
+│  • 2019: Broadcom acquires Symantec Enterprise                                  │
+│  • 2021: ICDm cloud management console released                                 │
+│  • 2023: Continued on-prem and cloud hybrid support                             │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="product-suite">Product Suite Components</h2>
+        
+        <div class="card-grid">
+          <div class="card" data-product="symantec">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+              </svg>
+            </div>
+            <h3>Endpoint DLP</h3>
+            <p>Agent-based protection for Windows, macOS, and Linux endpoints. Monitors USB, print, clipboard, email clients, and applications.</p>
+            <a href="symantec-endpoint.html" class="card-link text-symantec">
+              Learn More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+          
+          <div class="card" data-product="symantec">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+            </div>
+            <h3>Network DLP</h3>
+            <p>Network Monitor (passive), Network Prevent for Email/Web (inline). Inspects SMTP, HTTP/HTTPS, FTP, and IM traffic.</p>
+            <a href="symantec-network.html" class="card-link text-symantec">
+              Learn More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+          
+          <div class="card" data-product="symantec">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+              </svg>
+            </div>
+            <h3>Network Discover</h3>
+            <p>Scans file servers, databases, SharePoint, Exchange, and cloud storage to find sensitive data at rest.</p>
+            <a href="symantec-network.html#discover" class="card-link text-symantec">
+              Learn More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+          
+          <div class="card" data-product="symantec">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+              </svg>
+            </div>
+            <h3>Cloud DLP</h3>
+            <p>Integration with CloudSOC (CASB) for SaaS application protection. API-based and inline scanning.</p>
+            <a href="../cloud/cloud-dlp-overview.html" class="card-link text-symantec">
+              Learn More
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <h2 id="deployment-options">Deployment Options</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab" aria-selected="true">On-Premises</button>
+            <button class="tab-button" role="tab" aria-selected="false">ICDm Cloud</button>
+            <button class="tab-button" role="tab" aria-selected="false">Hybrid</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>Traditional On-Premises Deployment</h3>
+            <p>Full control over infrastructure with Enforce Server hosted in your data center.</p>
+            
+            <h4>Components Required:</h4>
+            <ul>
+              <li><strong>Enforce Server</strong> — Central management platform (Windows Server + Oracle Database)</li>
+              <li><strong>Detection Servers</strong> — Network Monitor, Network Prevent, Network Discover</li>
+              <li><strong>Endpoint Agents</strong> — DLP Agent deployed to Windows/macOS/Linux</li>
+              <li><strong>Oracle Database</strong> — Backend database for policies, incidents, and configuration</li>
+            </ul>
+            
+            <div class="callout warning">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Infrastructure Consideration
+              </div>
+              <p>On-premises deployments require Oracle Database licensing, which adds significant cost. Plan for database maintenance, backups, and high availability.</p>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>ICDm Cloud Console</h3>
+            <p>Integrated Cyber Defense Manager (ICDm) provides cloud-based management for Symantec DLP.</p>
+            
+            <h4>Benefits:</h4>
+            <ul>
+              <li>No on-premises Enforce Server required</li>
+              <li>Cloud-hosted policy management and reporting</li>
+              <li>Automatic updates and maintenance</li>
+              <li>Integration with other Broadcom security products</li>
+              <li>Reduced infrastructure footprint</li>
+            </ul>
+            
+            <h4>Limitations:</h4>
+            <ul>
+              <li>Some advanced features may not be available</li>
+              <li>Requires internet connectivity for management</li>
+              <li>Data processing in Broadcom cloud</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Hybrid Deployment</h3>
+            <p>Combine on-premises detection with cloud management, or mix on-prem and cloud-based scanning.</p>
+            
+            <h4>Common Hybrid Scenarios:</h4>
+            <ul>
+              <li>On-premises Network DLP + Cloud-managed Endpoint DLP</li>
+              <li>On-premises Enforce + CloudSOC for SaaS apps</li>
+              <li>Gradual migration from on-prem to ICDm</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="detection-methods">Detection Methods Overview</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Acronym</th>
+                <th>Description</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Described Content Matching</strong></td>
+                <td>DCM</td>
+                <td>Regex patterns, keywords, data identifiers</td>
+                <td>Credit cards, SSNs, structured data</td>
+              </tr>
+              <tr>
+                <td><strong>Indexed Document Matching</strong></td>
+                <td>IDM</td>
+                <td>Document fingerprinting from source files</td>
+                <td>Templates, contracts, source code</td>
+              </tr>
+              <tr>
+                <td><strong>Exact Data Matching</strong></td>
+                <td>EDM</td>
+                <td>Database record matching</td>
+                <td>Customer lists, employee data</td>
+              </tr>
+              <tr>
+                <td><strong>Vector Machine Learning</strong></td>
+                <td>VML</td>
+                <td>ML-based content classification</td>
+                <td>Unstructured documents, legal, financial</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <p>For detailed information on each detection method, see <a href="symantec-detection.html">Detection Methods</a>.</p>
+        
+        <h2 id="licensing">Licensing Model</h2>
+        
+        <p>Symantec DLP is licensed based on:</p>
+        
+        <ul>
+          <li><strong>User Count</strong> — Per-user licensing for endpoint and network protection</li>
+          <li><strong>Server Count</strong> — Additional licenses for detection servers</li>
+          <li><strong>Module Selection</strong> — Endpoint, Network, and Discover are separate modules</li>
+          <li><strong>Support Tier</strong> — Standard vs. Premium support options</li>
+        </ul>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Licensing Tip
+          </div>
+          <p>Contact Broadcom or your reseller for current pricing. Many organizations are evaluating migration to Microsoft Purview or other cloud-native solutions due to licensing costs and infrastructure overhead.</p>
+        </div>
+        
+        <h2 id="version-info">Current Version Information</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>Current Version</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Enforce Server</td>
+                <td>15.8 / 16.0</td>
+                <td>Check Broadcom support for latest</td>
+              </tr>
+              <tr>
+                <td>DLP Agent (Windows)</td>
+                <td>15.8.x</td>
+                <td>Requires Windows 10/11 or Server 2016+</td>
+              </tr>
+              <tr>
+                <td>DLP Agent (macOS)</td>
+                <td>15.8.x</td>
+                <td>Requires macOS 10.15+</td>
+              </tr>
+              <tr>
+                <td>DLP Agent (Linux)</td>
+                <td>15.8.x</td>
+                <td>RHEL, CentOS, Ubuntu supported</td>
+              </tr>
+              <tr>
+                <td>Oracle Database</td>
+                <td>19c recommended</td>
+                <td>12c minimum for older deployments</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="support-resources">Support Resources</h2>
+        
+        <ul>
+          <li><a href="https://knowledge.broadcom.com/external/article/171037" target="_blank">Broadcom DLP Knowledge Base</a></li>
+          <li><a href="https://community.broadcom.com/symantecenterprise/communities/community-home?CommunityKey=65ceb403-d435-4a8b-8e7d-67d8f9e7ed2f" target="_blank">Symantec Enterprise Community Forums</a></li>
+          <li><a href="https://support.broadcom.com/" target="_blank">Broadcom Support Portal</a> (requires login)</li>
+        </ul>
+        
+        <nav class="page-nav">
+          <a href="../../index.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Home</span>
+          </a>
+          <a href="symantec-architecture.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Symantec Architecture</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

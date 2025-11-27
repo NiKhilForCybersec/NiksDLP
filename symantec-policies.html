@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Symantec DLP policy creation, rule configuration, response rules, and incident management best practices.">
+  <title>Symantec Policies & Rules | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="symantec-overview.html" class="nav-link" data-product="symantec">Overview</a>
+          <a href="symantec-architecture.html" class="nav-link" data-product="symantec">Architecture</a>
+          <a href="symantec-endpoint.html" class="nav-link" data-product="symantec">Endpoint DLP</a>
+          <a href="symantec-network.html" class="nav-link" data-product="symantec">Network DLP</a>
+          <a href="symantec-detection.html" class="nav-link" data-product="symantec">Detection Methods</a>
+          <a href="symantec-policies.html" class="nav-link active" data-product="symantec">Policies & Rules</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="symantec-overview.html">Symantec DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Policies & Rules</span>
+        </nav>
+        
+        <h1>Symantec DLP Policies & Rules</h1>
+        
+        <p>Symantec DLP uses a policy framework consisting of Policy Groups, Policies, and Rules. Understanding this hierarchy is essential for effective DLP implementation.</p>
+        
+        <h2 id="hierarchy">Policy Hierarchy</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      SYMANTEC DLP POLICY HIERARCHY                               │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-purple">POLICY GROUP</span>                                                             │    │
+│  │  "PCI Compliance"                                                        │    │
+│  │  Organizational container for related policies                           │    │
+│  │                                                                          │    │
+│  │  ┌─────────────────────────────────────────────────────────────────┐    │    │
+│  │  │  <span class="accent-cyan">POLICY</span>                                                           │    │    │
+│  │  │  "Credit Card Detection"                                         │    │    │
+│  │  │  Detection logic + Response rules                                │    │    │
+│  │  │                                                                  │    │    │
+│  │  │  ┌─────────────────────────────────────────────────────────┐    │    │    │
+│  │  │  │  <span class="accent-green">DETECTION RULE</span>                                          │    │    │    │
+│  │  │  │  "Credit Card - High Volume"                            │    │    │    │
+│  │  │  │  Condition: Credit Card >= 10                           │    │    │    │
+│  │  │  │  Severity: High                                         │    │    │    │
+│  │  │  └─────────────────────────────────────────────────────────┘    │    │    │
+│  │  │                                                                  │    │    │
+│  │  │  ┌─────────────────────────────────────────────────────────┐    │    │    │
+│  │  │  │  <span class="accent-orange">RESPONSE RULE</span>                                           │    │    │    │
+│  │  │  │  "Block and Alert on High Severity"                     │    │    │    │
+│  │  │  │  Action: Block, Notify, Generate incident               │    │    │    │
+│  │  │  └─────────────────────────────────────────────────────────┘    │    │    │
+│  │  │                                                                  │    │    │
+│  │  └─────────────────────────────────────────────────────────────────┘    │    │
+│  │                                                                          │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="detection-rules">Detection Rules</h2>
+        
+        <p>Detection rules define what content to look for and how to classify matches.</p>
+        
+        <h3>Rule Components</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Component</th><th>Description</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Condition</strong></td><td>What to detect</td><td>Credit Card >= 5</td></tr>
+              <tr><td><strong>Exception</strong></td><td>When NOT to match</td><td>Sender = finance@</td></tr>
+              <tr><td><strong>Severity</strong></td><td>Impact classification</td><td>High, Medium, Low, Info</td></tr>
+              <tr><td><strong>Channels</strong></td><td>Where rule applies</td><td>Email, Web, Endpoint</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Condition Types</h3>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Content Conditions
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ul>
+                  <li><strong>Content Matches DCM</strong> — Pattern/keyword match</li>
+                  <li><strong>Content Matches IDM</strong> — Document fingerprint match</li>
+                  <li><strong>Content Matches EDM</strong> — Database record match</li>
+                  <li><strong>Content Matches VML</strong> — ML classifier match</li>
+                  <li><strong>File Type</strong> — Match specific file formats</li>
+                  <li><strong>File Size</strong> — Size threshold</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Context Conditions
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ul>
+                  <li><strong>Sender/Recipient</strong> — Email addresses, domains</li>
+                  <li><strong>Protocol</strong> — SMTP, HTTP, FTP, etc.</li>
+                  <li><strong>Endpoint User</strong> — User or group membership</li>
+                  <li><strong>URL Category</strong> — Web destination category</li>
+                  <li><strong>Application</strong> — Application generating traffic</li>
+                  <li><strong>Time</strong> — Business hours vs. off-hours</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Compound Conditions
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Combine conditions with logical operators:</p>
+                <div class="code-block" data-language="text">
+                  <div class="code-header">
+                    <span class="code-lang">Compound Condition Examples</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># High-risk external transfer
+(Credit Card >= 5) 
+  AND (Recipient Domain NOT = company.com)
+  AND (Protocol = SMTP OR HTTP)
+
+# After-hours sensitive data access
+(Content Matches "Confidential" keyword)
+  AND (Time = Outside Business Hours)
+  AND (User NOT IN "After-Hours Authorized")
+
+# Large file with PII
+(File Size > 10MB)
+  AND (SIN >= 1 OR Credit Card >= 1)
+  AND (Destination = Cloud Storage)</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="response-rules">Response Rules</h2>
+        
+        <p>Response rules define actions taken when detection rules match.</p>
+        
+        <h3>Response Actions by Channel</h3>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Action</th>
+                <th>Network Monitor</th>
+                <th>Network Prevent Email</th>
+                <th>Network Prevent Web</th>
+                <th>Endpoint</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Log Incident</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Block</strong></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Notify User</strong></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Redirect/Quarantine</strong></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+              <tr>
+                <td><strong>Modify Content</strong></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+              <tr>
+                <td><strong>Encrypt</strong></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+              </tr>
+              <tr>
+                <td><strong>Request Justification</strong></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Email Alert</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Response Rule Configuration</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Example Response Rules</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Response Rule: High Severity - Block and Alert
+Name: Block High Severity Incidents
+Condition: Severity = High
+Actions:
+  - Block transmission
+  - Send email notification to:
+    - Sender (user notification template)
+    - Manager (manager notification template)
+    - DLP Team (<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b7d3dbc79ad6dbd2c5c3c4f7d4d8dac7d6d9ce99d4d8da">[email&#160;protected]</a>)
+  - Generate incident with full content capture
+  - Set incident status: New
+  - Assign to: DLP Review Queue
+
+# Response Rule: Medium Severity - Warn User
+Name: Warn on Medium Severity
+Condition: Severity = Medium
+Actions:
+  - Display user notification popup
+  - Allow with justification required
+  - Generate incident
+  - Send daily digest to DLP team
+
+# Response Rule: Low Severity - Audit Only
+Name: Audit Low Severity
+Condition: Severity = Low
+Actions:
+  - Generate incident (no content capture)
+  - Add to weekly summary report</code></pre>
+        </div>
+        
+        <h2 id="user-notifications">User Notifications</h2>
+        
+        <h3>Endpoint Notification Popup</h3>
+        
+        <div class="code-block" data-language="html">
+          <div class="code-header">
+            <span class="code-lang">Notification Template (HTML)</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>&lt;!-- Endpoint User Notification Template --&gt;
+&lt;h2&gt;Data Protection Alert&lt;/h2&gt;
+&lt;p&gt;Your action has been blocked because it may contain sensitive information.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Policy:&lt;/strong&gt; $POLICY_NAME$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Action:&lt;/strong&gt; $ACTION$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;File:&lt;/strong&gt; $FILE_NAME$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Data Detected:&lt;/strong&gt; $MATCHED_DATA_TYPE$&lt;/p&gt;
+
+&lt;p&gt;If you believe this is a legitimate business need, please provide 
+a justification below and click "Request Override".&lt;/p&gt;
+
+&lt;p&gt;For questions, contact the Security Team at <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="84f7e1e7f1f6edf0fdc4e7ebe9f4e5eafdaae7ebe9">[email&#160;protected]</a>.&lt;/p&gt;</code></pre>
+        </div>
+        
+        <h3>Email Notification Template</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Email Template Variables</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Available Variables for Email Templates
+$INCIDENT_ID$          - Unique incident identifier
+$POLICY_NAME$          - Name of matched policy
+$SEVERITY$             - High/Medium/Low/Info
+$MATCHED_DATA_TYPE$    - Type of sensitive data found
+$MATCH_COUNT$          - Number of matches
+$SENDER$               - Sender email/username
+$RECIPIENT$            - Recipient email/domain
+$SUBJECT$              - Email subject line
+$FILE_NAME$            - Attached file name
+$FILE_SIZE$            - File size
+$DETECTION_DATE$       - Date/time of detection
+$CHANNEL$              - Network/Endpoint/Discover
+$ACTION_TAKEN$         - Block/Notify/Allow
+$INCIDENT_URL$         - Link to incident in console</code></pre>
+        </div>
+        
+        <h2 id="policy-templates">Built-in Policy Templates</h2>
+        
+        <p>Symantec includes policy templates for common regulatory requirements:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Template Category</th><th>Templates Included</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Financial</strong></td><td>PCI-DSS, SOX, GLBA</td></tr>
+              <tr><td><strong>Healthcare</strong></td><td>HIPAA, HITECH</td></tr>
+              <tr><td><strong>Privacy</strong></td><td>GDPR, CCPA, PIPEDA</td></tr>
+              <tr><td><strong>Government</strong></td><td>ITAR, EAR, CJIS</td></tr>
+              <tr><td><strong>Regional</strong></td><td>UK DPA, Australia Privacy Act</td></tr>
+              <tr><td><strong>Industry</strong></td><td>Source Code, M&A, HR Data</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Template Tip
+          </div>
+          <p>Templates are starting points. Always customize detection thresholds, severity levels, and response rules for your organization's risk tolerance.</p>
+        </div>
+        
+        <h2 id="best-practices">Policy Best Practices</h2>
+        
+        <ul>
+          <li><strong>Start with audit mode</strong> — Run policies without blocking for 2-4 weeks to baseline</li>
+          <li><strong>Use severity levels wisely</strong> — Reserve "High" for true data breach risks</li>
+          <li><strong>Implement tiered responses</strong> — Low=log, Medium=warn, High=block</li>
+          <li><strong>Minimize exceptions</strong> — Each exception is a potential data leak vector</li>
+          <li><strong>Review regularly</strong> — Monthly policy review, quarterly exception audit</li>
+          <li><strong>Document everything</strong> — Policy names, descriptions, and change history</li>
+          <li><strong>Test before production</strong> — Use test detection servers and endpoints</li>
+        </ul>
+        
+        <nav class="page-nav">
+          <a href="symantec-detection.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Detection Methods</span>
+          </a>
+          <a href="../migration/migration-symantec-to-purview.html" class="page-nav-link next">
+         </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

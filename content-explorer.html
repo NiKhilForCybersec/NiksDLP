@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Microsoft Purview Content Explorer for discovering and analyzing sensitive data across Microsoft 365 workloads.">
+  <title>Content Explorer | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Discovery</div>
+          <a href="data-discovery.html" class="nav-link" data-product="discovery">Data Discovery</a>
+          <a href="content-explorer.html" class="nav-link active" data-product="purview">Content Explorer</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="data-discovery.html">Discovery</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Content Explorer</span>
+        </nav>
+        
+        <h1>Content Explorer</h1>
+        
+        <p>Content Explorer provides visibility into sensitive data across Microsoft 365, showing where classified content exists and how it's being used. It's essential for understanding your data landscape before implementing DLP policies.</p>
+        
+        <h2 id="overview">Content Explorer Overview</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      CONTENT EXPLORER DATA FLOW                                  │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                        MICROSOFT 365 WORKLOADS                           │    │
+│  │                                                                          │    │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │    │
+│  │  │ Exchange │  │SharePoint│  │ OneDrive │  │  Teams   │  │  Devices │  │    │
+│  │  │  Online  │  │  Online  │  │   for    │  │  Files   │  │(Endpoint)│  │    │
+│  │  │          │  │          │  │ Business │  │          │  │          │  │    │
+│  │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘  │    │
+│  │       │             │             │             │             │        │    │
+│  └───────┴─────────────┴─────────────┴─────────────┴─────────────┴────────┘    │
+│                                      │                                          │
+│                                      ▼                                          │
+│                    ┌─────────────────────────────────┐                          │
+│                    │    <span class="accent-cyan">CLASSIFICATION ENGINE</span>        │                          │
+│                    │                                 │                          │
+│                    │  • Sensitive Info Types (SITs) │                          │
+│                    │  • Trainable Classifiers       │                          │
+│                    │  • Sensitivity Labels          │                          │
+│                    │  • Retention Labels            │                          │
+│                    └─────────────────┬───────────────┘                          │
+│                                      │                                          │
+│                                      ▼                                          │
+│                    ┌─────────────────────────────────┐                          │
+│                    │      <span class="accent-purple">CONTENT EXPLORER</span>           │                          │
+│                    │                                 │                          │
+│                    │  Browse by classification      │                          │
+│                    │  View file details             │                          │
+│                    │  Analyze distribution          │                          │
+│                    └─────────────────────────────────┘                          │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="accessing">Accessing Content Explorer</h2>
+        
+        <ol class="steps">
+          <li>
+            <strong>Navigate to Compliance Portal</strong>
+            <p>Go to <code>compliance.microsoft.com</code></p>
+          </li>
+          <li>
+            <strong>Open Data Classification</strong>
+            <p>Select <strong>Data classification</strong> from the left navigation</p>
+          </li>
+          <li>
+            <strong>Select Content Explorer</strong>
+            <p>Click on the <strong>Content explorer</strong> tab</p>
+          </li>
+        </ol>
+        
+        <h3>Required Permissions</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Role</th><th>Permissions</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Content Explorer List Viewer</strong></td>
+                <td>View list of items and their classifications</td>
+                <td>Compliance analysts reviewing data distribution</td>
+              </tr>
+              <tr>
+                <td><strong>Content Explorer Content Viewer</strong></td>
+                <td>View actual content of classified items</td>
+                <td>Investigators needing to see file contents</td>
+              </tr>
+              <tr>
+                <td><strong>Data Classification List Viewer</strong></td>
+                <td>View classification statistics</td>
+                <td>Reporting and dashboards</td>
+              </tr>
+              <tr>
+                <td><strong>Data Classification Content Viewer</strong></td>
+                <td>Full access to content and metadata</td>
+                <td>Full investigation capabilities</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Assign Content Explorer Roles</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Assign Content Explorer List Viewer role
+Add-RoleGroupMember -Identity "Content Explorer List Viewer" -Member "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ed8c838c81949e99ad8e82809d8c8394c38e8280">[email&#160;protected]</a>"
+
+# Assign Content Explorer Content Viewer (includes list viewer)
+Add-RoleGroupMember -Identity "Content Explorer Content Viewer" -Member "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="85ecebf3e0f6f1ece2e4f1eaf7c5e6eae8f5e4ebfcabe6eae8">[email&#160;protected]</a>"
+
+# Create custom role group with specific permissions
+New-RoleGroup -Name "DLP Analysts" -Roles "Data Classification List Viewer", "View-Only Audit Logs"
+Add-RoleGroupMember -Identity "DLP Analysts" -Member "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e6828a96cb9283878ba685898b9687889fc885898b">[email&#160;protected]</a>"</code></pre>
+        </div>
+        
+        <h2 id="browsing">Browsing Content</h2>
+        
+        <h3>Browse by Sensitive Info Type</h3>
+        
+        <p>The left panel shows all detected sensitive information types with counts:</p>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Content Explorer - SIT View</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>SENSITIVE INFO TYPES                          ITEMS
+─────────────────────────────────────────────────────
+▼ Financial
+    Credit Card Number                        2,847
+    U.S. Bank Account Number                    423
+    SWIFT Code                                  156
+    
+▼ Personal Information  
+    Canada Social Insurance Number            8,492
+    U.S. Social Security Number (SSN)         1,234
+    Canada Health Service Number                892
+    
+▼ Health
+    International Classification (ICD-10-CM)    234
+    Drug Enforcement Agency (DEA) Number         67
+    
+▼ Custom
+    Employee ID (Custom SIT)                  4,521
+    Project Code (Custom SIT)                 1,892</code></pre>
+        </div>
+        
+        <h3>Browse by Sensitivity Label</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Content Explorer - Label View</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>SENSITIVITY LABELS                            ITEMS
+─────────────────────────────────────────────────────
+▼ Highly Confidential
+    Highly Confidential\Executive             1,234
+    Highly Confidential\Legal                   567
+    Highly Confidential\M&A                     123
+    
+▼ Confidential
+    Confidential\Finance                     12,456
+    Confidential\HR                           8,234
+    Confidential\Engineering                  5,678
+    
+▼ Internal
+    Internal                                 45,678
+    
+▼ Public
+    Public                                    2,345</code></pre>
+        </div>
+        
+        <h3>Browse by Trainable Classifier</h3>
+        
+        <p>View content matched by machine learning classifiers:</p>
+        
+        <ul>
+          <li>Source Code</li>
+          <li>Resumes</li>
+          <li>Financial Statements</li>
+          <li>Legal Agreements</li>
+          <li>Tax Documents</li>
+          <li>Custom Trained Classifiers</li>
+        </ul>
+        
+        <h2 id="item-details">Viewing Item Details</h2>
+        
+        <p>Clicking on an item reveals detailed information:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Field</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>File Name</strong></td><td>Name of the file</td></tr>
+              <tr><td><strong>Location</strong></td><td>SharePoint site, OneDrive, Exchange mailbox</td></tr>
+              <tr><td><strong>Owner</strong></td><td>File owner or mailbox owner</td></tr>
+              <tr><td><strong>Last Modified</strong></td><td>When content was last changed</td></tr>
+              <tr><td><strong>Sensitivity Label</strong></td><td>Applied label (if any)</td></tr>
+              <tr><td><strong>Retention Label</strong></td><td>Applied retention label (if any)</td></tr>
+              <tr><td><strong>SITs Detected</strong></td><td>List of sensitive info types found</td></tr>
+              <tr><td><strong>Match Count</strong></td><td>Number of matches per SIT</td></tr>
+              <tr><td><strong>Confidence</strong></td><td>Detection confidence level</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="filtering">Filtering and Searching</h2>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Content Explorer Filters</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>AVAILABLE FILTERS
+─────────────────────────────────────────────────────
+Location Type:
+  ☑ SharePoint
+  ☑ OneDrive  
+  ☑ Exchange
+  ☐ Devices (Endpoint)
+
+Date Range:
+  From: [2024-01-01]  To: [2024-12-31]
+
+File Type:
+  ☑ Documents (.docx, .pdf)
+  ☑ Spreadsheets (.xlsx)
+  ☑ Presentations (.pptx)
+  ☐ Images
+  ☐ Other
+
+Site/Mailbox:
+  [Search for specific location...]
+
+Match Count:
+  Minimum: [1]  Maximum: [Any]</code></pre>
+        </div>
+        
+        <h2 id="export">Exporting Data</h2>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Export Content Explorer Data via Graph API</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Connect to Microsoft Graph
+Connect-MgGraph -Scopes "InformationProtectionPolicy.Read.All"
+
+# Note: Direct Content Explorer export requires Graph API or manual export
+# Use Activity Explorer for audit log export
+
+# Alternative: Query via Compliance Search
+$search = New-ComplianceSearch -Name "SIN Data Discovery" `
+    -ExchangeLocation "All" `
+    -SharePointLocation "All" `
+    -ContentMatchQuery "SensitiveType:Canada Social Insurance Number"
+
+Start-ComplianceSearch -Identity $search.Name
+
+# Wait for completion then get results
+Get-ComplianceSearch -Identity $search.Name | Select-Object Items, Size</code></pre>
+        </div>
+        
+        <h2 id="activity-explorer">Activity Explorer Integration</h2>
+        
+        <p>While Content Explorer shows <strong>where</strong> sensitive data exists, Activity Explorer shows <strong>what's happening</strong> to it:</p>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr><th>Aspect</th><th>Content Explorer</th><th>Activity Explorer</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Focus</strong></td>
+                <td>Data at rest</td>
+                <td>Data in motion</td>
+              </tr>
+              <tr>
+                <td><strong>Shows</strong></td>
+                <td>Where sensitive data exists</td>
+                <td>User activities on sensitive data</td>
+              </tr>
+              <tr>
+                <td><strong>Updates</strong></td>
+                <td>Near real-time (hours)</td>
+                <td>Real-time</td>
+              </tr>
+              <tr>
+                <td><strong>Use Case</strong></td>
+                <td>Data inventory, compliance audits</td>
+                <td>Incident investigation, monitoring</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="best-practices">Best Practices</h2>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Content Explorer Best Practices
+          </div>
+          <ul>
+            <li><strong>Baseline first</strong> — Use Content Explorer to understand your data landscape before creating DLP policies</li>
+            <li><strong>Focus on high-risk</strong> — Prioritize review of externally shared content with sensitive data</li>
+            <li><strong>Regular audits</strong> — Schedule monthly reviews to track data proliferation trends</li>
+            <li><strong>Limit content viewer access</strong> — Only grant content viewing to those who need it (privacy concern)</li>
+            <li><strong>Combine with Activity Explorer</strong> — Use both tools for complete visibility</li>
+            <li><strong>Document findings</strong> — Export and document baseline for compliance evidence</li>
+          </ul>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="data-discovery.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Data Discovery</span>
+          </a>
+          <a href="../operations/dlp-operations.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">DLP Operations</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

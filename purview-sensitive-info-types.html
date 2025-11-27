@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Microsoft Purview Sensitive Information Types (SITs) including built-in types, custom SITs, and configuration best practices.">
+  <title>Purview Sensitive Information Types | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Microsoft Purview</div>
+          <a href="purview-overview.html" class="nav-link" data-product="purview">Overview</a>
+          <a href="purview-architecture.html" class="nav-link" data-product="purview">Architecture</a>
+          <a href="purview-endpoint-dlp.html" class="nav-link" data-product="purview">Endpoint DLP</a>
+          <a href="purview-sensitive-info-types.html" class="nav-link active" data-product="purview">Sensitive Info Types</a>
+          <a href="purview-policies.html" class="nav-link" data-product="purview">DLP Policies</a>
+          <a href="purview-labels.html" class="nav-link" data-product="purview">Sensitivity Labels</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="purview-overview.html">Microsoft Purview</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Sensitive Information Types</span>
+        </nav>
+        
+        <h1>Sensitive Information Types (SITs)</h1>
+        
+        <p>Sensitive Information Types are pattern-based classifiers that identify sensitive data like credit card numbers, social security numbers, and health records. Microsoft Purview includes 300+ built-in SITs and supports creating custom types.</p>
+        
+        <h2 id="sit-components">SIT Components</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    SENSITIVE INFORMATION TYPE STRUCTURE                          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                    SENSITIVE INFORMATION TYPE                            │    │
+│  ├─────────────────────────────────────────────────────────────────────────┤    │
+│  │                                                                          │    │
+│  │  <span class="accent-green">PRIMARY PATTERN</span>                    <span class="accent-cyan">SUPPORTING ELEMENTS</span>                 │    │
+│  │  ┌────────────────────┐           ┌────────────────────┐                │    │
+│  │  │ Regex Pattern      │           │ Keywords           │                │    │
+│  │  │ (e.g., \d{4}-\d{4})│     +     │ (e.g., "card",     │                │    │
+│  │  │                    │           │  "credit")         │                │    │
+│  │  └────────────────────┘           └────────────────────┘                │    │
+│  │           │                                │                            │    │
+│  │           └────────────────┬───────────────┘                            │    │
+│  │                            ▼                                            │    │
+│  │                   <span class="accent-orange">VALIDATORS</span>                                          │    │
+│  │                   ┌────────────────────┐                                │    │
+│  │                   │ Checksum (Luhn)    │                                │    │
+│  │                   │ Date validation    │                                │    │
+│  │                   │ Format check       │                                │    │
+│  │                   └─────────┬──────────┘                                │    │
+│  │                             ▼                                           │    │
+│  │                   <span class="accent-purple">CONFIDENCE LEVELS</span>                                    │    │
+│  │                   ┌────────────────────┐                                │    │
+│  │                   │ Low: Pattern only  │                                │    │
+│  │                   │ Medium: + Keyword  │                                │    │
+│  │                   │ High: + Validator  │                                │    │
+│  │                   └────────────────────┘                                │    │
+│  │                                                                          │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="builtin-sits">Built-in SITs by Category</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Financial</button>
+            <button class="tab-button" role="tab">Healthcare</button>
+            <button class="tab-button" role="tab">National IDs</button>
+            <button class="tab-button" role="tab">Canada-Specific</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>Financial Data SITs</h3>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr><th>SIT Name</th><th>Pattern Example</th><th>Validators</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Credit Card Number</td><td>4532-0151-1283-0366</td><td>Luhn checksum, brand prefix</td></tr>
+                  <tr><td>ABA Routing Number</td><td>021000021</td><td>Checksum validation</td></tr>
+                  <tr><td>U.S. Bank Account Number</td><td>12345678901234</td><td>Format, proximity to routing</td></tr>
+                  <tr><td>SWIFT Code</td><td>CHASUS33XXX</td><td>Format validation</td></tr>
+                  <tr><td>IBAN</td><td>DE89370400440532013000</td><td>Country-specific checksum</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Healthcare SITs</h3>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr><th>SIT Name</th><th>Region</th><th>Notes</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>U.S. Health Insurance Claim Number</td><td>USA</td><td>Medicare/Medicaid claims</td></tr>
+                  <tr><td>Drug Enforcement Agency (DEA) Number</td><td>USA</td><td>DEA registration</td></tr>
+                  <tr><td>U.S. National Drug Code (NDC)</td><td>USA</td><td>Drug identification</td></tr>
+                  <tr><td>Canada Health Service Number</td><td>Canada</td><td>Provincial health cards</td></tr>
+                  <tr><td>U.K. National Health Service Number</td><td>UK</td><td>NHS patient ID</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>National ID SITs</h3>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr><th>SIT Name</th><th>Format</th><th>Validation</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>U.S. Social Security Number</td><td>XXX-XX-XXXX</td><td>Area/group rules</td></tr>
+                  <tr><td>U.K. National Insurance Number</td><td>AB123456C</td><td>Prefix validation</td></tr>
+                  <tr><td>Germany Identity Card Number</td><td>XXXXXXXXX</td><td>Checksum</td></tr>
+                  <tr><td>France National ID (CNI)</td><td>XXXXXXXXXXXX</td><td>Format check</td></tr>
+                  <tr><td>Australia Tax File Number</td><td>XXX XXX XXX</td><td>Checksum</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Canada-Specific SITs</h3>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr><th>SIT Name</th><th>Format</th><th>Province</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Canada Social Insurance Number</td><td>XXX-XXX-XXX</td><td>All</td></tr>
+                  <tr><td>Canada Passport Number</td><td>AB123456</td><td>All</td></tr>
+                  <tr><td>Canada Health Service Number</td><td>Various</td><td>Province-specific</td></tr>
+                  <tr><td>Canada Driver's License Number</td><td>Various</td><td>Province-specific</td></tr>
+                  <tr><td>Canada Bank Account Number</td><td>XXXXX-XXX-XXXXXXX</td><td>All</td></tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="callout tip">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Canada Health Cards
+              </div>
+              <p>Health card formats vary by province. Ontario (OHIP) uses 10 digits, BC uses regional format. You may need custom SITs for complete coverage.</p>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="custom-sits">Creating Custom SITs</h2>
+        
+        <h3>Using the Compliance Portal</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Navigate to Data Classification</strong>
+            <p>Go to compliance.microsoft.com → Data classification → Sensitive info types</p>
+          </li>
+          <li>
+            <strong>Create New SIT</strong>
+            <p>Click "Create sensitive info type" and provide name, description</p>
+          </li>
+          <li>
+            <strong>Define Primary Pattern</strong>
+            <p>Add regex pattern that identifies the sensitive data format</p>
+          </li>
+          <li>
+            <strong>Add Supporting Elements</strong>
+            <p>Add keywords, secondary patterns, or validators to improve accuracy</p>
+          </li>
+          <li>
+            <strong>Set Confidence Levels</strong>
+            <p>Define which elements are required for low/medium/high confidence</p>
+          </li>
+          <li>
+            <strong>Test and Publish</strong>
+            <p>Test with sample content, then publish the SIT</p>
+          </li>
+        </ol>
+        
+        <h3>PowerShell Creation</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Connect to Security & Compliance PowerShell
+Connect-IPPSSession -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1071747d797e50737f7e647f637f3e737f7d">[email&#160;protected]</a>
+
+# Example: Create custom Employee ID SIT
+# Pattern: EMP followed by 6 digits (e.g., EMP123456)
+
+# Define the regex pattern
+$employeeIdPattern = @{
+    Pattern = "EMP\d{6}"
+    Name = "Employee ID Pattern"
+}
+
+# Define supporting keywords
+$keywords = @{
+    Keywords = @("employee", "emp id", "staff number", "worker id")
+    Name = "Employee Keywords"
+    MatchType = "Word"
+}
+
+# Create the SIT
+New-DlpSensitiveInformationType `
+    -Name "Contoso Employee ID" `
+    -Description "Matches Contoso employee IDs in format EMP######" `
+    -SensitiveInformationTypeRulePackage @"
+<RulePackage xmlns="http://schemas.microsoft.com/office/2011/mce">
+  <RulePack id="$(New-Guid)">
+    <Version major="1" minor="0" build="0" revision="0"/>
+    <Publisher id="$(New-Guid)"/>
+  </RulePack>
+  <Rules>
+    <Entity id="$(New-Guid)" patternsProximity="300" 
+            recommendedConfidence="75" name="Contoso Employee ID">
+      <Pattern confidenceLevel="85">
+        <IdMatch idRef="EmployeeId_Regex"/>
+        <Match idRef="Employee_Keywords"/>
+      </Pattern>
+      <Pattern confidenceLevel="65">
+        <IdMatch idRef="EmployeeId_Regex"/>
+      </Pattern>
+    </Entity>
+    <Regex id="EmployeeId_Regex">EMP\d{6}</Regex>
+    <Keyword id="Employee_Keywords">
+      <Group matchStyle="word">
+        <Term>employee</Term>
+        <Term>emp id</Term>
+        <Term>staff number</Term>
+        <Term>worker id</Term>
+      </Group>
+    </Keyword>
+  </Rules>
+</RulePackage>
+"@
+
+# Verify creation
+Get-DlpSensitiveInformationType -Identity "Contoso Employee ID"</code></pre>
+        </div>
+        
+        <h2 id="common-sits">Commonly Used SITs</h2>
+        
+        <h3>Recommended SITs for PIPEDA Compliance (Canada)</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Data Type</th><th>Recommended SIT</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Social Insurance Number</td><td>Canada Social Insurance Number</td><td>Enable Luhn validation</td></tr>
+              <tr><td>Health Card</td><td>Canada Health Service Number</td><td>May need custom for OHIP</td></tr>
+              <tr><td>Passport</td><td>Canada Passport Number</td><td>Built-in works well</td></tr>
+              <tr><td>Driver's License</td><td>Canada Driver's License Number</td><td>Province variations</td></tr>
+              <tr><td>Bank Account</td><td>Canada Bank Account Number</td><td>Transit + account format</td></tr>
+              <tr><td>Credit Card</td><td>Credit Card Number</td><td>Global SIT with Luhn</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Custom Ontario Health Card (OHIP) SIT</h3>
+        
+        <div class="code-block" data-language="xml">
+          <div class="code-header">
+            <span class="code-lang">XML Rule Package</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>&lt;!-- Ontario Health Card (OHIP) Custom SIT --&gt;
+&lt;!-- Format: XXXX-XXX-XXX or XXXXXXXXXX (10 digits) --&gt;
+
+&lt;Entity id="GUID-HERE" patternsProximity="300" 
+        recommendedConfidence="75" name="Ontario Health Card (OHIP)"&gt;
+  
+  &lt;!-- High confidence: Pattern + Keywords --&gt;
+  &lt;Pattern confidenceLevel="85"&gt;
+    &lt;IdMatch idRef="OHIP_Regex"/&gt;
+    &lt;Match idRef="OHIP_Keywords"/&gt;
+  &lt;/Pattern&gt;
+  
+  &lt;!-- Medium confidence: Pattern only --&gt;
+  &lt;Pattern confidenceLevel="65"&gt;
+    &lt;IdMatch idRef="OHIP_Regex"/&gt;
+  &lt;/Pattern&gt;
+  
+&lt;/Entity&gt;
+
+&lt;!-- OHIP Number: 10 digits, optionally formatted as XXXX-XXX-XXX --&gt;
+&lt;Regex id="OHIP_Regex"&gt;\b\d{4}[-\s]?\d{3}[-\s]?\d{3}\b&lt;/Regex&gt;
+
+&lt;!-- Supporting keywords --&gt;
+&lt;Keyword id="OHIP_Keywords"&gt;
+  &lt;Group matchStyle="word"&gt;
+    &lt;Term&gt;OHIP&lt;/Term&gt;
+    &lt;Term&gt;Ontario Health&lt;/Term&gt;
+    &lt;Term&gt;health card&lt;/Term&gt;
+    &lt;Term&gt;health insurance&lt;/Term&gt;
+    &lt;Term&gt;health number&lt;/Term&gt;
+    &lt;Term&gt;ontario health insurance plan&lt;/Term&gt;
+  &lt;/Group&gt;
+&lt;/Keyword&gt;</code></pre>
+        </div>
+        
+        <h2 id="sit-testing">Testing SITs</h2>
+        
+        <h3>Test in Compliance Portal</h3>
+        
+        <ol>
+          <li>Go to Data classification → Sensitive info types</li>
+          <li>Select your SIT and click "Test"</li>
+          <li>Enter or upload test content</li>
+          <li>Review matches and confidence levels</li>
+        </ol>
+        
+        <h3>PowerShell Testing</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Test SIT against sample content
+$testContent = @"
+Customer: John Smith
+SIN: 046-454-286
+Credit Card: 4532-0151-1283-0366
+Employee ID: EMP123456
+OHIP: 1234-567-890
+"@
+
+# Test specific SIT
+Test-DataClassification -TextContent $testContent `
+    -SensitiveInformationType "Credit Card Number"
+
+# Test all SITs
+$results = Test-DataClassification -TextContent $testContent
+
+# Display results
+$results | ForEach-Object {
+    Write-Host "SIT: $($_.SensitiveType)" -ForegroundColor Cyan
+    Write-Host "  Count: $($_.Count)"
+    Write-Host "  Confidence: $($_.Confidence)"
+    Write-Host "  Matches: $($_.SensitiveTypeMatches.Value -join ', ')"
+}</code></pre>
+        </div>
+        
+        <h2 id="best-practices">Best Practices</h2>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            SIT Best Practices
+          </div>
+          <ul>
+            <li><strong>Start with built-in SITs</strong> — Customize only when needed</li>
+            <li><strong>Use high confidence for blocking</strong> — Low confidence for auditing</li>
+            <li><strong>Combine with keywords</strong> — Reduces false positives significantly</li>
+            <li><strong>Test thoroughly</strong> — Use real-world sample data</li>
+            <li><strong>Document custom SITs</strong> — Include regex explanation and test cases</li>
+            <li><strong>Review regularly</strong> — Data formats change over time</li>
+          </ul>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="purview-endpoint-dlp.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Endpoint DLP</span>
+          </a>
+          <a href="purview-policies.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">DLP Policies</span>
+               </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

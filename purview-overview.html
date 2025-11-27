@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Microsoft Purview DLP overview, compliance portal navigation, and licensing requirements for E3, E5, and compliance add-ons.">
+  <title>Purview Overview & Licensing | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Microsoft Purview</div>
+          <a href="purview-overview.html" class="nav-link active" data-product="purview">Overview & Licensing</a>
+          <a href="purview-architecture.html" class="nav-link" data-product="purview">Architecture</a>
+          <a href="purview-endpoint-dlp.html" class="nav-link" data-product="purview">Endpoint DLP</a>
+          <a href="purview-sensitive-info-types.html" class="nav-link" data-product="purview">Sensitive Info Types</a>
+          <a href="purview-policies.html" class="nav-link" data-product="purview">DLP Policies</a>
+          <a href="purview-labels.html" class="nav-link" data-product="purview">Sensitivity Labels</a>
+          <a href="../operations/dlp-alerts.html" class="nav-link" data-product="purview">Alerts & Activity Explorer</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Microsoft Purview Overview</span>
+        </nav>
+        
+        <h1>Microsoft Purview DLP Overview</h1>
+        
+        <p>Microsoft Purview Data Loss Prevention (DLP) is a cloud-native solution integrated with Microsoft 365 that helps organizations discover, classify, and protect sensitive information across endpoints, Microsoft 365 services, and cloud applications.</p>
+        
+        <div class="callout info">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Rebranding Note
+          </div>
+          <p>Microsoft Purview was formerly known as "Microsoft 365 Compliance" and "Microsoft Information Protection (MIP)". Documentation and UI may still reference these older names.</p>
+        </div>
+        
+        <h2 id="key-capabilities">Key Capabilities</h2>
+        
+        <div class="card-grid">
+          <div class="card" data-product="purview">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3>Discover</h3>
+            <p>Identify sensitive data across Microsoft 365 workloads, endpoints, and on-premises file shares using 300+ built-in sensitive information types.</p>
+          </div>
+          
+          <div class="card" data-product="purview">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+              </svg>
+            </div>
+            <h3>Classify</h3>
+            <p>Apply sensitivity labels automatically or manually to documents and emails. Labels persist with content and can trigger protection policies.</p>
+          </div>
+          
+          <div class="card" data-product="purview">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h3>Protect</h3>
+            <p>Block, warn, or audit sensitive data transfers across email, cloud apps, USB drives, printing, and more with unified DLP policies.</p>
+          </div>
+        </div>
+        
+        <h2 id="protected-locations">Protected Locations</h2>
+        
+        <p>Purview DLP policies can protect sensitive data across these locations:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th>Protection Type</th>
+                <th>Key Features</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Exchange Online</strong></td>
+                <td>Email DLP</td>
+                <td>Policy tips in Outlook, block/encrypt attachments, mail flow rules</td>
+              </tr>
+              <tr>
+                <td><strong>SharePoint Online</strong></td>
+                <td>Cloud DLP</td>
+                <td>Block sharing, restrict access, sensitivity labels</td>
+              </tr>
+              <tr>
+                <td><strong>OneDrive for Business</strong></td>
+                <td>Cloud DLP</td>
+                <td>Sync client integration, sharing controls</td>
+              </tr>
+              <tr>
+                <td><strong>Microsoft Teams</strong></td>
+                <td>Chat & Channel DLP</td>
+                <td>Block messages, policy tips in chat, file protection</td>
+              </tr>
+              <tr>
+                <td><strong>Windows/macOS Endpoints</strong></td>
+                <td>Endpoint DLP</td>
+                <td>USB, print, clipboard, browser upload, app restrictions</td>
+              </tr>
+              <tr>
+                <td><strong>Power BI</strong></td>
+                <td>BI DLP</td>
+                <td>Sensitivity labels on datasets and reports</td>
+              </tr>
+              <tr>
+                <td><strong>On-premises file shares</strong></td>
+                <td>MIP Scanner</td>
+                <td>Discovery and labeling of on-prem repositories</td>
+              </tr>
+              <tr>
+                <td><strong>Cloud Apps (MCAS)</strong></td>
+                <td>Defender for Cloud Apps</td>
+                <td>Third-party SaaS protection via CASB</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="licensing">Licensing Requirements</h2>
+        
+        <p>DLP features vary by license tier. Here's what's included at each level:</p>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Microsoft 365 E3</button>
+            <button class="tab-button" role="tab">Microsoft 365 E5</button>
+            <button class="tab-button" role="tab">E5 Compliance Add-on</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>Microsoft 365 E3 / A3 / G3</h3>
+            
+            <p>Basic DLP capabilities for Exchange, SharePoint, and OneDrive:</p>
+            
+            <ul>
+              <li><span class="status-badge supported">✓</span> DLP policies for Exchange Online</li>
+              <li><span class="status-badge supported">✓</span> DLP policies for SharePoint Online</li>
+              <li><span class="status-badge supported">✓</span> DLP policies for OneDrive for Business</li>
+              <li><span class="status-badge supported">✓</span> 100+ built-in sensitive information types</li>
+              <li><span class="status-badge supported">✓</span> Manual sensitivity labeling</li>
+              <li><span class="status-badge supported">✓</span> Basic DLP reports</li>
+              <li><span class="status-badge unsupported">✗</span> Endpoint DLP</li>
+              <li><span class="status-badge unsupported">✗</span> Teams DLP</li>
+              <li><span class="status-badge unsupported">✗</span> Auto-labeling</li>
+              <li><span class="status-badge unsupported">✗</span> Trainable classifiers</li>
+              <li><span class="status-badge unsupported">✗</span> Exact Data Match (EDM)</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Microsoft 365 E5 / A5 / G5</h3>
+            
+            <p>Full DLP capabilities including Endpoint DLP and advanced features:</p>
+            
+            <ul>
+              <li><span class="status-badge supported">✓</span> Everything in E3, plus:</li>
+              <li><span class="status-badge supported">✓</span> <strong>Endpoint DLP</strong> (Windows/macOS)</li>
+              <li><span class="status-badge supported">✓</span> <strong>Teams DLP</strong> (chat and channels)</li>
+              <li><span class="status-badge supported">✓</span> <strong>Auto-labeling</strong> policies</li>
+              <li><span class="status-badge supported">✓</span> <strong>Trainable classifiers</strong> (pre-trained and custom)</li>
+              <li><span class="status-badge supported">✓</span> <strong>Exact Data Match (EDM)</strong></li>
+              <li><span class="status-badge supported">✓</span> <strong>Document fingerprinting</strong></li>
+              <li><span class="status-badge supported">✓</span> 300+ sensitive information types</li>
+              <li><span class="status-badge supported">✓</span> Activity Explorer</li>
+              <li><span class="status-badge supported">✓</span> Content Explorer</li>
+              <li><span class="status-badge supported">✓</span> DLP Alerts dashboard</li>
+              <li><span class="status-badge supported">✓</span> Microsoft Defender for Cloud Apps integration</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>E5 Compliance Add-on</h3>
+            
+            <p>Add E5 DLP features to E3 licenses:</p>
+            
+            <ul>
+              <li><strong>Microsoft 365 E5 Compliance</strong> — Full compliance suite including DLP, eDiscovery, Insider Risk</li>
+              <li><strong>Microsoft 365 E5 Information Protection & Governance</strong> — DLP, labeling, and data lifecycle management</li>
+            </ul>
+            
+            <div class="callout tip">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Cost Optimization
+              </div>
+              <p>If you only need Endpoint DLP (not full E5), the E5 Compliance add-on to E3 can be more cost-effective than upgrading all users to full E5.</p>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="compliance-portal">Microsoft Purview Compliance Portal</h2>
+        
+        <p>Access DLP configuration at <a href="https://compliance.microsoft.com" target="_blank">compliance.microsoft.com</a></p>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    PURVIEW COMPLIANCE PORTAL NAVIGATION                          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  <span class="accent-blue">compliance.microsoft.com</span>                                                       │
+│                                                                                  │
+│  ├── Solutions                                                                   │
+│  │   ├── <span class="accent-green">Data loss prevention</span>                                                │
+│  │   │   ├── Policies              ← Create/manage DLP policies                 │
+│  │   │   ├── Endpoint DLP settings ← Device settings, exclusions               │
+│  │   │   ├── Alerts                ← View and investigate alerts                │
+│  │   │   └── Activity explorer     ← Audit DLP events                          │
+│  │   │                                                                          │
+│  │   ├── <span class="accent-purple">Information protection</span>                                             │
+│  │   │   ├── Labels                ← Sensitivity labels                         │
+│  │   │   ├── Label policies        ← Auto-labeling and publishing              │
+│  │   │   └── Auto-labeling         ← Automatic label application               │
+│  │   │                                                                          │
+│  │   └── <span class="accent-orange">Data classification</span>                                                 │
+│  │       ├── Overview              ← Classification statistics                  │
+│  │       ├── Content explorer      ← Browse classified content                 │
+│  │       ├── Activity explorer     ← User activity on sensitive data          │
+│  │       ├── Trainable classifiers ← ML-based classifiers                      │
+│  │       ├── Sensitive info types  ← Built-in and custom SITs                  │
+│  │       └── EDM classifiers       ← Exact Data Match                          │
+│  │                                                                              │
+│  └── Settings                                                                   │
+│      └── Device onboarding         ← Endpoint DLP device management             │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="admin-roles">Required Admin Roles</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Permissions</th>
+                <th>Use Case</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Compliance Administrator</td>
+                <td>Full access to compliance portal</td>
+                <td>DLP policy creation and management</td>
+              </tr>
+              <tr>
+                <td>Compliance Data Administrator</td>
+                <td>Manage data classification, DLP, labels</td>
+                <td>Day-to-day DLP operations</td>
+              </tr>
+              <tr>
+                <td>Security Administrator</td>
+                <td>Security settings and policies</td>
+                <td>Security team oversight</td>
+              </tr>
+              <tr>
+                <td>Security Reader</td>
+                <td>Read-only access to security features</td>
+                <td>Monitoring and reporting</td>
+              </tr>
+              <tr>
+                <td>Global Reader</td>
+                <td>Read-only access to all admin centers</td>
+                <td>Auditors, executives</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Assign Compliance Role</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Connect to Exchange Online PowerShell
+Connect-ExchangeOnline -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="543530393d3a14373b3a203b273b7a373b39">[email&#160;protected]</a>
+
+# Add user to Compliance Administrator role group
+Add-RoleGroupMember -Identity "Compliance Administrator" `
+    -Member "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="98fcf4e8f9fcf5f1f6d8fbf7f6ecf7ebf7b6fbf7f5">[email&#160;protected]</a>"
+
+# View current members
+Get-RoleGroupMember -Identity "Compliance Administrator"
+
+# For Security & Compliance PowerShell
+Connect-IPPSSession -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c8a9aca5a1a688aba7a6bca7bba7e6aba7a5">[email&#160;protected]</a>
+
+# View DLP-related role groups
+Get-RoleGroup | Where-Object { $_.Name -like "*Compliance*" -or $_.Name -like "*DLP*" }</code></pre>
+        </div>
+        
+        <h2 id="getting-started">Getting Started Checklist</h2>
+        
+        <ol class="steps">
+          <li>
+            <strong>Verify Licensing</strong>
+            <p>Confirm you have E5 or E5 Compliance add-on for Endpoint DLP and advanced features.</p>
+          </li>
+          <li>
+            <strong>Assign Admin Roles</strong>
+            <p>Grant Compliance Administrator role to team members who will manage DLP.</p>
+          </li>
+          <li>
+            <strong>Enable Endpoint DLP</strong>
+            <p>Turn on device monitoring in Settings → Device onboarding.</p>
+          </li>
+          <li>
+            <strong>Onboard Devices</strong>
+            <p>Deploy MDE onboarding via Intune, GPO, or SCCM. <a href="purview-endpoint-dlp.html">See Endpoint DLP Guide</a></p>
+          </li>
+          <li>
+            <strong>Create Test Policy</strong>
+            <p>Start with a simple policy in Test mode to validate detection.</p>
+          </li>
+          <li>
+            <strong>Monitor Activity Explorer</strong>
+            <p>Review detected activities and tune policies before enabling enforcement.</p>
+          </li>
+        </ol>
+        
+        <nav class="page-nav">
+          <a href="../../index.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Home</span>
+          </a>
+          <a href="purview-architecture.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Purview Architecture</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

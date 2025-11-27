@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Detailed coverage of Endpoint DLP channels including USB, cloud storage, email, print, clipboard, and browser monitoring.">
+  <title>Endpoint DLP Channels | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Endpoint DLP</div>
+          <a href="edlp-concepts.html" class="nav-link" data-product="endpoint">Concepts</a>
+          <a href="edlp-channels.html" class="nav-link active" data-product="endpoint">Channels</a>
+          <a href="edlp-comparison.html" class="nav-link" data-product="endpoint">Vendor Comparison</a>
+          <a href="edlp-concepts.html" class="nav-link" data-product="endpoint">Deployment</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="edlp-concepts.html">Endpoint DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Channels</span>
+        </nav>
+        
+        <h1>Endpoint DLP Channels</h1>
+        
+        <p>Endpoint DLP monitors various "channels" through which sensitive data can leave an organization. Understanding each channel's capabilities and limitations is essential for comprehensive data protection.</p>
+        
+        <h2 id="channel-overview">Channel Overview</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                       ENDPOINT DLP EGRESS CHANNELS                               │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│                              ┌─────────────────┐                                 │
+│                              │    ENDPOINT     │                                 │
+│                              │   (Sensitive    │                                 │
+│                              │     Data)       │                                 │
+│                              └────────┬────────┘                                 │
+│                                       │                                          │
+│         ┌─────────────────────────────┼─────────────────────────────┐           │
+│         │           │           │           │           │           │           │
+│         ▼           ▼           ▼           ▼           ▼           ▼           │
+│    ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐     │
+│    │ <span class="accent-green">USB</span>     │ │ <span class="accent-cyan">CLOUD</span>   │ │ <span class="accent-orange">PRINT</span>   │ │ <span class="accent-purple">EMAIL</span>   │ │ <span class="accent-blue">BROWSER</span> │ │ <span class="accent-green">NETWORK</span> │     │
+│    │         │ │         │ │         │ │         │ │         │ │         │     │
+│    │ USB     │ │ OneDrive│ │ Local   │ │ Outlook │ │ Upload  │ │ Share   │     │
+│    │ SD Card │ │ Dropbox │ │ Network │ │ Gmail   │ │ Paste   │ │ FTP     │     │
+│    │ HDD     │ │ GDrive  │ │ PDF     │ │ Web     │ │ Download│ │ UNC     │     │
+│    └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘ └─────────┘     │
+│                                                                                  │
+│    ┌─────────┐ ┌─────────┐ ┌─────────┐                                          │
+│    │<span class="accent-orange">CLIPBOARD</span>│ │<span class="accent-cyan">BLUETOOTH</span>│ │  <span class="accent-purple">RDP</span>    │                                          │
+│    │         │ │         │ │         │                                          │
+│    │ Copy    │ │ File    │ │ Clip-   │                                          │
+│    │ Paste   │ │ Transfer│ │ board   │                                          │
+│    └─────────┘ └─────────┘ └─────────┘                                          │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="usb-removable">Removable Storage (USB/External Drives)</h2>
+        
+        <p>The most common data exfiltration vector. Endpoint DLP monitors file copy operations to removable media.</p>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Covered Device Types
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ul>
+                  <li><strong>USB Flash Drives</strong> — Most common, all capacity sizes</li>
+                  <li><strong>External Hard Drives</strong> — USB/eSATA connected</li>
+                  <li><strong>SD/MicroSD Cards</strong> — Via built-in or USB reader</li>
+                  <li><strong>Mobile Phones (MTP)</strong> — When connected as storage device</li>
+                  <li><strong>Optical Media</strong> — CD/DVD burning (limited support)</li>
+                  <li><strong>Encrypted Drives</strong> — BitLocker, vendor-encrypted USB</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Policy Actions
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr><th>Action</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td><strong>Audit</strong></td><td>Log the activity, allow transfer</td></tr>
+                      <tr><td><strong>Warn</strong></td><td>Show policy tip, allow with justification</td></tr>
+                      <tr><td><strong>Block</strong></td><td>Prevent file copy to device</td></tr>
+                      <tr><td><strong>Encrypt</strong></td><td>Allow only to encrypted/approved devices</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Exceptions & Approved Devices
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Most DLP solutions support device whitelisting:</p>
+                <ul>
+                  <li><strong>By Hardware ID</strong> — Allow specific device serial numbers</li>
+                  <li><strong>By Vendor ID</strong> — Allow all devices from a manufacturer</li>
+                  <li><strong>By Encryption Status</strong> — Only allow encrypted USB</li>
+                  <li><strong>By User Group</strong> — IT admins can use any device</li>
+                </ul>
+                
+                <div class="code-block" data-language="text">
+                  <div class="code-header">
+                    <span class="code-lang">Example Device ID</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># USB Device Hardware ID Format
+USB\VID_0781&PID_5583      # SanDisk Cruzer
+USB\VID_0951&PID_1666      # Kingston DataTraveler
+
+# Find device ID in Windows
+Get-PnpDevice -Class DiskDrive | Select-Object InstanceId</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="cloud-storage">Cloud Storage & Sync</h2>
+        
+        <p>Monitors file uploads to cloud storage services via sync clients and web interfaces.</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Sync Client</th>
+                <th>Web Upload</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>OneDrive</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>Native integration in Purview</td>
+              </tr>
+              <tr>
+                <td><strong>Dropbox</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>Monitor or block sync client</td>
+              </tr>
+              <tr>
+                <td><strong>Google Drive</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>Drive for Desktop client</td>
+              </tr>
+              <tr>
+                <td><strong>Box</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>Box Drive and Box Sync</td>
+              </tr>
+              <tr>
+                <td><strong>iCloud</strong></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>macOS native, harder to monitor</td>
+              </tr>
+              <tr>
+                <td><strong>WeTransfer</strong></td>
+                <td>N/A</td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>Web-only service</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Best Practice
+          </div>
+          <p>Block personal cloud storage sync clients (Dropbox, personal Google Drive) while allowing corporate-approved services. Use CASB for additional cloud app visibility.</p>
+        </div>
+        
+        <h2 id="print">Printing</h2>
+        
+        <p>Monitors print operations to detect sensitive documents being printed.</p>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Local Printing</h4>
+            <ul style="font-size: 0.9rem;">
+              <li>Direct USB-connected printers</li>
+              <li>Print to file (PDF, XPS)</li>
+              <li>Virtual printers</li>
+            </ul>
+          </div>
+          
+          <div class="card">
+            <h4 style="margin-top: 0;">Network Printing</h4>
+            <ul style="font-size: 0.9rem;">
+              <li>Network-connected printers</li>
+              <li>Print servers</li>
+              <li>Cloud print services</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h3>Print Monitoring Challenges</h3>
+        
+        <ul>
+          <li><strong>Content Inspection</strong> — Print spool files can be inspected, but some applications bypass normal printing</li>
+          <li><strong>Rendered Content</strong> — Document is rendered as image, limiting text-based detection</li>
+          <li><strong>Screen Capture to Print</strong> — Screenshots printed bypass document detection</li>
+        </ul>
+        
+        <h2 id="email">Email Clients</h2>
+        
+        <p>Monitors email composition and attachment handling in desktop email clients.</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Email Client</th>
+                <th>Support Level</th>
+                <th>Coverage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Microsoft Outlook</strong></td>
+                <td><span class="status-badge supported">Full</span></td>
+                <td>Body, attachments, recipients</td>
+              </tr>
+              <tr>
+                <td><strong>Outlook Web (OWA)</strong></td>
+                <td><span class="status-badge supported">Full</span></td>
+                <td>Via browser monitoring</td>
+              </tr>
+              <tr>
+                <td><strong>Gmail Web</strong></td>
+                <td><span class="status-badge supported">Full</span></td>
+                <td>Via browser monitoring</td>
+              </tr>
+              <tr>
+                <td><strong>Thunderbird</strong></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td>Attachment monitoring only (some vendors)</td>
+              </tr>
+              <tr>
+                <td><strong>Apple Mail</strong></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td>macOS support varies by vendor</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="browser">Browser Upload & Paste</h2>
+        
+        <p>Monitors file uploads and content pasted into web browsers.</p>
+        
+        <h3>Supported Browsers</h3>
+        
+        <ul>
+          <li><strong>Microsoft Edge</strong> — Best support, especially with Purview</li>
+          <li><strong>Google Chrome</strong> — Requires browser extension for full monitoring</li>
+          <li><strong>Mozilla Firefox</strong> — Extension-based monitoring</li>
+          <li><strong>Other Browsers</strong> — Often blocked as "unallowed browsers"</li>
+        </ul>
+        
+        <h3>Monitored Activities</h3>
+        
+        <ul>
+          <li><strong>File Upload</strong> — Via file picker or drag-and-drop</li>
+          <li><strong>Content Paste</strong> — Text pasted into web forms</li>
+          <li><strong>Download (some vendors)</strong> — Sensitive files downloaded from web</li>
+        </ul>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Browser Extension Required
+          </div>
+          <p>For Chrome and Firefox monitoring, deploy the DLP browser extension via GPO or Intune. Without the extension, upload detection may be limited.</p>
+        </div>
+        
+        <h2 id="clipboard">Clipboard Monitoring</h2>
+        
+        <p>Monitors copy/paste operations between applications.</p>
+        
+        <h3>Typical Capabilities</h3>
+        
+        <ul>
+          <li><strong>Copy Detection</strong> — Sensitive content copied to clipboard</li>
+          <li><strong>Paste Detection</strong> — Paste to unallowed applications</li>
+          <li><strong>Cross-Application</strong> — Paste from Word to personal email</li>
+        </ul>
+        
+        <div class="callout info">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Purview Limitation
+          </div>
+          <p>Microsoft Purview Endpoint DLP only audits clipboard activity—it cannot block clipboard operations. Other vendors like Symantec and Digital Guardian can block clipboard transfers.</p>
+        </div>
+        
+        <h2 id="network-share">Network Share (UNC Paths)</h2>
+        
+        <p>Monitors file copy operations to network shares and mapped drives.</p>
+        
+        <ul>
+          <li><strong>UNC Paths</strong> — \\server\share\folder</li>
+          <li><strong>Mapped Drives</strong> — Z:\folder (treated as network)</li>
+          <li><strong>DFS Paths</strong> — \\domain\dfs\path</li>
+        </ul>
+        
+        <h3>Common Policy Patterns</h3>
+        
+        <ul>
+          <li>Allow copy to approved file servers</li>
+          <li>Block copy to personal NAS devices</li>
+          <li>Audit all network copy operations</li>
+        </ul>
+        
+        <h2 id="bluetooth">Bluetooth Transfer</h2>
+        
+        <p>Monitors file transfer via Bluetooth to phones, headsets, and other devices.</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Bluetooth DLP Support</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Windows</td>
+                <td><span class="status-badge supported">Full</span> — Block file transfer via OBEX</td>
+              </tr>
+              <tr>
+                <td>macOS</td>
+                <td><span class="status-badge unsupported">Limited/None</span> — System restrictions</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="rdp">Remote Desktop (RDP) Clipboard</h2>
+        
+        <p>Monitors clipboard and drive redirection in RDP sessions.</p>
+        
+        <ul>
+          <li><strong>Clipboard Redirection</strong> — Copy/paste between local and remote</li>
+          <li><strong>Drive Redirection</strong> — Access to local drives from remote session</li>
+          <li><strong>File Transfer</strong> — Drag-and-drop files into RDP window</li>
+        </ul>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            RDP Protection
+          </div>
+          <p>For highest security, disable clipboard and drive redirection via Group Policy on RDP servers. DLP can provide an additional layer of monitoring.</p>
+        </div>
+        
+        <h2 id="screen-capture">Screen Capture</h2>
+        
+        <p>Monitors screenshot and screen recording activities.</p>
+        
+        <ul>
+          <li><strong>Print Screen</strong> — Keyboard shortcut capture</li>
+          <li><strong>Snipping Tool / Snip & Sketch</strong> — Windows built-in tools</li>
+          <li><strong>Third-Party Tools</strong> — Snagit, Greenshot, LightShot</li>
+          <li><strong>Screen Recording</strong> — OBS, Camtasia, game recording</li>
+        </ul>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Detection Limitations
+          </div>
+          <p>Screen capture DLP typically audits but cannot prevent captures. Content in screenshots is an image, making text-based detection ineffective on the captured output.</p>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="edlp-concepts.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">EDLP Concepts</span>
+          </a>
+          <a href="edlp-comparison.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Vendor Comparison</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

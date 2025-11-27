@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Symantec DLP detection methods including DCM (regex/keywords), IDM (fingerprinting), EDM (exact data matching), and VML (machine learning).">
+  <title>Symantec Detection Methods | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="symantec-overview.html" class="nav-link" data-product="symantec">Overview</a>
+          <a href="symantec-architecture.html" class="nav-link" data-product="symantec">Architecture</a>
+          <a href="symantec-endpoint.html" class="nav-link" data-product="symantec">Endpoint DLP</a>
+          <a href="symantec-network.html" class="nav-link" data-product="symantec">Network DLP</a>
+          <a href="symantec-detection.html" class="nav-link active" data-product="symantec">Detection Methods</a>
+          <a href="symantec-policies.html" class="nav-link" data-product="symantec">Policies & Rules</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="symantec-overview.html">Symantec DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Detection Methods</span>
+        </nav>
+        
+        <h1>Symantec DLP Detection Methods</h1>
+        
+        <p>Symantec DLP offers four primary detection technologies, each suited for different data protection scenarios. Understanding when to use each method is key to building effective policies with minimal false positives.</p>
+        
+        <h2 id="overview">Detection Method Overview</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                     SYMANTEC DLP DETECTION METHODS                               │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-cyan">DCM</span> - Described Content Matching                                        │    │
+│  │  Pattern-based detection using regex, keywords, dictionaries            │    │
+│  │  ✓ Quick to deploy    ✓ No training data    ✗ Higher false positives   │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-green">IDM</span> - Indexed Document Matching (Fingerprinting)                       │    │
+│  │  Hash-based matching of specific documents or document fragments        │    │
+│  │  ✓ Very accurate      ✓ Catches derivatives    ✗ Requires indexing     │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-orange">EDM</span> - Exact Data Matching                                               │    │
+│  │  Database matching for structured data (SSN, employee IDs, etc.)        │    │
+│  │  ✓ Very low FP rate   ✓ Exact matches only    ✗ Database maintenance   │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-purple">VML</span> - Vector Machine Learning                                           │    │
+│  │  ML-based classification trained on sample documents                    │    │
+│  │  ✓ Understands context ✓ Catches variations   ✗ Requires training      │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="comparison">Method Comparison</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>DCM</th>
+                <th>IDM</th>
+                <th>EDM</th>
+                <th>VML</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Best For</strong></td>
+                <td>Known patterns (CC#, SSN)</td>
+                <td>Specific documents</td>
+                <td>Database records</td>
+                <td>Document categories</td>
+              </tr>
+              <tr>
+                <td><strong>Setup Time</strong></td>
+                <td>Minutes</td>
+                <td>Hours</td>
+                <td>Hours</td>
+                <td>Days/Weeks</td>
+              </tr>
+              <tr>
+                <td><strong>Maintenance</strong></td>
+                <td>Low</td>
+                <td>Medium (re-index)</td>
+                <td>High (data refresh)</td>
+                <td>Medium (retraining)</td>
+              </tr>
+              <tr>
+                <td><strong>False Positives</strong></td>
+                <td>Higher</td>
+                <td>Very Low</td>
+                <td>Very Low</td>
+                <td>Low</td>
+              </tr>
+              <tr>
+                <td><strong>Performance Impact</strong></td>
+                <td>Low</td>
+                <td>Medium</td>
+                <td>Medium</td>
+                <td>Higher</td>
+              </tr>
+              <tr>
+                <td><strong>Catches Derivatives</strong></td>
+                <td>No</td>
+                <td>Yes (partial)</td>
+                <td>No</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="dcm">DCM - Described Content Matching</h2>
+        
+        <p>DCM uses patterns, keywords, and dictionaries to identify sensitive content. It's the most commonly used detection method and requires no training data.</p>
+        
+        <h3>DCM Components</h3>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Regular Expressions
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Regex patterns for structured data formats:</p>
+                <div class="code-block" data-language="regex">
+                  <div class="code-header">
+                    <span class="code-lang">Common Regex Patterns</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Credit Card (Visa)
+4[0-9]{12}(?:[0-9]{3})?
+
+# Credit Card (MasterCard)
+5[1-5][0-9]{14}
+
+# Canadian SIN
+\b\d{3}[-\s]?\d{3}[-\s]?\d{3}\b
+
+# US SSN
+\b\d{3}[-\s]?\d{2}[-\s]?\d{4}\b
+
+# Email Address
+[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}
+
+# Canadian Postal Code
+[A-Za-z]\d[A-Za-z][-\s]?\d[A-Za-z]\d
+
+# Ontario Health Card (OHIP)
+\b\d{4}[-\s]?\d{3}[-\s]?\d{3}\b</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Keywords and Phrases
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Keyword matching options:</p>
+                <ul>
+                  <li><strong>Whole word</strong> — Matches complete words only</li>
+                  <li><strong>Substring</strong> — Matches within larger text</li>
+                  <li><strong>Case sensitive</strong> — Exact case matching</li>
+                  <li><strong>Proximity</strong> — Keywords within X characters</li>
+                </ul>
+                <div class="code-block" data-language="text">
+                  <div class="code-header">
+                    <span class="code-lang">Example Keyword Lists</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Financial Keywords
+confidential, proprietary, internal use only
+revenue, profit margin, earnings forecast
+merger, acquisition, tender offer
+
+# HR/Employee Keywords
+salary, compensation, performance review
+termination, disciplinary, grievance
+social insurance number, SIN, date of birth
+
+# Healthcare Keywords
+patient, diagnosis, prescription
+medical record, health card, OHIP
+blood type, allergies, medications</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Data Identifiers (Built-in)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Symantec includes 60+ pre-built data identifiers with validation:</p>
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr><th>Category</th><th>Data Identifiers</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Financial</td><td>Credit Card, ABA Routing, IBAN, SWIFT</td></tr>
+                      <tr><td>National ID</td><td>US SSN, Canadian SIN, UK NIN, German ID</td></tr>
+                      <tr><td>Healthcare</td><td>DEA Number, NPI, NDC Code</td></tr>
+                      <tr><td>Network</td><td>IP Address, MAC Address, URL</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Validators
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Validators reduce false positives by checking pattern validity:</p>
+                <ul>
+                  <li><strong>Luhn Algorithm</strong> — Credit card checksum validation</li>
+                  <li><strong>Date Validation</strong> — Ensures valid date formats</li>
+                  <li><strong>Custom Script</strong> — Custom validation logic</li>
+                </ul>
+                <div class="code-block" data-language="text">
+                  <div class="code-header">
+                    <span class="code-lang">Luhn Validator Example</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Luhn Algorithm validates credit card numbers
+# 4532015112830366 → Valid (passes Luhn)
+# 1234567890123456 → Invalid (fails Luhn)
+
+# Without validator: Many false positives from 16-digit numbers
+# With validator: Only real credit card numbers match</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="idm">IDM - Indexed Document Matching</h2>
+        
+        <p>IDM creates fingerprints of sensitive documents and detects when content from those documents appears elsewhere, even in modified form.</p>
+        
+        <h3>How IDM Works</h3>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         IDM FINGERPRINTING PROCESS                               │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  <span class="accent-cyan">INDEXING PHASE</span>                                                                │
+│  ┌────────────┐      ┌────────────┐      ┌────────────┐      ┌────────────┐    │
+│  │ Sensitive  │      │  Extract   │      │  Create    │      │   Store    │    │
+│  │ Documents  │─────▶│   Text     │─────▶│ Fingerprint│─────▶│  in Index  │    │
+│  │            │      │            │      │  (Hashes)  │      │            │    │
+│  └────────────┘      └────────────┘      └────────────┘      └────────────┘    │
+│                                                                                  │
+│  <span class="accent-green">DETECTION PHASE</span>                                                               │
+│  ┌────────────┐      ┌────────────┐      ┌────────────┐      ┌────────────┐    │
+│  │ Outgoing   │      │  Extract   │      │  Compare   │      │   Match    │    │
+│  │ Content    │─────▶│   Text     │─────▶│ to Index   │─────▶│  Found!    │    │
+│  │            │      │            │      │            │      │            │    │
+│  └────────────┘      └────────────┘      └────────────┘      └────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3>IDM Index Configuration</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">IDM Profile Settings</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># IDM Profile Configuration
+Profile Name: Confidential Documents
+Index Location: \\fileserver\confidential\
+
+# Indexing Options
+Include Subfolders: Yes
+File Types: *.doc, *.docx, *.pdf, *.xls, *.xlsx, *.ppt, *.pptx
+Exclude: *.tmp, ~*.*
+
+# Match Settings
+Minimum Match Percentage: 40%  (catches partial copies)
+Minimum Unique Characters: 100  (ignore very short fragments)
+
+# Schedule
+Full Index: Weekly (Sunday 2 AM)
+Incremental: Daily (2 AM)</code></pre>
+        </div>
+        
+        <h3>IDM Use Cases</h3>
+        
+        <ul>
+          <li>Protecting specific confidential documents (M&A files, patents)</li>
+          <li>Detecting document fragments in emails</li>
+          <li>Catching copy/paste from sensitive files</li>
+          <li>Source code protection</li>
+        </ul>
+        
+        <h2 id="edm">EDM - Exact Data Matching</h2>
+        
+        <p>EDM compares content against a database of known sensitive values (employee IDs, customer account numbers, patient records). It's highly accurate with near-zero false positives.</p>
+        
+        <h3>EDM Data Flow</h3>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                           EDM DATA FLOW                                          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────┐                                                             │
+│  │  SOURCE DATA    │   Employee Database, Customer Records, Patient Data         │
+│  │  (Database/CSV) │                                                             │
+│  └────────┬────────┘                                                             │
+│           │                                                                      │
+│           ▼                                                                      │
+│  ┌─────────────────┐                                                             │
+│  │  EDM INDEXER    │   Extracts and hashes values from specified columns         │
+│  │                 │   Name + SIN + DOB → Fingerprint                            │
+│  └────────┬────────┘                                                             │
+│           │                                                                      │
+│           ▼                                                                      │
+│  ┌─────────────────┐                                                             │
+│  │  EDM INDEX      │   Stored on Enforce Server                                  │
+│  │  (Encrypted)    │   ~1KB per 10 records                                       │
+│  └────────┬────────┘                                                             │
+│           │                                                                      │
+│           ▼                                                                      │
+│  ┌─────────────────┐                                                             │
+│  │  DETECTION      │   Content scanned against index                             │
+│  │                 │   Match if 2+ columns found together                        │
+│  └─────────────────┘                                                             │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3>EDM Profile Configuration</h3>
+        
+        <div class="code-block" data-language="sql">
+          <div class="code-header">
+            <span class="code-lang">EDM Source Data Example</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>-- EDM Source: Employee PII
+-- Columns marked for indexing: SIN, Employee_ID, Email
+
+SELECT 
+    Employee_ID,      -- Index column
+    First_Name,       -- Context column (not indexed)
+    Last_Name,        -- Context column
+    SIN,              -- Index column (sensitive)
+    Email,            -- Index column
+    Department        -- Context column
+FROM HR.Employees
+WHERE Status = 'Active'
+
+-- Output CSV format for EDM indexer:
+-- Employee_ID,First_Name,Last_Name,SIN,Email,Department
+-- E12345,John,Smith,046-454-286,<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="375d445a5e435f7754585a4756594e1954585a">[email&#160;protected]</a>,Engineering
+-- E12346,Jane,Doe,123-456-789,<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bbd1dfd4defbd8d4d6cbdad5c295d8d4d6">[email&#160;protected]</a>,Finance</code></pre>
+        </div>
+        
+        <h3>EDM Matching Rules</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Match Type</th><th>Description</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Single Column</td><td>Match on any indexed column</td><td>SIN appears alone → Match</td></tr>
+              <tr><td>Multi-Column AND</td><td>All specified columns present</td><td>SIN AND Name AND DOB</td></tr>
+              <tr><td>Multi-Column OR</td><td>Any combination of columns</td><td>SIN OR Employee_ID</td></tr>
+              <tr><td>Row Match</td><td>Multiple columns from same row</td><td>John Smith + 046-454-286 (same person)</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            EDM Best Practice
+          </div>
+          <p>Require at least 2 columns for a match to reduce false positives. A SIN alone might match random numbers; SIN + Name confirms it's real employee data.</p>
+        </div>
+        
+        <h2 id="vml">VML - Vector Machine Learning</h2>
+        
+        <p>VML uses machine learning to classify documents based on content similarity to training samples. It understands context and catches variations that pattern matching would miss.</p>
+        
+        <h3>VML Training Process</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Collect Training Documents</strong>
+            <p>Gather 50-200 positive examples (confidential) and negative examples (non-confidential)</p>
+          </li>
+          <li>
+            <strong>Create VML Profile</strong>
+            <p>Define category name and upload training documents</p>
+          </li>
+          <li>
+            <strong>Train the Model</strong>
+            <p>System analyzes documents and builds classification model</p>
+          </li>
+          <li>
+            <strong>Validate with Test Set</strong>
+            <p>Test with held-out documents, review accuracy</p>
+          </li>
+          <li>
+            <strong>Deploy and Monitor</strong>
+            <p>Use in policies, monitor false positive rate, retrain as needed</p>
+          </li>
+        </ol>
+        
+        <h3>VML Use Cases</h3>
+        
+        <ul>
+          <li><strong>Financial Reports</strong> — Earnings statements, analyst reports</li>
+          <li><strong>Legal Documents</strong> — Contracts, NDAs, litigation materials</li>
+          <li><strong>R&D Documents</strong> — Research papers, patent applications</li>
+          <li><strong>Source Code</strong> — Proprietary code vs. open source</li>
+          <li><strong>Customer Data</strong> — Documents containing customer information</li>
+        </ul>
+        
+        <h3>VML Training Guidelines</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Guideline</th><th>Recommendation</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Minimum Training Docs</td><td>50 positive, 50 negative (more is better)</td></tr>
+              <tr><td>Document Variety</td><td>Include different formats, authors, lengths</td></tr>
+              <tr><td>Negative Examples</td><td>Similar but non-sensitive documents</td></tr>
+              <tr><td>Confidence Threshold</td><td>Start at 75%, adjust based on FP rate</td></tr>
+              <tr><td>Retraining Frequency</td><td>Quarterly or when document types change</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="combining">Combining Detection Methods</h2>
+        
+        <p>Best practice is to combine multiple detection methods for defense in depth:</p>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Example: PCI Compliance Policy</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>Policy: PCI - Credit Card Protection
+
+Rule 1: DCM Detection
+  - Credit Card data identifier (with Luhn validation)
+  - Count >= 1
+  - Confidence: High
+  
+Rule 2: EDM Detection  
+  - Match against customer payment database
+  - Columns: Card_Last4, Customer_Name, Account_Number
+  - Require 2+ column match
+
+Rule 3: IDM Detection
+  - Index: Payment processing documentation
+  - Match percentage: 40%+
+
+Combined Action:
+  - Any rule match → Block + Encrypt + Alert</code></pre>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="symantec-network.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Network DLP</span>
+          </a>
+          <a href="symantec-policies.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Policies & Rules</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

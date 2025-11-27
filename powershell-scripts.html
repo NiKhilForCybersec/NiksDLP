@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PowerShell scripts for DLP administration including policy management, reporting, diagnostics, and automation.">
+  <title>PowerShell Scripts | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Reference</div>
+          <a href="kql-library.html" class="nav-link" data-product="purview">KQL Query Library</a>
+          <a href="regex-patterns.html" class="nav-link" data-product="reference">Regex Patterns</a>
+          <a href="powershell-scripts.html" class="nav-link active" data-product="reference">PowerShell Scripts</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>PowerShell Scripts</span>
+        </nav>
+        
+        <h1>PowerShell Scripts for DLP</h1>
+        
+        <p>Ready-to-use PowerShell scripts for Microsoft Purview DLP administration, including policy management, reporting, diagnostics, and automation.</p>
+        
+        <h2 id="prerequisites">Prerequisites</h2>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Module Installation</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Install required modules
+Install-Module -Name ExchangeOnlineManagement -Force
+Install-Module -Name Microsoft.Graph -Force
+Install-Module -Name Az -Force
+
+# Connect to Security & Compliance Center
+Connect-IPPSSession -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="49282d242027092a262439282730672a2624">[email&#160;protected]</a>
+
+# Connect to Exchange Online
+Connect-ExchangeOnline -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bddcd9d0d4d3fdded2d0cddcd3c493ded2d0">[email&#160;protected]</a>
+
+# Connect to Microsoft Graph
+Connect-MgGraph -Scopes "SecurityEvents.Read.All", "User.Read.All"</code></pre>
+        </div>
+        
+        <h2 id="policy-management">Policy Management Scripts</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Export All DLP Policies
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Export-DLPPolicies.ps1
+# Exports all DLP policies and rules to JSON for backup/documentation
+
+param(
+    [string]$OutputPath = "C:\DLP_Export"
+)
+
+# Connect if not already connected
+try { Get-DlpCompliancePolicy -ErrorAction Stop | Out-Null }
+catch { Connect-IPPSSession }
+
+# Create output directory
+New-Item -ItemType Directory -Path $OutputPath -Force | Out-Null
+
+# Get all policies
+$policies = Get-DlpCompliancePolicy
+
+$exportData = @()
+
+foreach ($policy in $policies) {
+    Write-Host "Exporting policy: $($policy.Name)" -ForegroundColor Cyan
+    
+    # Get rules for this policy
+    $rules = Get-DlpComplianceRule -Policy $policy.Name
+    
+    $policyExport = @{
+        PolicyName = $policy.Name
+        Mode = $policy.Mode
+        Enabled = $policy.Enabled
+        Priority = $policy.Priority
+        Workload = $policy.Workload
+        ExchangeLocation = $policy.ExchangeLocation
+        SharePointLocation = $policy.SharePointLocation
+        OneDriveLocation = $policy.OneDriveLocation
+        TeamsLocation = $policy.TeamsLocation
+        EndpointDlpLocation = $policy.EndpointDlpLocation
+        Rules = @()
+    }
+    
+    foreach ($rule in $rules) {
+        $ruleExport = @{
+            RuleName = $rule.Name
+            Disabled = $rule.Disabled
+            Priority = $rule.Priority
+            ContentContainsSensitiveInformation = $rule.ContentContainsSensitiveInformation
+            BlockAccess = $rule.BlockAccess
+            NotifyUser = $rule.NotifyUser
+        }
+        $policyExport.Rules += $ruleExport
+    }
+    
+    $exportData += $policyExport
+}
+
+# Export to JSON
+$timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+$exportFile = Join-Path $OutputPath "DLP_Policies_$timestamp.json"
+$exportData | ConvertTo-Json -Depth 10 | Out-File $exportFile
+
+Write-Host "`nExported $($policies.Count) policies to: $exportFile" -ForegroundColor Green</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Bulk Enable/Disable Policies
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Set-DLPPolicyMode.ps1
+# Bulk change mode for DLP policies (Test/Enforce)
+
+param(
+    [Parameter(Mandatory=$true)]
+    [ValidateSet("TestWithoutNotifications", "TestWithNotifications", "Enable")]
+    [string]$Mode,
+    
+    [string]$PolicyNameFilter = "*"
+)
+
+$policies = Get-DlpCompliancePolicy | Where-Object { $_.Name -like $PolicyNameFilter }
+
+Write-Host "Found $($policies.Count) policies matching filter" -ForegroundColor Cyan
+
+foreach ($policy in $policies) {
+    Write-Host "Setting $($policy.Name) to $Mode..." -NoNewline
+    try {
+        Set-DlpCompliancePolicy -Identity $policy.Name -Mode $Mode
+        Write-Host " Done" -ForegroundColor Green
+    }
+    catch {
+        Write-Host " Failed: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
+Write-Host "`nCompleted policy mode changes" -ForegroundColor Green</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Create Standard DLP Policy
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># New-StandardDLPPolicy.ps1
+# Creates a standard Canadian PII protection policy
+
+param(
+    [string]$PolicyName = "Canada PII Protection",
+    [ValidateSet("TestWithoutNotifications", "TestWithNotifications", "Enable")]
+    [string]$Mode = "TestWithNotifications"
+)
+
+# Create the policy
+Write-Host "Creating policy: $PolicyName" -ForegroundColor Cyan
+
+New-DlpCompliancePolicy -Name $PolicyName `
+    -ExchangeLocation "All" `
+    -SharePointLocation "All" `
+    -OneDriveLocation "All" `
+    -TeamsLocation "All" `
+    -Mode $Mode
+
+# High volume rule - Block
+Write-Host "Creating high-volume rule (block)..." -ForegroundColor Yellow
+New-DlpComplianceRule -Name "$PolicyName - High Volume Block" `
+    -Policy $PolicyName `
+    -ContentContainsSensitiveInformation @(
+        @{Name="Canada Social Insurance Number"; minCount="5"; confidenceLevel="High"}
+    ) `
+    -BlockAccess $true `
+    -NotifyUser "LastModifier", "SiteAdmin" `
+    -NotifyPolicyTipCustomText "This content contains multiple SIN numbers and has been blocked. Contact <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2d4e42405d41444c434e486d4e42405d4c4354034e4240">[email&#160;protected]</a> for assistance." `
+    -GenerateAlert $true `
+    -AlertProperties @{AggregationType="None"}
+
+# Low volume rule - Warn
+Write-Host "Creating low-volume rule (warn)..." -ForegroundColor Yellow
+New-DlpComplianceRule -Name "$PolicyName - Low Volume Warn" `
+    -Policy $PolicyName `
+    -ContentContainsSensitiveInformation @(
+        @{Name="Canada Social Insurance Number"; minCount="1"; maxCount="4"; confidenceLevel="High"}
+    ) `
+    -BlockAccess $false `
+    -NotifyUser "LastModifier" `
+    -NotifyPolicyTipCustomText "This content may contain Social Insurance Numbers. Ensure you have proper authorization to share this information."
+
+Write-Host "`nPolicy created successfully!" -ForegroundColor Green
+Write-Host "Mode: $Mode" -ForegroundColor Cyan</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="reporting">Reporting Scripts</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Weekly DLP Activity Report
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Get-WeeklyDLPReport.ps1
+# Generates weekly DLP activity summary report
+
+param(
+    [int]$DaysBack = 7,
+    [string]$OutputPath = "C:\Reports",
+    [string[]]$EmailTo = @("<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0e7d6b6d7b7c677a77237a6b6f634e6d61637e6f6077206d6163">[email&#160;protected]</a>")
+)
+
+$startDate = (Get-Date).AddDays(-$DaysBack)
+$endDate = Get-Date
+
+Write-Host "Generating DLP report for $startDate to $endDate" -ForegroundColor Cyan
+
+# Search audit log for DLP events
+$auditResults = Search-UnifiedAuditLog `
+    -StartDate $startDate `
+    -EndDate $endDate `
+    -RecordType DLPAll `
+    -ResultSize 5000
+
+if ($auditResults.Count -eq 0) {
+    Write-Host "No DLP events found in the specified period" -ForegroundColor Yellow
+    return
+}
+
+# Parse and summarize results
+$parsedResults = $auditResults | ForEach-Object {
+    $auditData = $_.AuditData | ConvertFrom-Json
+    [PSCustomObject]@{
+        Timestamp = $_.CreationDate
+        User = $_.UserIds
+        Operation = $_.Operations
+        PolicyName = $auditData.PolicyDetails.PolicyName
+        RuleName = $auditData.PolicyDetails.Rules.RuleName
+        SensitiveInfoType = ($auditData.SensitiveInfoTypeData | ForEach-Object { $_.SensitiveInfoTypeName }) -join ", "
+        ActionTaken = $auditData.PolicyDetails.Rules.Actions
+        Workload = $_.Workload
+    }
+}
+
+# Generate summary statistics
+$summary = @{
+    TotalEvents = $parsedResults.Count
+    UniqueUsers = ($parsedResults | Select-Object -Unique User).Count
+    ByPolicy = $parsedResults | Group-Object PolicyName | Select-Object Name, Count | Sort-Object Count -Descending
+    ByWorkload = $parsedResults | Group-Object Workload | Select-Object Name, Count
+    TopUsers = $parsedResults | Group-Object User | Sort-Object Count -Descending | Select-Object -First 10 Name, Count
+}
+
+# Create HTML report
+$htmlReport = @"
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4472C4; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .metric { font-size: 24px; font-weight: bold; color: #4472C4; }
+    </style>
+</head>
+<body>
+    <h1>Weekly DLP Report</h1>
+    <p>Period: $($startDate.ToString('MMM dd, yyyy')) - $($endDate.ToString('MMM dd, yyyy'))</p>
+    
+    <h2>Summary</h2>
+    <p>Total Events: <span class="metric">$($summary.TotalEvents)</span></p>
+    <p>Unique Users: <span class="metric">$($summary.UniqueUsers)</span></p>
+    
+    <h2>Events by Policy</h2>
+    <table>
+        <tr><th>Policy</th><th>Count</th></tr>
+        $($summary.ByPolicy | ForEach-Object { "<tr><td>$($_.Name)</td><td>$($_.Count)</td></tr>" })
+    </table>
+    
+    <h2>Top 10 Users</h2>
+    <table>
+        <tr><th>User</th><th>Incidents</th></tr>
+        $($summary.TopUsers | ForEach-Object { "<tr><td>$($_.Name)</td><td>$($_.Count)</td></tr>" })
+    </table>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script></body>
+</html>
+"@
+
+# Save report
+$reportFile = Join-Path $OutputPath "DLP_Weekly_Report_$(Get-Date -Format 'yyyyMMdd').html"
+$htmlReport | Out-File $reportFile -Encoding UTF8
+
+Write-Host "Report saved to: $reportFile" -ForegroundColor Green
+
+# Optionally send email
+if ($EmailTo) {
+    Send-MailMessage `
+        -From "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="33575f431e4156435c41474073505c5e43525d4a1d505c5e">[email&#160;protected]</a>" `
+        -To $EmailTo `
+        -Subject "Weekly DLP Report - $(Get-Date -Format 'MMM dd, yyyy')" `
+        -Body "Weekly DLP report attached." `
+        -Attachments $reportFile `
+        -SmtpServer "smtp.company.com"
+    
+    Write-Host "Email sent to: $($EmailTo -join ', ')" -ForegroundColor Cyan
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Top Violators Report
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Get-TopDLPViolators.ps1
+# Identifies users with most DLP policy violations
+
+param(
+    [int]$DaysBack = 30,
+    [int]$TopN = 25,
+    [int]$MinimumViolations = 3
+)
+
+$startDate = (Get-Date).AddDays(-$DaysBack)
+$endDate = Get-Date
+
+Write-Host "Searching for DLP violations from $startDate to $endDate" -ForegroundColor Cyan
+
+$auditResults = Search-UnifiedAuditLog `
+    -StartDate $startDate `
+    -EndDate $endDate `
+    -RecordType DLPAll `
+    -ResultSize 5000
+
+$userStats = $auditResults | Group-Object UserIds | ForEach-Object {
+    $events = $_.Group | ForEach-Object {
+        ($_.AuditData | ConvertFrom-Json)
+    }
+    
+    [PSCustomObject]@{
+        User = $_.Name
+        TotalViolations = $_.Count
+        HighSeverity = ($events | Where-Object { $_.Severity -eq "High" }).Count
+        UniquePolices = ($events | Select-Object -ExpandProperty PolicyDetails | 
+                        Select-Object -Unique PolicyName).Count
+        FirstViolation = ($_.Group | Sort-Object CreationDate | Select-Object -First 1).CreationDate
+        LastViolation = ($_.Group | Sort-Object CreationDate -Descending | Select-Object -First 1).CreationDate
+    }
+} | Where-Object { $_.TotalViolations -ge $MinimumViolations } |
+    Sort-Object TotalViolations -Descending |
+    Select-Object -First $TopN
+
+# Display results
+$userStats | Format-Table -AutoSize
+
+# Export to CSV
+$csvPath = "C:\Reports\TopDLPViolators_$(Get-Date -Format 'yyyyMMdd').csv"
+$userStats | Export-Csv -Path $csvPath -NoTypeInformation
+
+Write-Host "`nExported to: $csvPath" -ForegroundColor Green</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="diagnostics">Diagnostic Scripts</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Policy Health Check
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Test-DLPPolicyHealth.ps1
+# Checks DLP policy configuration for common issues
+
+Write-Host "=== DLP Policy Health Check ===" -ForegroundColor Cyan
+Write-Host ""
+
+$policies = Get-DlpCompliancePolicy
+$issues = @()
+
+foreach ($policy in $policies) {
+    Write-Host "Checking: $($policy.Name)" -ForegroundColor Yellow
+    
+    # Check 1: Policy enabled
+    if ($policy.Enabled -eq $false) {
+        $issues += [PSCustomObject]@{
+            Policy = $policy.Name
+            Issue = "Policy is disabled"
+            Severity = "Warning"
+        }
+    }
+    
+    # Check 2: Test mode for too long
+    if ($policy.Mode -like "Test*") {
+        $issues += [PSCustomObject]@{
+            Policy = $policy.Name
+            Issue = "Policy in test mode - consider enabling if tested"
+            Severity = "Info"
+        }
+    }
+    
+    # Check 3: No locations configured
+    $hasLocations = $policy.ExchangeLocation -or 
+                    $policy.SharePointLocation -or 
+                    $policy.OneDriveLocation -or
+                    $policy.TeamsLocation -or
+                    $policy.EndpointDlpLocation
+    
+    if (-not $hasLocations) {
+        $issues += [PSCustomObject]@{
+            Policy = $policy.Name
+            Issue = "No locations configured - policy has no effect"
+            Severity = "Critical"
+        }
+    }
+    
+    # Check 4: Rules exist
+    $rules = Get-DlpComplianceRule -Policy $policy.Name
+    if ($rules.Count -eq 0) {
+        $issues += [PSCustomObject]@{
+            Policy = $policy.Name
+            Issue = "No rules configured"
+            Severity = "Critical"
+        }
+    }
+    
+    # Check 5: All rules disabled
+    $enabledRules = $rules | Where-Object { $_.Disabled -eq $false }
+    if ($rules.Count -gt 0 -and $enabledRules.Count -eq 0) {
+        $issues += [PSCustomObject]@{
+            Policy = $policy.Name
+            Issue = "All rules are disabled"
+            Severity = "Warning"
+        }
+    }
+}
+
+# Display results
+Write-Host "`n=== Health Check Results ===" -ForegroundColor Cyan
+
+if ($issues.Count -eq 0) {
+    Write-Host "✓ No issues found!" -ForegroundColor Green
+} else {
+    $critical = $issues | Where-Object { $_.Severity -eq "Critical" }
+    $warnings = $issues | Where-Object { $_.Severity -eq "Warning" }
+    $info = $issues | Where-Object { $_.Severity -eq "Info" }
+    
+    Write-Host "Found $($issues.Count) issues:" -ForegroundColor Yellow
+    Write-Host "  Critical: $($critical.Count)" -ForegroundColor Red
+    Write-Host "  Warnings: $($warnings.Count)" -ForegroundColor Yellow
+    Write-Host "  Info: $($info.Count)" -ForegroundColor Cyan
+    
+    Write-Host "`nDetails:" -ForegroundColor White
+    $issues | Format-Table -AutoSize
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Endpoint DLP Status Check
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell - Run on Endpoint</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Test-EndpointDLPStatus.ps1
+# Run on endpoint to check MDE/DLP status
+
+Write-Host "=== Endpoint DLP Status Check ===" -ForegroundColor Cyan
+Write-Host "Computer: $env:COMPUTERNAME"
+Write-Host "User: $env:USERNAME"
+Write-Host ""
+
+# Check Windows Defender service
+$defender = Get-Service WinDefend -ErrorAction SilentlyContinue
+Write-Host "Windows Defender Service: " -NoNewline
+if ($defender.Status -eq "Running") {
+    Write-Host "Running" -ForegroundColor Green
+} else {
+    Write-Host "$($defender.Status)" -ForegroundColor Red
+}
+
+# Check Sense service (MDE)
+$sense = Get-Service Sense -ErrorAction SilentlyContinue
+Write-Host "Sense Service (MDE): " -NoNewline
+if ($sense.Status -eq "Running") {
+    Write-Host "Running" -ForegroundColor Green
+} else {
+    Write-Host "$($sense.Status)" -ForegroundColor Red
+}
+
+# Check onboarding status
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows Advanced Threat Protection\Status"
+if (Test-Path $regPath) {
+    $onboardingState = (Get-ItemProperty $regPath).OnboardingState
+    Write-Host "Onboarding State: " -NoNewline
+    if ($onboardingState -eq 1) {
+        Write-Host "Onboarded" -ForegroundColor Green
+    } else {
+        Write-Host "Not Onboarded ($onboardingState)" -ForegroundColor Red
+    }
+    
+    $orgId = (Get-ItemProperty $regPath).OrgId
+    Write-Host "Organization ID: $orgId"
+} else {
+    Write-Host "Onboarding: Not configured" -ForegroundColor Yellow
+}
+
+# Check MDE connectivity
+Write-Host "`n=== Connectivity Tests ===" -ForegroundColor Cyan
+$urls = @(
+    "winatp-gw-cus.microsoft.com",
+    "us.vortex-win.data.microsoft.com",
+    "settings-win.data.microsoft.com"
+)
+
+foreach ($url in $urls) {
+    $result = Test-NetConnection -ComputerName $url -Port 443 -WarningAction SilentlyContinue
+    Write-Host "$url : " -NoNewline
+    if ($result.TcpTestSucceeded) {
+        Write-Host "OK" -ForegroundColor Green
+    } else {
+        Write-Host "FAILED" -ForegroundColor Red
+    }
+}
+
+# Check for recent DLP events
+Write-Host "`n=== Recent DLP Events ===" -ForegroundColor Cyan
+$dlpEvents = Get-WinEvent -LogName "Microsoft-Windows-Windows Defender/Operational" -MaxEvents 50 -ErrorAction SilentlyContinue |
+    Where-Object { $_.Message -like "*DLP*" } |
+    Select-Object -First 5
+
+if ($dlpEvents) {
+    $dlpEvents | Format-Table TimeCreated, Id, Message -AutoSize -Wrap
+} else {
+    Write-Host "No recent DLP events found" -ForegroundColor Yellow
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="sensitivity-labels">Sensitivity Label Scripts</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              List All Sensitivity Labels
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Get-SensitivityLabels.ps1
+# Lists all sensitivity labels with their settings
+
+$labels = Get-Label
+
+$labelInfo = $labels | ForEach-Object {
+    [PSCustomObject]@{
+        Name = $_.Name
+        DisplayName = $_.DisplayName
+        Priority = $_.Priority
+        ParentLabel = $_.ParentId
+        Enabled = $_.Enabled
+        ContentType = $_.ContentType -join ", "
+        EncryptionEnabled = $_.EncryptionEnabled
+        WatermarkEnabled = if ($_.LabelActions -match "Watermark") { $true } else { $false }
+    }
+}
+
+$labelInfo | Sort-Object Priority | Format-Table -AutoSize
+
+# Export to CSV
+$labelInfo | Export-Csv -Path "C:\Reports\SensitivityLabels.csv" -NoTypeInformation</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="regex-patterns.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Regex Patterns</span>
+          </a>
+          <a href="glossary.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Glossary</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

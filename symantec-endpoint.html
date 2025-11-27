@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Symantec DLP Endpoint Agent deployment, configuration, monitored channels, and troubleshooting for Windows, macOS, and Linux.">
+  <title>Symantec Endpoint DLP | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="symantec-overview.html" class="nav-link" data-product="symantec">Overview</a>
+          <a href="symantec-architecture.html" class="nav-link" data-product="symantec">Architecture</a>
+          <a href="symantec-endpoint.html" class="nav-link active" data-product="symantec">Endpoint DLP</a>
+          <a href="symantec-network.html" class="nav-link" data-product="symantec">Network DLP</a>
+          <a href="symantec-detection.html" class="nav-link" data-product="symantec">Detection Methods</a>
+          <a href="symantec-policies.html" class="nav-link" data-product="symantec">Policies & Rules</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="symantec-overview.html">Symantec DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Endpoint DLP</span>
+        </nav>
+        
+        <h1>Symantec Endpoint DLP</h1>
+        
+        <p>Symantec Endpoint DLP provides agent-based data protection for Windows, macOS, and Linux endpoints. The DLP Agent monitors user activities on sensitive content and enforces policies locally, even when disconnected from the Enforce Server.</p>
+        
+        <h2 id="supported-platforms">Supported Platforms</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Versions</th>
+                <th>Architecture</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Windows</strong></td>
+                <td>10, 11, Server 2016/2019/2022</td>
+                <td>x64</td>
+                <td>Full feature support</td>
+              </tr>
+              <tr>
+                <td><strong>macOS</strong></td>
+                <td>10.15 (Catalina) - 14 (Sonoma)</td>
+                <td>Intel, Apple Silicon</td>
+                <td>Requires system extensions</td>
+              </tr>
+              <tr>
+                <td><strong>Linux</strong></td>
+                <td>RHEL 7/8/9, Ubuntu 18.04/20.04/22.04</td>
+                <td>x64</td>
+                <td>Limited channel support</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="monitored-channels">Monitored Channels by Platform</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Channel</th>
+                <th>Windows</th>
+                <th>macOS</th>
+                <th>Linux</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Removable Storage (USB)</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Local/Network Print</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+              </tr>
+              <tr>
+                <td><strong>Clipboard</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+              <tr>
+                <td><strong>Screen Capture</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+              <tr>
+                <td><strong>Email (Outlook)</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+              <tr>
+                <td><strong>Email (Lotus Notes)</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+              <tr>
+                <td><strong>Browser HTTP/HTTPS</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>FTP</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>IM (Skype, Teams)</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cloud Sync Apps</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+              </tr>
+              <tr>
+                <td><strong>Network Share (CIFS/SMB)</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Endpoint Discover</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="agent-deployment">Agent Deployment</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Windows</button>
+            <button class="tab-button" role="tab">macOS</button>
+            <button class="tab-button" role="tab">Linux</button>
+            <button class="tab-button" role="tab">Mass Deployment</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>Windows Agent Installation</h3>
+            
+            <h4>Prerequisites</h4>
+            <ul>
+              <li>.NET Framework 4.7.2 or later</li>
+              <li>Local administrator rights for installation</li>
+              <li>Network connectivity to Enforce Server (port 8200)</li>
+              <li>Antivirus exclusions configured</li>
+            </ul>
+            
+            <h4>Interactive Installation</h4>
+            <div class="code-block" data-language="batch">
+              <div class="code-header">
+                <span class="code-lang">Command Prompt</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code>:: Navigate to agent installer directory
+cd C:\DLP_Agent_15.8
+
+:: Run installer with basic parameters
+msiexec /i "Symantec DLP Agent.msi" ^
+    ENFORCE_SERVER=enforce.company.com ^
+    ENFORCE_PORT=8200 ^
+    /qn /l*v C:\Temp\dlp_install.log
+
+:: Verify installation
+sc query "Symantec DLP Agent"
+reg query "HKLM\SOFTWARE\Symantec\DataLossPrevention\Agent"</code></pre>
+            </div>
+            
+            <h4>Silent Installation with All Parameters</h4>
+            <div class="code-block" data-language="batch">
+              <div class="code-header">
+                <span class="code-lang">Command Prompt</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code>msiexec /i "Symantec DLP Agent.msi" ^
+    ENFORCE_SERVER=enforce.company.com ^
+    ENFORCE_PORT=8200 ^
+    AGENT_GROUP="Windows Endpoints" ^
+    INSTALL_OUTLOOK_PLUGIN=1 ^
+    INSTALL_NOTES_PLUGIN=0 ^
+    ENABLE_HTTPS_INSPECTION=1 ^
+    STEALTH_MODE=0 ^
+    REBOOT=ReallySuppress ^
+    /qn /l*v C:\Temp\dlp_install.log</code></pre>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>macOS Agent Installation</h3>
+            
+            <h4>Prerequisites</h4>
+            <ul>
+              <li>macOS 10.15 or later</li>
+              <li>Administrator privileges</li>
+              <li>System Extension approval (MDM recommended)</li>
+              <li>Full Disk Access permission</li>
+            </ul>
+            
+            <div class="callout warning">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                macOS Security Requirements
+              </div>
+              <p>Starting with macOS 10.15, System Extensions require user approval or MDM pre-approval. Without approval, the agent will have limited functionality.</p>
+            </div>
+            
+            <h4>Installation Steps</h4>
+            <div class="code-block" data-language="bash">
+              <div class="code-header">
+                <span class="code-lang">Bash</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code># Mount the DMG
+hdiutil attach SymantecDLPAgent.dmg
+
+# Run the installer package
+sudo installer -pkg "/Volumes/Symantec DLP Agent/SymantecDLPAgent.pkg" -target /
+
+# Configure Enforce Server connection
+sudo /opt/Symantec/DataLossPrevention/Agent/bin/edpactl config \
+    --server enforce.company.com \
+    --port 8200
+
+# Start the agent
+sudo /opt/Symantec/DataLossPrevention/Agent/bin/edpactl start
+
+# Verify status
+/opt/Symantec/DataLossPrevention/Agent/bin/edpactl status</code></pre>
+            </div>
+            
+            <h4>MDM Profile for System Extension</h4>
+            <div class="code-block" data-language="xml">
+              <div class="code-header">
+                <span class="code-lang">MDM Profile (XML)</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+    &lt;key&gt;PayloadType&lt;/key&gt;
+    &lt;string&gt;com.apple.system-extension-policy&lt;/string&gt;
+    &lt;key&gt;AllowedSystemExtensions&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;SYMANTEC_TEAM_ID&lt;/key&gt;
+        &lt;array&gt;
+            &lt;string&gt;com.symantec.dlp.endpoint.systemextension&lt;/string&gt;
+        &lt;/array&gt;
+    &lt;/dict&gt;
+    &lt;key&gt;AllowedSystemExtensionTypes&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;SYMANTEC_TEAM_ID&lt;/key&gt;
+        &lt;array&gt;
+            &lt;string&gt;EndpointSecurityExtension&lt;/string&gt;
+            &lt;string&gt;NetworkExtension&lt;/string&gt;
+        &lt;/array&gt;
+    &lt;/dict&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;</code></pre>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Linux Agent Installation</h3>
+            
+            <h4>Prerequisites</h4>
+            <ul>
+              <li>RHEL/CentOS 7+ or Ubuntu 18.04+</li>
+              <li>Kernel 3.10 or later</li>
+              <li>Root privileges</li>
+              <li>Required packages: glibc, libstdc++, openssl</li>
+            </ul>
+            
+            <div class="code-block" data-language="bash">
+              <div class="code-header">
+                <span class="code-lang">Bash (RHEL/CentOS)</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code># Install dependencies
+sudo yum install -y glibc libstdc++ openssl
+
+# Extract and install agent
+tar -xzf SymantecDLPAgent-Linux-15.8.tar.gz
+cd SymantecDLPAgent-Linux
+sudo ./install.sh
+
+# Configure connection
+sudo /opt/Symantec/DataLossPrevention/Agent/bin/edpactl config \
+    --server enforce.company.com \
+    --port 8200
+
+# Enable and start service
+sudo systemctl enable edpa
+sudo systemctl start edpa
+
+# Check status
+sudo systemctl status edpa
+/opt/Symantec/DataLossPrevention/Agent/bin/edpactl status</code></pre>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Mass Deployment Options</h3>
+            
+            <h4>SCCM/ConfigMgr</h4>
+            <ol>
+              <li>Create application package with MSI and transform file</li>
+              <li>Configure detection method (registry key or file existence)</li>
+              <li>Deploy to device collection with required deployment type</li>
+            </ol>
+            
+            <h4>Group Policy</h4>
+            <ol>
+              <li>Place MSI on network share accessible by target computers</li>
+              <li>Create GPO with Computer Configuration → Software Installation</li>
+              <li>Add MSI package as Assigned installation</li>
+              <li>Use MST transform file for configuration parameters</li>
+            </ol>
+            
+            <h4>Intune (Windows)</h4>
+            <ol>
+              <li>Convert MSI to .intunewin format using Content Prep Tool</li>
+              <li>Create Win32 app in Intune admin center</li>
+              <li>Configure install command with parameters</li>
+              <li>Assign to device groups</li>
+            </ol>
+            
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell - SCCM Detection Script</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code># Detection script for SCCM/Intune
+$regPath = "HKLM:\SOFTWARE\Symantec\DataLossPrevention\Agent"
+$minVersion = [version]"15.8.0.0"
+
+try {
+    $installed = Get-ItemProperty -Path $regPath -ErrorAction Stop
+    $currentVersion = [version]$installed.Version
+    
+    if ($currentVersion -ge $minVersion) {
+        Write-Host "Symantec DLP Agent $currentVersion is installed"
+        exit 0
+    }
+} catch {
+    # Not installed
+    exit 1
+}</code></pre>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="agent-configuration">Agent Configuration</h2>
+        
+        <h3>Configuration File Location</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Configuration Path</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Windows</td>
+                <td><code>C:\Program Files\Symantec\DataLossPrevention\Agent\config\</code></td>
+              </tr>
+              <tr>
+                <td>macOS</td>
+                <td><code>/opt/Symantec/DataLossPrevention/Agent/config/</code></td>
+              </tr>
+              <tr>
+                <td>Linux</td>
+                <td><code>/opt/Symantec/DataLossPrevention/Agent/config/</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Key Configuration Options</h3>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Server Communication
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="text">
+                  <div class="code-header">
+                    <span class="code-lang">edpa.conf</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Primary Enforce Server
+EnforceServer=enforce.company.com
+EnforcePort=8200
+
+# Failover server (optional)
+EnforceServerFailover=enforce-dr.company.com
+
+# Communication interval (seconds)
+HeartbeatInterval=300
+PolicyCheckInterval=600
+
+# SSL/TLS settings
+UseSSL=true
+ValidateServerCert=true</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Channel Settings
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="text">
+                  <div class="code-header">
+                    <span class="code-lang">channels.conf</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Enable/disable channels
+EnableRemovableStorage=true
+EnablePrinting=true
+EnableClipboard=true
+EnableScreenCapture=true
+EnableEmailMonitoring=true
+EnableBrowserMonitoring=true
+EnableCloudApps=true
+
+# HTTPS inspection
+EnableHTTPSInspection=true
+HTTPSInspectionPort=8443
+
+# Excluded processes (comma-separated)
+ExcludedProcesses=antivirus.exe,backup.exe</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Stealth Mode
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Stealth mode hides the DLP agent from users:</p>
+                <ul>
+                  <li>No system tray icon</li>
+                  <li>Hidden from Add/Remove Programs</li>
+                  <li>Service name obfuscated</li>
+                  <li>Process name changed</li>
+                </ul>
+                <div class="callout warning">
+                  <div class="callout-header">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                      <line x1="12" y1="9" x2="12" y2="13"></line>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    Legal Consideration
+                  </div>
+                  <p>Check local privacy laws before deploying in stealth mode. Many jurisdictions require employee notification of monitoring.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="agent-commands">Agent Management Commands</h2>
+        
+        <div class="code-block" data-language="bash">
+          <div class="code-header">
+            <span class="code-lang">edpactl Commands</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Check agent status
+edpactl status
+
+# Start/Stop/Restart agent
+edpactl start
+edpactl stop
+edpactl restart
+
+# Force policy update
+edpactl update-policies
+
+# View current configuration
+edpactl show-config
+
+# Test connectivity to Enforce
+edpactl test-connection
+
+# Generate diagnostic bundle
+edpactl collect-diagnostics --output /tmp/dlp_diag.zip
+
+# View agent version
+edpactl version
+
+# Enable debug logging (temporary)
+edpactl set-loglevel debug
+# ... reproduce issue ...
+edpactl set-loglevel info</code></pre>
+        </div>
+        
+        <h2 id="troubleshooting">Troubleshooting</h2>
+        
+        <h3>Common Issues</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Issue</th>
+                <th>Possible Cause</th>
+                <th>Resolution</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Agent offline in Enforce</td>
+                <td>Network connectivity, firewall</td>
+                <td>Check port 8200, run test-connection</td>
+              </tr>
+              <tr>
+                <td>Policies not applying</td>
+                <td>Agent group mismatch, sync failure</td>
+                <td>Verify agent group, force update-policies</td>
+              </tr>
+              <tr>
+                <td>High CPU usage</td>
+                <td>Large file scanning, many policies</td>
+                <td>Add file exclusions, optimize policies</td>
+              </tr>
+              <tr>
+                <td>HTTPS inspection failing</td>
+                <td>Certificate trust, proxy conflict</td>
+                <td>Install root CA, check proxy settings</td>
+              </tr>
+              <tr>
+                <td>USB not monitored</td>
+                <td>Driver conflict, disabled channel</td>
+                <td>Check channel config, reinstall agent</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Log File Locations</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Log Paths</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Windows
+C:\ProgramData\Symantec\DataLossPrevention\Agent\logs\
+  - edpa.log         (main agent log)
+  - detection.log    (detection events)
+  - communication.log (server communication)
+
+# macOS / Linux
+/var/log/Symantec/DataLossPrevention/Agent/
+  - edpa.log
+  - detection.log
+  - communication.log</code></pre>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="symantec-architecture.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Architecture</span>
+          </a>
+          <a href="symantec-network.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Network DLP</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

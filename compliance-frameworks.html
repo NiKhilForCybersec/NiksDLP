@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliance Frameworks | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <div class="sidebar-overlay"></div>
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header"><a href="../../index.html" class="sidebar-logo"><svg viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/></svg>DLP Docs</a></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Fundamentals</div>
+          <a href="dlp-fundamentals.html" class="nav-link">DLP Fundamentals</a>
+          <a href="data-classification.html" class="nav-link">Data Classification</a>
+          <a href="dlp-architecture.html" class="nav-link">DLP Architecture</a>
+          <a href="compliance-frameworks.html" class="nav-link active">Compliance</a>
+        </div>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs"><a href="../../index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Compliance Frameworks</span></nav>
+        <h1>Compliance Frameworks & DLP</h1>
+        <p>DLP solutions help organizations comply with data protection regulations by identifying, monitoring, and protecting sensitive data. This page maps common compliance requirements to DLP controls.</p>
+        
+        <h2 id="hipaa">HIPAA (Healthcare)</h2>
+        <p>The Health Insurance Portability and Accountability Act requires protection of Protected Health Information (PHI).</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>HIPAA Requirement</th><th>DLP Control</th></tr></thead>
+            <tbody>
+              <tr><td>Access controls (§164.312(a))</td><td>Sensitivity labels, encryption</td></tr>
+              <tr><td>Audit controls (§164.312(b))</td><td>Activity Explorer, DLP reports</td></tr>
+              <tr><td>Transmission security (§164.312(e))</td><td>Email encryption, block unencrypted sharing</td></tr>
+              <tr><td>Integrity controls (§164.312(c))</td><td>Block unauthorized modifications</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="pci">PCI-DSS (Payment Card)</h2>
+        <p>The Payment Card Industry Data Security Standard protects cardholder data.</p>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>PCI-DSS Requirement</th><th>DLP Control</th></tr></thead>
+            <tbody>
+              <tr><td>Req 3: Protect stored cardholder data</td><td>Discovery scans, encryption, access controls</td></tr>
+              <tr><td>Req 4: Encrypt transmission</td><td>Block unencrypted email with card data</td></tr>
+              <tr><td>Req 7: Restrict access</td><td>Sensitivity labels, DLP policies</td></tr>
+              <tr><td>Req 10: Track and monitor access</td><td>Activity Explorer, SIEM integration</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 id="gdpr">GDPR (European Union)</h2>
+        <p>The General Data Protection Regulation protects personal data of EU residents.</p>
+        <div class="callout info">
+          <div class="callout-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>Key GDPR Principles</div>
+          <p>GDPR requires data minimization, purpose limitation, and individual rights (access, erasure). DLP helps enforce these by controlling data flows and identifying personal data.</p>
+        </div>
+
+        <h2 id="pipeda">PIPEDA (Canada)</h2>
+        <p>Canada's Personal Information Protection and Electronic Documents Act governs how private sector organizations collect, use, and disclose personal information.</p>
+        <ul>
+          <li>Accountability — Organizations must designate someone responsible for compliance</li>
+          <li>Safeguards — Protect personal information with appropriate security</li>
+          <li>Openness — Be transparent about policies and practices</li>
+        </ul>
+
+        <nav class="page-nav">
+          <a href="dlp-architecture.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">DLP Architecture</span></a>
+          <a href="../purview/purview-overview.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Purview Overview</span></a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

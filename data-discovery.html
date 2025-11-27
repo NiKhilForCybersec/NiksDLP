@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Data discovery and data-at-rest scanning for identifying sensitive data across file servers, databases, SharePoint, and cloud storage.">
+  <title>Data Discovery | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Discovery</div>
+          <a href="data-discovery.html" class="nav-link active" data-product="discovery">Data Discovery</a>
+          <a href="content-explorer.html" class="nav-link" data-product="discovery">Content Explorer</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Data Discovery</span>
+        </nav>
+        
+        <h1>Data Discovery</h1>
+        
+        <p>Data discovery scans repositories to identify and classify sensitive data at rest. Understanding where sensitive data lives is essential for effective DLP policy design and compliance.</p>
+        
+        <h2 id="why-discovery">Why Data Discovery?</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    DATA DISCOVERY VALUE CHAIN                                    │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────┐   ┌─────────────┐   ┌─────────────┐   ┌─────────────┐          │
+│  │  <span class="accent-cyan">DISCOVER</span>   │──▶│  <span class="accent-green">CLASSIFY</span>   │──▶│  <span class="accent-orange">PROTECT</span>    │──▶│  <span class="accent-purple">MONITOR</span>    │          │
+│  │             │   │             │   │             │   │             │          │
+│  │ Find where  │   │ Categorize  │   │ Apply DLP   │   │ Track data  │          │
+│  │ sensitive   │   │ by type &   │   │ policies &  │   │ movement &  │          │
+│  │ data lives  │   │ sensitivity │   │ controls    │   │ violations  │          │
+│  └─────────────┘   └─────────────┘   └─────────────┘   └─────────────┘          │
+│                                                                                  │
+│  <span class="accent-cyan">Questions Answered:</span>                                                            │
+│  • Where is our PII stored?                                                     │
+│  • Who has access to sensitive data?                                            │
+│  • Is data stored in unauthorized locations?                                    │
+│  • Are we compliant with data residency requirements?                           │
+│  • How much sensitive data do we have?                                          │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="discovery-targets">Discovery Targets</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Target Type</th><th>Symantec Network Discover</th><th>Purview (Native)</th><th>Purview Scanner</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Windows File Servers (CIFS/SMB)</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>SharePoint On-Premises</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>SharePoint Online</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">N/A</span></td>
+              </tr>
+              <tr>
+                <td><strong>OneDrive for Business</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">N/A</span></td>
+              </tr>
+              <tr>
+                <td><strong>Exchange Mailboxes</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">N/A</span></td>
+              </tr>
+              <tr>
+                <td><strong>SQL Server Databases</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Oracle Databases</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+              </tr>
+              <tr>
+                <td><strong>Linux/NFS Shares</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">✗</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>AWS S3</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">N/A</span></td>
+              </tr>
+              <tr>
+                <td><strong>Azure Blob Storage</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge unsupported">N/A</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="purview-discovery">Microsoft Purview Data Discovery</h2>
+        
+        <h3>Content Explorer</h3>
+        
+        <p>Content Explorer shows where sensitive content exists across Microsoft 365:</p>
+        
+        <ol class="steps">
+          <li>
+            <strong>Navigate to Content Explorer</strong>
+            <p>compliance.microsoft.com → Data classification → Content explorer</p>
+          </li>
+          <li>
+            <strong>Browse by Sensitive Info Type</strong>
+            <p>Click on a SIT to see all content matching that type</p>
+          </li>
+          <li>
+            <strong>View File Details</strong>
+            <p>Click on individual files to see location, owner, sensitivity label</p>
+          </li>
+        </ol>
+        
+        <h3>Activity Explorer</h3>
+        
+        <p>Track activities on sensitive data:</p>
+        
+        <div class="code-block" data-language="kql">
+          <div class="code-header">
+            <span class="code-lang">KQL - Activity Explorer Data</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>// Sensitive data activities summary
+CloudAppEvents
+| where Timestamp > ago(30d)
+| where ActionType has_any ("DlpRuleMatch", "SensitivityLabelApplied", 
+                            "SensitivityLabelChanged", "SensitivityLabelRemoved")
+| summarize 
+    Activities = count(),
+    UniqueFiles = dcount(tostring(RawEventData.FileName)),
+    UniqueUsers = dcount(AccountUpn)
+    by ActionType
+| order by Activities desc</code></pre>
+        </div>
+        
+        <h3>On-Premises Scanner</h3>
+        
+        <p>For on-premises repositories, deploy the Microsoft Purview Information Protection scanner:</p>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Scanner Installation</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Install the scanner service
+Install-AIPScanner
+
+# Configure scanner cluster
+Set-AIPScannerConfiguration -OnlineConfiguration On
+
+# Add content scan job (in Purview portal)
+# compliance.microsoft.com > Information protection > Scanner
+
+# Configure repository to scan
+Add-AIPScannerRepository -Path "\\fileserver\shares\hr" -OverrideContentScanJob Off
+
+# Run discovery scan (audit only)
+Start-AIPScan -Discover
+
+# View scan results
+Get-AIPScannerStatus
+Get-AIPScanReport -ReportType Summary</code></pre>
+        </div>
+        
+        <h2 id="symantec-discover">Symantec Network Discover</h2>
+        
+        <h3>Scan Configuration</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Network Discover Scan Target</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># File Server Scan Target Configuration
+Target Name: HR File Server
+Target Type: File System (CIFS/SMB)
+
+Connection:
+  Server: \\fileserver.company.com
+  Share Path: \HR\
+  Credentials: svc_dlp_scan (domain service account)
+  Include Subfolders: Yes
+
+Filters:
+  Include Extensions: *.doc, *.docx, *.xls, *.xlsx, *.pdf, *.ppt, *.pptx
+  Exclude Extensions: *.tmp, *.log, *.bak
+  Exclude Paths: \Archive\, \Backup\
+  Max File Size: 100 MB
+
+Schedule:
+  Scan Type: Incremental (changes only)
+  Frequency: Weekly (Saturday 2:00 AM)
+  Full Scan: Monthly (First Sunday)
+
+Policies:
+  ☑ PCI - Credit Card Detection
+  ☑ PIPEDA - Canadian PII
+  ☑ HR - Employee Data</code></pre>
+        </div>
+        
+        <h3>Database Scanning</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Database Scan Configuration</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># SQL Server Scan Target
+Target Name: HR Database
+Target Type: Database (SQL Server)
+
+Connection:
+  Server: sqlserver.company.com
+  Database: HRDatabase
+  Authentication: SQL Authentication
+  Username: dlp_scan_user
+  
+Scan Scope:
+  ☑ All tables
+  ☐ Selected tables only
+  Exclude: AuditLog, SystemConfig
+  
+  # Or define specific query:
+  Custom Query: |
+    SELECT 
+      EmployeeID, FirstName, LastName, SIN, DOB, Address
+    FROM Employees
+    WHERE Status = 'Active'
+
+Sampling:
+  Mode: Sample rows
+  Sample Size: 1000 rows per table
+  # Full scan for tables with < 10000 rows</code></pre>
+        </div>
+        
+        <h2 id="discovery-reports">Discovery Reports</h2>
+        
+        <h3>Key Metrics to Track</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Metric</th><th>Description</th><th>Target</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Total Sensitive Files</strong></td>
+                <td>Count of files containing sensitive data</td>
+                <td>Baseline, then reduce</td>
+              </tr>
+              <tr>
+                <td><strong>Sensitive Data by Type</strong></td>
+                <td>Breakdown by SIN, Credit Card, etc.</td>
+                <td>Know your data</td>
+              </tr>
+              <tr>
+                <td><strong>Files by Location</strong></td>
+                <td>Where sensitive data is stored</td>
+                <td>Consolidate to approved locations</td>
+              </tr>
+              <tr>
+                <td><strong>Files with External Access</strong></td>
+                <td>Sensitive files shared externally</td>
+                <td>Minimize, review exceptions</td>
+              </tr>
+              <tr>
+                <td><strong>Unprotected Sensitive Files</strong></td>
+                <td>Sensitive data without labels/encryption</td>
+                <td>Reduce to near zero</td>
+              </tr>
+              <tr>
+                <td><strong>Stale Sensitive Data</strong></td>
+                <td>Sensitive files not accessed in 1+ year</td>
+                <td>Archive or delete</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Sample Discovery Report</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Discovery Scan Summary Report</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>===============================================
+DISCOVERY SCAN REPORT - November 2024
+===============================================
+
+SCAN SUMMARY
+  Targets Scanned:     15
+  Files Scanned:       2,847,392
+  Data Volume:         4.2 TB
+  Scan Duration:       18 hours 34 minutes
+
+SENSITIVE DATA FOUND
+  Total Matches:       47,283 files
+  
+  By Data Type:
+    Credit Card Numbers:      2,341 files
+    Canada SIN:               8,492 files
+    Health Information:       3,127 files
+    Employee PII:            28,441 files
+    Financial Data:           4,882 files
+
+  By Location:
+    \\fileserver\HR:         18,234 files (38%)
+    \\fileserver\Finance:    12,847 files (27%)
+    SharePoint HR Site:       9,283 files (20%)
+    User OneDrives:           6,919 files (15%)
+
+RISK ASSESSMENT
+  High Risk (externally shared):     234 files
+  Medium Risk (broad internal):    4,821 files
+  Low Risk (restricted access):   42,228 files
+
+RECOMMENDATIONS
+  1. Review 234 externally shared files immediately
+  2. Apply sensitivity labels to unlabeled PII
+  3. Archive 12,384 stale files (>2 years old)
+  4. Consolidate HR data from user OneDrives</code></pre>
+        </div>
+        
+        <h2 id="remediation">Automated Remediation</h2>
+        
+        <p>Discovery can trigger automated remediation actions:</p>
+        
+        <ul>
+          <li><strong>Apply Sensitivity Label</strong> — Auto-label discovered sensitive content</li>
+          <li><strong>Quarantine</strong> — Move to secure quarantine location</li>
+          <li><strong>Remove Permissions</strong> — Revoke external sharing</li>
+          <li><strong>Encrypt</strong> — Apply encryption to unprotected files</li>
+          <li><strong>Notify Owner</strong> — Alert file owner to take action</li>
+          <li><strong>Delete</strong> — Remove files violating policy (with approval)</li>
+        </ul>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Remediation Caution
+          </div>
+          <p>Start with audit-only discovery. Automated remediation (quarantine, delete) can disrupt business operations. Always test thoroughly and get business approval before enabling destructive actions.</p>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="../cloud/cloud-dlp-overview.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Cloud DLP Overview</span>
+          </a>
+          <a href="../operations/dlp-operations.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">DLP Operations</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

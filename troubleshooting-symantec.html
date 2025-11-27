@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Troubleshooting Symantec DLP issues including agent communication, Enforce Server problems, Oracle database issues, and detection failures.">
+  <title>Symantec DLP Troubleshooting | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Troubleshooting</div>
+          <a href="troubleshooting-overview.html" class="nav-link">Overview</a>
+          <a href="troubleshooting-purview.html" class="nav-link" data-product="purview">Purview DLP</a>
+          <a href="troubleshooting-symantec.html" class="nav-link active" data-product="symantec">Symantec DLP</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="troubleshooting-overview.html">Troubleshooting</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Symantec DLP</span>
+        </nav>
+        
+        <h1>Symantec DLP Troubleshooting</h1>
+        
+        <p>This guide covers common issues with Symantec DLP including endpoint agent problems, Enforce Server issues, Oracle database connectivity, and detection failures.</p>
+        
+        <h2 id="agent-issues">Endpoint Agent Issues</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Agent showing offline in Enforce Console
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Symptoms:</strong> Agent appears offline or last seen timestamp is stale.</p>
+                
+                <p><strong>Diagnostic Steps:</strong></p>
+                <div class="code-block" data-language="bash">
+                  <div class="code-header">
+                    <span class="code-lang">Command Line</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check agent status
+edpactl status
+
+# Test connectivity to Enforce Server
+edpactl test-connection
+
+# Check agent logs for errors
+# Windows:
+type "C:\ProgramData\Symantec\DataLossPrevention\Agent\logs\communication.log"
+# Linux/macOS:
+cat /var/log/Symantec/DataLossPrevention/Agent/communication.log</code></pre>
+                </div>
+                
+                <p><strong>Common Causes & Solutions:</strong></p>
+                <ul>
+                  <li><strong>Firewall blocking port 8200</strong> — Verify port is open: <code>telnet enforce-server 8200</code></li>
+                  <li><strong>DNS resolution failure</strong> — Check Enforce Server hostname resolves correctly</li>
+                  <li><strong>Certificate issues</strong> — Verify SSL certificate chain is valid</li>
+                  <li><strong>Agent service stopped</strong> — Restart service: <code>edpactl restart</code></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Agent causing high CPU usage
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Diagnostic Steps:</strong></p>
+                <ol>
+                  <li>Check which process is consuming CPU (edpa.exe, vontu*.exe)</li>
+                  <li>Review recent activity—large file scan or many small files?</li>
+                  <li>Check for antivirus conflicts</li>
+                </ol>
+                
+                <p><strong>Solutions:</strong></p>
+                <ul>
+                  <li><strong>Add file/folder exclusions</strong> — Exclude temp folders, build directories</li>
+                  <li><strong>Exclude processes</strong> — Add high-IO processes to exclusion list</li>
+                  <li><strong>Adjust scan settings</strong> — Reduce real-time scanning scope</li>
+                  <li><strong>Schedule intensive scans</strong> — Run Endpoint Discover during off-hours</li>
+                </ul>
+                
+                <div class="code-block" data-language="text">
+                  <div class="code-header">
+                    <span class="code-lang">Agent Exclusions (channels.conf)</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Add to channels.conf
+ExcludedProcesses=devenv.exe,java.exe,sqlservr.exe
+ExcludedFolders=C:\Windows\Temp,C:\Users\*\AppData\Local\Temp
+ExcludedFileTypes=*.tmp,*.log,*.bak</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Policies not applying to agent
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Verification Steps:</strong></p>
+                <div class="code-block" data-language="bash">
+                  <div class="code-header">
+                    <span class="code-lang">Command Line</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check policy version on agent
+edpactl show-config | grep PolicyVersion
+
+# Force policy update
+edpactl update-policies
+
+# Verify agent group assignment
+edpactl show-config | grep AgentGroup</code></pre>
+                </div>
+                
+                <p><strong>Common Causes:</strong></p>
+                <ul>
+                  <li>Agent in wrong agent group</li>
+                  <li>Policy not deployed to agent group</li>
+                  <li>Network issues preventing policy download</li>
+                  <li>Policy file corrupted—force re-download</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              HTTPS inspection not working
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Symptoms:</strong> Web uploads to HTTPS sites not being detected.</p>
+                
+                <p><strong>Diagnostic Steps:</strong></p>
+                <ol>
+                  <li>Verify HTTPS inspection is enabled in agent config</li>
+                  <li>Check that DLP root CA is in trusted store</li>
+                  <li>Test with specific browser (Edge/Chrome work best)</li>
+                  <li>Check for proxy conflicts</li>
+                </ol>
+                
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell - Check Certificate</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check for DLP certificate in trusted root
+Get-ChildItem Cert:\LocalMachine\Root | 
+    Where-Object { $_.Subject -like "*Symantec*" -or $_.Subject -like "*DLP*" }
+
+# Import certificate if missing
+Import-Certificate -FilePath "DLP_Root_CA.cer" -CertStoreLocation Cert:\LocalMachine\Root</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="enforce-server">Enforce Server Issues</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Enforce Console slow or unresponsive
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Diagnostic Steps:</strong></p>
+                <ol>
+                  <li>Check Enforce Server CPU and memory usage</li>
+                  <li>Review database performance</li>
+                  <li>Check disk I/O on Enforce Server</li>
+                  <li>Review concurrent user count</li>
+                </ol>
+                
+                <div class="code-block" data-language="bash">
+                  <div class="code-header">
+                    <span class="code-lang">Linux - Performance Check</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check DLP services
+systemctl status SymantecDLP*
+
+# Check Java heap usage
+jstat -gc $(pgrep -f "ProtectManager") 1000 5
+
+# Review Enforce logs
+tail -f /var/log/Symantec/DataLossPrevention/Enforce/tomcat/logs/catalina.out
+
+# Check disk space
+df -h /var/Symantec</code></pre>
+                </div>
+                
+                <p><strong>Common Solutions:</strong></p>
+                <ul>
+                  <li>Increase JVM heap size in startup scripts</li>
+                  <li>Archive old incidents to reduce database size</li>
+                  <li>Add indexes to frequently queried columns</li>
+                  <li>Schedule reports during off-hours</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Services failing to start
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Service Startup Order:</strong></p>
+                <ol>
+                  <li>Oracle Database (must be running first)</li>
+                  <li>Symantec DLP Manager Service</li>
+                  <li>Symantec DLP Notifier Service</li>
+                  <li>Detection Servers (after Manager)</li>
+                </ol>
+                
+                <div class="code-block" data-language="bash">
+                  <div class="code-header">
+                    <span class="code-lang">Service Management</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check all DLP services
+systemctl list-units --type=service | grep -i symantec
+
+# Start services in order
+systemctl start oracle-xe
+systemctl start SymantecDLPManager
+systemctl start SymantecDLPNotifier
+
+# Check for port conflicts
+netstat -tlnp | grep -E "443|8443|8200"</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="database-issues">Oracle Database Issues</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Database connection errors
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Common Error Messages:</strong></p>
+                <ul>
+                  <li><code>ORA-12541: TNS:no listener</code> — Listener not running</li>
+                  <li><code>ORA-12514: TNS:listener does not know of service</code> — Wrong service name</li>
+                  <li><code>ORA-01017: invalid username/password</code> — Credentials issue</li>
+                  <li><code>ORA-00257: archiver error</code> — Archive log full</li>
+                </ul>
+                
+                <div class="code-block" data-language="bash">
+                  <div class="code-header">
+                    <span class="code-lang">Oracle Diagnostics</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check listener status
+lsnrctl status
+
+# Start listener if down
+lsnrctl start
+
+# Test database connection
+sqlplus protect/password@DLPDB
+
+# Check database status
+sqlplus / as sysdba
+SQL> SELECT STATUS FROM V$INSTANCE;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Database tablespace full
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="sql">
+                  <div class="code-header">
+                    <span class="code-lang">SQL - Check and Extend Tablespace</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>-- Check tablespace usage
+SELECT 
+    tablespace_name,
+    ROUND(used_space * 8192 / 1024 / 1024 / 1024, 2) AS used_gb,
+    ROUND(tablespace_size * 8192 / 1024 / 1024 / 1024, 2) AS total_gb,
+    ROUND(used_percent, 2) AS pct_used
+FROM dba_tablespace_usage_metrics
+ORDER BY used_percent DESC;
+
+-- Add datafile to extend tablespace
+ALTER TABLESPACE PROTECT_DATA 
+ADD DATAFILE '/u01/app/oracle/oradata/DLPDB/protect_data02.dbf' 
+SIZE 10G AUTOEXTEND ON MAXSIZE 50G;
+
+-- Check largest tables (for cleanup planning)
+SELECT 
+    owner, 
+    segment_name, 
+    ROUND(bytes/1024/1024/1024, 2) AS size_gb
+FROM dba_segments 
+WHERE owner = 'PROTECT'
+ORDER BY bytes DESC
+FETCH FIRST 10 ROWS ONLY;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Slow database queries
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="sql">
+                  <div class="code-header">
+                    <span class="code-lang">SQL - Performance Diagnostics</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>-- Find slow queries
+SELECT 
+    sql_text,
+    elapsed_time/1000000 AS elapsed_seconds,
+    executions,
+    elapsed_time/executions/1000 AS avg_ms
+FROM v$sql
+WHERE parsing_schema_name = 'PROTECT'
+AND executions > 0
+ORDER BY elapsed_time DESC
+FETCH FIRST 20 ROWS ONLY;
+
+-- Check for missing indexes
+SELECT 
+    table_name,
+    index_name,
+    status
+FROM dba_indexes
+WHERE owner = 'PROTECT'
+AND status != 'VALID';
+
+-- Rebuild invalid indexes
+ALTER INDEX PROTECT.IDX_INCIDENT_DATE REBUILD;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="detection-issues">Detection Issues</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Policy not detecting expected content
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Troubleshooting Steps:</strong></p>
+                <ol>
+                  <li>Test policy using the Policy Tester in Enforce Console</li>
+                  <li>Verify file type is supported for content inspection</li>
+                  <li>Check that channel is enabled and monitored</li>
+                  <li>Review rule conditions and thresholds</li>
+                  <li>Check for conflicting exceptions</li>
+                </ol>
+                
+                <p><strong>Common Issues:</strong></p>
+                <ul>
+                  <li><strong>Encrypted files</strong> — Cannot inspect encrypted/password-protected files</li>
+                  <li><strong>Unsupported format</strong> — Some file types not inspected</li>
+                  <li><strong>Threshold too high</strong> — Reduce minimum match count</li>
+                  <li><strong>Regex too restrictive</strong> — Test pattern against sample data</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              IDM/EDM index not matching
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>IDM Index Issues:</strong></p>
+                <ul>
+                  <li>Verify index is up to date (check last indexed timestamp)</li>
+                  <li>Ensure source documents haven't changed significantly</li>
+                  <li>Check match percentage threshold (40% default may be too high)</li>
+                  <li>Re-index if source documents were modified</li>
+                </ul>
+                
+                <p><strong>EDM Index Issues:</strong></p>
+                <ul>
+                  <li>Verify source data export completed successfully</li>
+                  <li>Check column mappings are correct</li>
+                  <li>Ensure data format matches expected (dates, numbers)</li>
+                  <li>Verify multi-column matching requirements</li>
+                </ul>
+                
+                <div class="code-block" data-language="sql">
+                  <div class="code-header">
+                    <span class="code-lang">SQL - Check Index Status</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>-- Check EDM profile status
+SELECT 
+    profile_name,
+    record_count,
+    last_indexed,
+    status
+FROM protect.edm_profiles;
+
+-- Check IDM profile status
+SELECT 
+    profile_name,
+    document_count,
+    last_indexed,
+    status
+FROM protect.idm_profiles;</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="log-locations">Log File Locations</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Component</th><th>Log Location</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Enforce Server</td>
+                <td><code>/var/log/Symantec/DataLossPrevention/Enforce/</code></td>
+                <td>Manager, notifications, incidents</td>
+              </tr>
+              <tr>
+                <td>Detection Server</td>
+                <td><code>/var/log/Symantec/DataLossPrevention/DetectionServer/</code></td>
+                <td>Detection events, processing</td>
+              </tr>
+              <tr>
+                <td>Endpoint Agent (Win)</td>
+                <td><code>C:\ProgramData\Symantec\DataLossPrevention\Agent\logs\</code></td>
+                <td>Agent operation, detection</td>
+              </tr>
+              <tr>
+                <td>Endpoint Agent (Mac/Linux)</td>
+                <td><code>/var/log/Symantec/DataLossPrevention/Agent/</code></td>
+                <td>Agent operation, detection</td>
+              </tr>
+              <tr>
+                <td>Tomcat (Console)</td>
+                <td><code>.../Enforce/tomcat/logs/catalina.out</code></td>
+                <td>Web console, API errors</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="support-bundle">Collecting Support Bundle</h2>
+        
+        <div class="code-block" data-language="bash">
+          <div class="code-header">
+            <span class="code-lang">Support Bundle Collection</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Enforce Server - Generate support bundle
+cd /opt/Symantec/DataLossPrevention/Enforce/bin
+./SupportTool.sh --output /tmp/dlp_support_bundle.zip
+
+# Endpoint Agent - Collect diagnostics
+edpactl collect-diagnostics --output /tmp/agent_diag.zip
+
+# Include in support case:
+# - Support bundle
+# - Recent log files
+# - Screenshot of error
+# - Steps to reproduce</code></pre>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="troubleshooting-purview.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Purview Troubleshooting</span>
+          </a>
+          <a href="../operations/dlp-operations.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">DLP Operations</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

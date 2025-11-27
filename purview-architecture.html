@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purview Architecture | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <div class="sidebar-overlay"></div>
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header"><a href="../../index.html" class="sidebar-logo"><svg viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/></svg>DLP Docs</a></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Microsoft Purview</div>
+          <a href="purview-overview.html" class="nav-link" data-product="purview">Overview</a>
+          <a href="purview-architecture.html" class="nav-link active" data-product="purview">Architecture</a>
+          <a href="purview-endpoint-dlp.html" class="nav-link" data-product="purview">Endpoint DLP</a>
+        </div>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs"><a href="../../index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Purview Architecture</span></nav>
+        <h1>Microsoft Purview Architecture</h1>
+        <p>Microsoft Purview DLP is built on a unified cloud architecture that integrates with Microsoft 365 services, Microsoft Defender for Endpoint, and Microsoft Defender for Cloud Apps.</p>
+        
+        <h2>Architecture Overview</h2>
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      MICROSOFT PURVIEW DLP ARCHITECTURE                          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│                        ┌───────────────────────────┐                             │
+│                        │   <span class="accent-blue">PURVIEW COMPLIANCE</span>      │                             │
+│                        │       PORTAL              │                             │
+│                        │                           │                             │
+│                        │  • Policy Management      │                             │
+│                        │  • Activity Explorer      │                             │
+│                        │  • Alerts & Reports       │                             │
+│                        └─────────────┬─────────────┘                             │
+│                                      │                                           │
+│                        ┌─────────────▼─────────────┐                             │
+│                        │   <span class="accent-purple">UNIFIED POLICY ENGINE</span>   │                             │
+│                        │                           │                             │
+│                        │  • Sensitive Info Types   │                             │
+│                        │  • Trainable Classifiers  │                             │
+│                        │  • Sensitivity Labels     │                             │
+│                        └─────────────┬─────────────┘                             │
+│                                      │                                           │
+│    ┌─────────────────────────────────┼─────────────────────────────────┐        │
+│    │                                 │                                 │        │
+│    ▼                                 ▼                                 ▼        │
+│ ┌──────────────┐            ┌──────────────┐            ┌──────────────┐        │
+│ │  <span class="accent-green">ENDPOINT</span>    │            │  <span class="accent-orange">M365 APPS</span>   │            │  <span class="accent-cyan">CLOUD APPS</span>  │        │
+│ │              │            │              │            │              │        │
+│ │ MDE Agent    │            │ Exchange     │            │ Defender for │        │
+│ │ Windows/Mac  │            │ SharePoint   │            │ Cloud Apps   │        │
+│ │              │            │ OneDrive     │            │ (MCAS)       │        │
+│ │              │            │ Teams        │            │              │        │
+│ └──────────────┘            └──────────────┘            └──────────────┘        │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+
+        <h2>Key Components</h2>
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">Microsoft 365 Compliance Center<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="accordion-content"><div class="accordion-body">
+              <p>The central management portal at compliance.microsoft.com where administrators create policies, configure sensitive information types, and monitor DLP activity.</p>
+            </div></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">Unified Policy Engine<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="accordion-content"><div class="accordion-body">
+              <p>A single policy engine that evaluates content across all protected locations. Write once, protect everywhere.</p>
+            </div></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">Microsoft Defender for Endpoint<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="accordion-content"><div class="accordion-body">
+              <p>Provides the endpoint sensor for Endpoint DLP. No additional agent deployment required if already using MDE.</p>
+            </div></div>
+          </div>
+        </div>
+
+        <nav class="page-nav">
+          <a href="purview-overview.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Overview</span></a>
+          <a href="purview-endpoint-dlp.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Endpoint DLP</span></a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

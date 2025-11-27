@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Symantec Network DLP including Network Monitor, Network Prevent for Email and Web, and Network Discover for data-at-rest scanning.">
+  <title>Symantec Network DLP | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="symantec-overview.html" class="nav-link" data-product="symantec">Overview</a>
+          <a href="symantec-architecture.html" class="nav-link" data-product="symantec">Architecture</a>
+          <a href="symantec-endpoint.html" class="nav-link" data-product="symantec">Endpoint DLP</a>
+          <a href="symantec-network.html" class="nav-link active" data-product="symantec">Network DLP</a>
+          <a href="symantec-detection.html" class="nav-link" data-product="symantec">Detection Methods</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="symantec-overview.html">Symantec DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Network DLP</span>
+        </nav>
+        
+        <h1>Symantec Network DLP</h1>
+        
+        <p>Symantec Network DLP provides traffic inspection at network boundaries to detect and prevent sensitive data exfiltration via email, web, and other network protocols.</p>
+        
+        <h2 id="components">Network DLP Components</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      SYMANTEC NETWORK DLP COMPONENTS                             │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐             │
+│  │ <span class="accent-cyan">NETWORK MONITOR</span> │    │<span class="accent-orange">NETWORK PREVENT</span>  │    │<span class="accent-green">NETWORK DISCOVER</span>│             │
+│  │                 │    │                 │    │                 │             │
+│  │ Passive         │    │ Inline/Active   │    │ Scanning        │             │
+│  │ monitoring via  │    │ blocking via    │    │ data at rest    │             │
+│  │ TAP/SPAN        │    │ MTA/ICAP        │    │ on servers      │             │
+│  └────────┬────────┘    └────────┬────────┘    └────────┬────────┘             │
+│           │                      │                      │                       │
+│           ▼                      ▼                      ▼                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐        │
+│  │                         PROTOCOLS & TARGETS                          │        │
+│  ├──────────────────┬──────────────────┬──────────────────────────────┤        │
+│  │ <span class="accent-cyan">MONITOR</span>          │ <span class="accent-orange">PREVENT</span>          │ <span class="accent-green">DISCOVER</span>                     │        │
+│  │ • SMTP           │ • SMTP (Email)   │ • File Servers (CIFS/NFS)    │        │
+│  │ • HTTP/HTTPS     │ • HTTP/S (ICAP)  │ • SharePoint                 │        │
+│  │ • FTP            │ • FTP            │ • Exchange                   │        │
+│  │ • IM protocols   │                  │ • Databases (Oracle/SQL)     │        │
+│  │ • Custom TCP     │                  │ • Lotus Notes                │        │
+│  └──────────────────┴──────────────────┴──────────────────────────────┘        │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="network-monitor">Network Monitor</h2>
+        
+        <p>Network Monitor provides passive traffic inspection via network TAP or SPAN port. It detects but does not block sensitive data.</p>
+        
+        <h3>Deployment Architecture</h3>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      NETWORK MONITOR DEPLOYMENT                                  │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│     INTERNET                                                                     │
+│         │                                                                        │
+│         ▼                                                                        │
+│    ┌─────────┐                                                                   │
+│    │Firewall │                                                                   │
+│    └────┬────┘                                                                   │
+│         │                                                                        │
+│         ▼                                                                        │
+│    ┌─────────┐        ┌─────────────────────────────────┐                       │
+│    │  Core   │───────▶│         <span class="accent-cyan">NETWORK TAP</span>             │                       │
+│    │ Switch  │        │  (Copies traffic, no latency)   │                       │
+│    └────┬────┘        └───────────────┬─────────────────┘                       │
+│         │                             │                                          │
+│         ▼                             ▼                                          │
+│    ┌─────────┐                 ┌─────────────────┐                               │
+│    │Internal │                 │ <span class="accent-purple">NETWORK MONITOR</span> │                               │
+│    │ Network │                 │    SERVER       │                               │
+│    └─────────┘                 │                 │                               │
+│                                │ Analyzes copy   │                               │
+│                                │ of traffic      │──────▶ Enforce Server        │
+│                                └─────────────────┘                               │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3>Supported Protocols</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Protocol</th><th>Ports</th><th>Notes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>SMTP</td><td>25, 587</td><td>Email content and attachments</td></tr>
+              <tr><td>HTTP</td><td>80, 8080</td><td>Web uploads, form submissions</td></tr>
+              <tr><td>HTTPS</td><td>443</td><td>Requires SSL inspection</td></tr>
+              <tr><td>FTP</td><td>20, 21</td><td>File transfers</td></tr>
+              <tr><td>IM (various)</td><td>Varies</td><td>AIM, Yahoo, MSN (legacy)</td></tr>
+              <tr><td>Custom TCP</td><td>Configurable</td><td>Any TCP-based protocol</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="network-prevent-email">Network Prevent for Email</h2>
+        
+        <p>Network Prevent for Email integrates with your mail transfer agent (MTA) to block, redirect, or modify emails containing sensitive data.</p>
+        
+        <h3>Integration Options</h3>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Reflection Mode</button>
+            <button class="tab-button" role="tab">MTA Integration</button>
+            <button class="tab-button" role="tab">Forwarding Mode</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h4>Reflection Mode (Recommended)</h4>
+            <p>MTA sends copy of email to Network Prevent; waits for verdict before delivery.</p>
+            
+            <ul>
+              <li>MTA remains authoritative for email routing</li>
+              <li>DLP server returns allow/block/modify decision</li>
+              <li>Supports most MTAs (Exchange, Postfix, Sendmail)</li>
+              <li>Timeout handling prevents mail delays</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>MTA Integration Mode</h4>
+            <p>Network Prevent acts as hop in mail flow.</p>
+            
+            <ul>
+              <li>All email routed through DLP server</li>
+              <li>Direct inspection and modification</li>
+              <li>Requires careful HA planning</li>
+              <li>Single point of failure risk</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Forwarding Mode</h4>
+            <p>BCC/journal copy sent to DLP for monitoring only.</p>
+            
+            <ul>
+              <li>No blocking capability</li>
+              <li>Detection and alerting only</li>
+              <li>Lowest impact deployment</li>
+              <li>Good for initial assessment</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h3>Response Actions</h3>
+        
+        <ul>
+          <li><strong>Block</strong> — Reject email, send NDR to sender</li>
+          <li><strong>Redirect</strong> — Send to quarantine or compliance review</li>
+          <li><strong>Modify</strong> — Remove attachment, add disclaimer</li>
+          <li><strong>Encrypt</strong> — Apply email encryption</li>
+          <li><strong>Tag</strong> — Add header for downstream processing</li>
+        </ul>
+        
+        <h2 id="network-prevent-web">Network Prevent for Web</h2>
+        
+        <p>Network Prevent for Web integrates with web proxies via ICAP (Internet Content Adaptation Protocol) to inspect HTTP/HTTPS uploads.</p>
+        
+        <h3>ICAP Integration</h3>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         ICAP INTEGRATION FLOW                                    │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│    USER                     WEB PROXY                 DLP SERVER                 │
+│      │                          │                          │                     │
+│      │  1. HTTPS POST           │                          │                     │
+│      │  (file upload)           │                          │                     │
+│      │─────────────────────────▶│                          │                     │
+│      │                          │                          │                     │
+│      │                          │  2. ICAP REQMOD          │                     │
+│      │                          │  (send content)          │                     │
+│      │                          │─────────────────────────▶│                     │
+│      │                          │                          │                     │
+│      │                          │                          │  3. Inspect         │
+│      │                          │                          │     content         │
+│      │                          │                          │                     │
+│      │                          │  4. ICAP Response        │                     │
+│      │                          │  (allow/block/modify)    │                     │
+│      │                          │◀─────────────────────────│                     │
+│      │                          │                          │                     │
+│      │  5. Allow or block page  │                          │                     │
+│      │◀─────────────────────────│                          │                     │
+│      │                          │                          │                     │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3>Supported Proxies</h3>
+        
+        <ul>
+          <li>Blue Coat / Symantec ProxySG</li>
+          <li>Squid Proxy</li>
+          <li>McAfee Web Gateway</li>
+          <li>Cisco WSA</li>
+          <li>Zscaler (via ICAP connector)</li>
+          <li>Any ICAP-compliant proxy</li>
+        </ul>
+        
+        <h2 id="network-discover">Network Discover</h2>
+        
+        <p>Network Discover scans data repositories to find sensitive data at rest.</p>
+        
+        <h3>Supported Targets</h3>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Target Type</th><th>Protocol</th><th>Capabilities</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>File Servers</td><td>CIFS/SMB, NFS</td><td>Scan, quarantine, apply rights</td></tr>
+              <tr><td>SharePoint</td><td>Web Services API</td><td>Scan document libraries</td></tr>
+              <tr><td>Exchange</td><td>EWS, MAPI</td><td>Scan mailboxes, public folders</td></tr>
+              <tr><td>Databases</td><td>JDBC/ODBC</td><td>Oracle, SQL Server, MySQL</td></tr>
+              <tr><td>Lotus Notes</td><td>Notes API</td><td>Scan Notes databases</td></tr>
+              <tr><td>Box, O365</td><td>REST API</td><td>Cloud storage scanning</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Scan Scheduling</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Best Practice Schedule</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Initial full scan
+- Schedule during off-hours (weekends)
+- Expect 1-5 GB/hour depending on content
+- May take days for large repositories
+
+# Incremental scans
+- Daily or weekly after initial scan
+- Only scan new/modified files
+- Much faster than full scan
+
+# Targeted scans
+- High-risk locations (HR shares, Finance)
+- More frequent (daily)
+- Smaller scope, faster completion</code></pre>
+        </div>
+        
+        <h2 id="deployment-sizing">Deployment Sizing</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Environment Size</th><th>Users</th><th>Network Monitor</th><th>Network Prevent</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Small</td><td>&lt; 5,000</td><td>1 server</td><td>1 server (email + web)</td></tr>
+              <tr><td>Medium</td><td>5,000 - 25,000</td><td>2 servers</td><td>2 email + 2 web</td></tr>
+              <tr><td>Large</td><td>25,000 - 100,000</td><td>4+ servers</td><td>4+ email + 4+ web (load balanced)</td></tr>
+              <tr><td>Enterprise</td><td>&gt; 100,000</td><td>Distributed deployment</td><td>Regional servers with central management</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Sizing Tip
+          </div>
+          <p>For HTTPS inspection, plan for 30-50% more capacity due to SSL decryption overhead. High IDM/VML usage also increases CPU requirements.</p>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="symantec-endpoint.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Endpoint DLP</span>
+          </a>
+          <a href="symantec-detection.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Detection Methods</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

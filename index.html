@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Comprehensive Data Loss Prevention (DLP) documentation for security engineers. Covers Microsoft Purview, Symantec DLP, Endpoint DLP, and enterprise deployment strategies.">
+  <title>DLP Documentation Hub | Enterprise Data Loss Prevention</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <!-- Mobile Menu Button -->
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="8" cy="8" r="2" fill="#ef4444"/>
+            <circle cx="14" cy="8" r="2" fill="#eab308"/>
+            <circle cx="20" cy="8" r="2" fill="#22c55e"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <div class="search-container" style="padding: 1rem;">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" placeholder="Search docs... (Ctrl+K)">
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Getting Started</div>
+          <a href="index.html" class="nav-link active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Home
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Fundamentals</div>
+          <a href="pages/fundamentals/dlp-fundamentals.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            DLP Fundamentals
+          </a>
+          <a href="pages/fundamentals/data-classification.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            Data Classification
+          </a>
+          <a href="pages/fundamentals/dlp-architecture.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+            DLP Architecture
+          </a>
+          <a href="pages/fundamentals/compliance-frameworks.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Compliance Frameworks
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Microsoft Purview</div>
+          <a href="pages/purview/purview-overview.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            Overview & Licensing
+          </a>
+          <a href="pages/purview/purview-architecture.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            Architecture
+          </a>
+          <a href="pages/purview/purview-endpoint-dlp.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+              <line x1="9" y1="1" x2="9" y2="4"></line>
+              <line x1="15" y1="1" x2="15" y2="4"></line>
+              <line x1="9" y1="20" x2="9" y2="23"></line>
+              <line x1="15" y1="20" x2="15" y2="23"></line>
+            </svg>
+            Endpoint DLP
+          </a>
+          <a href="pages/purview/purview-sensitive-info-types.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            Sensitive Info Types
+          </a>
+          <a href="pages/purview/purview-policies.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            DLP Policies
+          </a>
+          <a href="pages/purview/purview-labels.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              <line x1="7" y1="7" x2="7.01" y2="7"></line>
+            </svg>
+            Sensitivity Labels
+          </a>
+          <a href="pages/operations/dlp-alerts.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            Alerts & Activity Explorer
+          </a>
+          <a href="pages/operations/reporting-metrics.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            Reports
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="pages/symantec/symantec-overview.html" class="nav-link" data-product="symantec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            Overview
+          </a>
+          <a href="pages/symantec/symantec-architecture.html" class="nav-link" data-product="symantec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+            </svg>
+            Architecture
+          </a>
+          <a href="pages/symantec/symantec-endpoint.html" class="nav-link" data-product="symantec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+              <rect x="9" y="9" width="6" height="6"></rect>
+            </svg>
+            Endpoint DLP
+          </a>
+          <a href="pages/symantec/symantec-network.html" class="nav-link" data-product="symantec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+              <line x1="6" y1="6" x2="6.01" y2="6"></line>
+              <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
+            Network DLP
+          </a>
+          <a href="pages/symantec/symantec-detection.html" class="nav-link" data-product="symantec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            Detection Methods
+          </a>
+          <a href="pages/symantec/symantec-policies.html" class="nav-link" data-product="symantec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+            </svg>
+            Policies & Rules
+          </a>
+          <a href="pages/operations/incident-response.html" class="nav-link" data-product="symantec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Incident Management
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Endpoint DLP</div>
+          <a href="pages/endpoint/edlp-concepts.html" class="nav-link" data-product="endpoint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 16v-4"></path>
+              <path d="M12 8h.01"></path>
+            </svg>
+            Concepts
+          </a>
+          <a href="pages/endpoint/edlp-channels.html" class="nav-link" data-product="endpoint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="12" x2="2" y2="12"></line>
+              <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+              <line x1="6" y1="16" x2="6.01" y2="16"></line>
+              <line x1="10" y1="16" x2="10.01" y2="16"></line>
+            </svg>
+            Channels
+          </a>
+          <a href="pages/endpoint/edlp-comparison.html" class="nav-link" data-product="endpoint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            Vendor Comparison
+          </a>
+          <a href="pages/endpoint/edlp-concepts.html" class="nav-link" data-product="endpoint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            </svg>
+            Deployment
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Network DLP</div>
+          <a href="pages/symantec/symantec-network.html" class="nav-link" data-product="network">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+              <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+              <line x1="6" y1="6" x2="6.01" y2="6"></line>
+              <line x1="6" y1="18" x2="6.01" y2="18"></line>
+            </svg>
+            Overview
+          </a>
+          <a href="pages/symantec/symantec-network.html" class="nav-link" data-product="network">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            Email DLP
+          </a>
+          <a href="pages/symantec/symantec-network.html" class="nav-link" data-product="network">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            Web DLP
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Cloud DLP</div>
+          <a href="pages/cloud/cloud-dlp-overview.html" class="nav-link" data-product="cloud">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+            </svg>
+            Overview
+          </a>
+          <a href="pages/cloud/cloud-saas-protection.html" class="nav-link" data-product="cloud">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            SaaS Protection
+          </a>
+          <a href="pages/cloud/cloud-dlp-overview.html" class="nav-link" data-product="cloud">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+              <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+            </svg>
+            IaaS Protection
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Migration</div>
+          <a href="pages/migration/migration-planning.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+            Planning
+          </a>
+          <a href="pages/migration/migration-symantec-to-purview.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+            Symantec → Purview
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Operations</div>
+          <a href="pages/operations/dlp-operations.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            Day-to-Day Ops
+          </a>
+          <a href="pages/operations/incident-response.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Incident Response
+          </a>
+          <a href="pages/operations/incident-response.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            False Positive Mgmt
+          </a>
+          <a href="pages/operations/siem-integration.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            SIEM Integration
+          </a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Troubleshooting</div>
+          <a href="pages/troubleshooting/troubleshooting-overview.html" class="nav-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+            Overview
+          </a>
+          <a href="pages/troubleshooting/troubleshooting-purview.html" class="nav-link" data-product="purview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            Purview Issues
+          </a>
+          <a href="pages/troubleshooting/troubleshooting-symantec.html" class="nav-link" data-product="symantec">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            Symantec Issues
+          </a>
+        </div>
+      </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Enterprise Security Documentation
+          </div>
+          <h1>Data Loss Prevention Documentation Hub</h1>
+          <p class="hero-subtitle">
+            Comprehensive technical reference for DLP administrators, security engineers, and SOC analysts.
+            Covering Microsoft Purview, Symantec DLP, endpoint protection, and migration strategies.
+          </p>
+          <div class="flex gap-md justify-center" style="justify-content: center;">
+            <a href="pages/purview/purview-overview.html" class="btn btn-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="10 8 16 12 10 16 10 8"></polygon>
+              </svg>
+              Get Started with Purview
+            </a>
+            <a href="pages/fundamentals/dlp-fundamentals.html" class="btn btn-secondary">
+              Learn Fundamentals
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      <div class="content-wrapper">
+        <!-- Quick Links -->
+        <div class="quick-links">
+          <a href="pages/purview/purview-endpoint-dlp.html" class="tag purview">Endpoint DLP Setup</a>
+          <a href="pages/migration/migration-symantec-to-purview.html" class="tag">Migration Guide</a>
+          <a href="pages/purview/purview-sensitive-info-types.html" class="tag purview">Sensitive Info Types</a>
+          <a href="pages/endpoint/edlp-comparison.html" class="tag endpoint">Vendor Comparison</a>
+          <a href="pages/operations/incident-response.html" class="tag">Incident Response</a>
+          <a href="pages/troubleshooting/troubleshooting-purview.html" class="tag purview">Troubleshooting</a>
+        </div>
+        
+        <!-- Product Cards -->
+        <h2>DLP Platforms</h2>
+        <div class="card-grid">
+          <div class="card" data-product="purview">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h3>Microsoft Purview DLP</h3>
+            <p>Cloud-native DLP integrated with Microsoft 365. Covers endpoint, Exchange, SharePoint, Teams, and cloud apps with unified policy management.</p>
+            <a href="pages/purview/purview-overview.html" class="card-link text-purview">
+              Explore Purview
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+          
+          <div class="card" data-product="symantec">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+              </svg>
+            </div>
+            <h3>Symantec DLP</h3>
+            <p>Enterprise DLP solution with on-premises Enforce Server, network monitoring, endpoint agents, and advanced detection methods including IDM, EDM, and VML.</p>
+            <a href="pages/symantec/symantec-overview.html" class="card-link text-symantec">
+              Explore Symantec
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+          
+          <div class="card" data-product="endpoint">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                <rect x="9" y="9" width="6" height="6"></rect>
+                <line x1="9" y1="1" x2="9" y2="4"></line>
+                <line x1="15" y1="1" x2="15" y2="4"></line>
+              </svg>
+            </div>
+            <h3>Endpoint DLP</h3>
+            <p>Cross-platform endpoint protection covering USB, cloud storage, email, print, clipboard, and application channels. Compare Purview, Symantec, Trellix, and more.</p>
+            <a href="pages/endpoint/edlp-concepts.html" class="card-link text-endpoint">
+              Explore Endpoint DLP
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Use Cases by Industry -->
+        <h2>Compliance Use Cases</h2>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+            </div>
+            <h3>Healthcare / HIPAA</h3>
+            <p>Protect PHI across endpoints, email, and cloud storage. Implement safeguards for patient data including medical records, insurance information, and clinical notes.</p>
+            <a href="pages/fundamentals/compliance-frameworks.html#hipaa" class="card-link">
+              HIPAA Guidelines
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+          
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                <line x1="1" y1="10" x2="23" y2="10"></line>
+              </svg>
+            </div>
+            <h3>Finance / PCI-DSS</h3>
+            <p>Secure payment card data, financial records, and PII. Meet PCI-DSS requirements for cardholder data protection across all channels.</p>
+            <a href="pages/fundamentals/compliance-frameworks.html#pci" class="card-link">
+              PCI-DSS Guidelines
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+          
+          <div class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h3>Government / PIPEDA</h3>
+            <p>Comply with Canadian privacy regulations and government data handling requirements. Protect citizen data and classified information.</p>
+            <a href="pages/fundamentals/compliance-frameworks.html#pipeda" class="card-link">
+              PIPEDA Guidelines
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Architecture Overview -->
+        <h2>DLP Architecture Overview</h2>
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                           ENTERPRISE DLP ARCHITECTURE                            │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│    ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐  │
+│    │  <span class="accent-green">ENDPOINTS</span>  │     │   <span class="accent-orange">NETWORK</span>   │     │    <span class="accent-cyan">CLOUD</span>    │     │  <span class="accent-purple">DISCOVERY</span> │  │
+│    │             │     │             │     │             │     │             │  │
+│    │ • Laptops   │     │ • Email GW  │     │ • O365      │     │ • File Svrs │  │
+│    │ • Desktops  │     │ • Web Proxy │     │ • Box       │     │ • SharePt   │  │
+│    │ • Servers   │     │ • TAP/SPAN  │     │ • Dropbox   │     │ • Databases │  │
+│    └──────┬──────┘     └──────┬──────┘     └──────┬──────┘     └──────┬──────┘  │
+│           │                   │                   │                   │         │
+│           └───────────────────┴───────────────────┴───────────────────┘         │
+│                                       │                                          │
+│                                       ▼                                          │
+│                        ┌──────────────────────────┐                              │
+│                        │     <span class="accent-blue">DETECTION ENGINE</span>     │                              │
+│                        │                          │                              │
+│                        │  • Regex / Keywords      │                              │
+│                        │  • Document Fingerprint  │                              │
+│                        │  • Exact Data Match      │                              │
+│                        │  • Machine Learning      │                              │
+│                        └────────────┬─────────────┘                              │
+│                                     │                                            │
+│                                     ▼                                            │
+│                        ┌──────────────────────────┐                              │
+│                        │    <span class="accent-blue">POLICY ENGINE</span>         │                              │
+│                        │                          │                              │
+│                        │  • Conditions            │                              │
+│                        │  • Actions               │                              │
+│                        │  • Exceptions            │                              │
+│                        │  • User Notifications    │                              │
+│                        └────────────┬─────────────┘                              │
+│                                     │                                            │
+│                    ┌────────────────┼────────────────┐                           │
+│                    ▼                ▼                ▼                           │
+│             ┌───────────┐    ┌───────────┐    ┌───────────┐                      │
+│             │   ALLOW   │    │   BLOCK   │    │   ALERT   │                      │
+│             │           │    │ + Notify  │    │ + Report  │                      │
+│             └───────────┘    └───────────┘    └───────────┘                      │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <!-- Getting Started Tabs -->
+        <h2>Getting Started</h2>
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab" aria-selected="true">New to DLP</button>
+            <button class="tab-button" role="tab" aria-selected="false">Deploying Purview</button>
+            <button class="tab-button" role="tab" aria-selected="false">Migrating from Symantec</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <div class="callout info">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Recommended Learning Path
+              </div>
+              <p>Start with the fundamentals to understand core DLP concepts before diving into specific platforms.</p>
+            </div>
+            <ol class="steps">
+              <li><strong>Understand DLP Basics</strong> — Learn about data states, classification methods, and why DLP matters. <a href="pages/fundamentals/dlp-fundamentals.html">Read DLP Fundamentals →</a></li>
+              <li><strong>Learn Data Classification</strong> — Understand regex, keywords, fingerprinting, and ML-based detection. <a href="pages/fundamentals/data-classification.html">Read Data Classification →</a></li>
+              <li><strong>Review Architecture Patterns</strong> — See how DLP components work together across endpoints, network, and cloud. <a href="pages/fundamentals/dlp-architecture.html">Read DLP Architecture →</a></li>
+              <li><strong>Map to Compliance</strong> — Connect DLP controls to GDPR, HIPAA, PCI-DSS, and PIPEDA requirements. <a href="pages/fundamentals/compliance-frameworks.html">Read Compliance Frameworks →</a></li>
+            </ol>
+          </div>
+          
+          <div class="tab-panel">
+            <div class="callout tip">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Pro Tip
+              </div>
+              <p>Start with Endpoint DLP in monitor-only mode to understand data flow before enabling blocking actions.</p>
+            </div>
+            <ol class="steps">
+              <li><strong>Verify Licensing</strong> — Ensure you have Microsoft 365 E5/A5/G5 or E5 Compliance add-on. <a href="pages/purview/purview-overview.html#licensing">Check Licensing Requirements →</a></li>
+              <li><strong>Onboard Devices</strong> — Deploy endpoint agents via Intune, GPO, or SCCM. <a href="pages/purview/purview-endpoint-dlp.html#onboarding">Endpoint Onboarding Guide →</a></li>
+              <li><strong>Configure Sensitive Info Types</strong> — Set up built-in and custom classifiers for your data. <a href="pages/purview/purview-sensitive-info-types.html">Configure SITs →</a></li>
+              <li><strong>Create DLP Policies</strong> — Build policies with conditions, actions, and user notifications. <a href="pages/purview/purview-policies.html">Create Policies →</a></li>
+              <li><strong>Monitor with Activity Explorer</strong> — Review detections and tune for false positives. <a href="pages/operations/dlp-alerts.html">Monitor Activity →</a></li>
+            </ol>
+          </div>
+          
+          <div class="tab-panel">
+            <div class="callout warning">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                Important
+              </div>
+              <p>Plan for a coexistence period where both platforms run simultaneously before decommissioning Symantec.</p>
+            </div>
+            <ol class="steps">
+              <li><strong>Inventory Current Policies</strong> — Document all Symantec policies, response rules, and exceptions. <a href="pages/migration/migration-symantec-to-purview.html#inventory">Policy Inventory Guide →</a></li>
+              <li><strong>Map Detection Methods</strong> — Convert DCM, IDM, EDM to Purview equivalents. <a href="pages/migration/migration-symantec-to-purview.html#mapping">Detection Mapping →</a></li>
+              <li><strong>Phased Rollout</strong> — Start with monitor mode, progress to notify, then block. <a href="pages/migration/migration-symantec-to-purview.html#phased">Phased Approach →</a></li>
+              <li><strong>Validate Coverage</strong> — Ensure all critical data types are detected by Purview. <a href="pages/migration/migration-symantec-to-purview.html#validation">Validation Checklist →</a></li>
+              <li><strong>Decommission Symantec</strong> — Remove agents and servers after successful migration. <a href="pages/migration/migration-symantec-to-purview.html#decommission">Decommissioning Guide →</a></li>
+            </ol>
+          </div>
+        </div>
+        
+        <!-- Feature Comparison -->
+        <h2>Platform Quick Comparison</h2>
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th class="text-purview">Microsoft Purview</th>
+                <th class="text-symantec">Symantec DLP</th>
+                <th>Trellix DLP</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Deployment Model</td>
+                <td>Cloud-native (SaaS)</td>
+                <td>On-premises / Cloud (ICDm)</td>
+                <td>On-premises / Cloud</td>
+              </tr>
+              <tr>
+                <td>Endpoint OS Support</td>
+                <td>Windows 10/11, macOS</td>
+                <td>Windows, macOS, Linux</td>
+                <td>Windows, macOS</td>
+              </tr>
+              <tr>
+                <td>Network DLP</td>
+                <td><span class="status-badge partial">Via Defender</span></td>
+                <td><span class="status-badge supported">Native</span></td>
+                <td><span class="status-badge supported">Native</span></td>
+              </tr>
+              <tr>
+                <td>Document Fingerprinting</td>
+                <td><span class="status-badge supported">Supported</span></td>
+                <td><span class="status-badge supported">IDM</span></td>
+                <td><span class="status-badge supported">Supported</span></td>
+              </tr>
+              <tr>
+                <td>Exact Data Match</td>
+                <td><span class="status-badge supported">EDM</span></td>
+                <td><span class="status-badge supported">EDM</span></td>
+                <td><span class="status-badge supported">Supported</span></td>
+              </tr>
+              <tr>
+                <td>ML Classification</td>
+                <td><span class="status-badge supported">Trainable Classifiers</span></td>
+                <td><span class="status-badge supported">VML</span></td>
+                <td><span class="status-badge partial">Limited</span></td>
+              </tr>
+              <tr>
+                <td>M365 Integration</td>
+                <td><span class="status-badge supported">Native</span></td>
+                <td><span class="status-badge partial">Connector</span></td>
+                <td><span class="status-badge partial">Connector</span></td>
+              </tr>
+              <tr>
+                <td>SIEM Integration</td>
+                <td>Sentinel, Splunk</td>
+                <td>Splunk, QRadar, ArcSight</td>
+                <td>Trellix XDR, Splunk</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-center" style="margin-top: var(--space-md);">
+          <a href="pages/endpoint/edlp-comparison.html" class="btn btn-secondary">View Full Comparison →</a>
+        </p>
+        
+        <!-- Footer -->
+        <footer style="margin-top: var(--space-3xl); padding-top: var(--space-xl); border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted);">
+          <p>DLP Documentation Hub — Built for security engineers, by security engineers.</p>
+          <p style="font-size: 0.875rem; margin-top: var(--space-sm);">Last updated: 2024 | <a href="https://github.com" style="color: var(--text-muted);">Contribute on GitHub</a></p>
+        </footer>
+      </div>
+    </main>
+  </div>
+  
+  <script src="js/main.js"></script>
+</body>
+</html>

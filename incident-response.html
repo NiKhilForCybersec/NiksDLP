@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DLP Incident Response | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <div class="sidebar-overlay"></div>
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header"><a href="../../index.html" class="sidebar-logo"><svg viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/></svg>DLP Docs</a></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Operations</div>
+          <a href="dlp-operations.html" class="nav-link">Day-to-Day Ops</a>
+          <a href="incident-response.html" class="nav-link active">Incident Response</a>
+          <a href="dlp-operations.html" class="nav-link">False Positive Mgmt</a>
+        </div>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs"><a href="../../index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Incident Response</span></nav>
+        <h1>DLP Incident Response</h1>
+        <p>When a DLP policy is triggered, a structured incident response process ensures consistent handling, proper documentation, and appropriate remediation.</p>
+        
+        <h2>Incident Response Workflow</h2>
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        DLP INCIDENT RESPONSE WORKFLOW                            │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│    <span class="accent-blue">DETECT</span>          <span class="accent-green">TRIAGE</span>          <span class="accent-orange">INVESTIGATE</span>       <span class="accent-purple">REMEDIATE</span>         <span class="accent-cyan">CLOSE</span>   │
+│    ┌─────┐        ┌─────┐        ┌─────┐         ┌─────┐         ┌─────┐     │
+│    │Alert│───────▶│Assign│───────▶│Review│────────▶│Action│────────▶│Document│ │
+│    │     │        │     │        │     │         │     │         │      │     │
+│    └─────┘        └─────┘        └─────┘         └─────┘         └─────┘     │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2>Triage Criteria</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Severity</th><th>Criteria</th><th>Response Time</th></tr></thead>
+            <tbody>
+              <tr><td><span class="status-badge" style="background: rgba(239, 68, 68, 0.2); color: #ef4444;">Critical</span></td><td>Confirmed data breach, large volume, external recipient</td><td>&lt; 1 hour</td></tr>
+              <tr><td><span class="status-badge" style="background: rgba(249, 115, 22, 0.2); color: #f97316;">High</span></td><td>Sensitive PII/PHI, suspicious pattern, executive involved</td><td>&lt; 4 hours</td></tr>
+              <tr><td><span class="status-badge" style="background: rgba(234, 179, 8, 0.2); color: #eab308;">Medium</span></td><td>Policy violation, internal recipient, single occurrence</td><td>&lt; 24 hours</td></tr>
+              <tr><td><span class="status-badge supported">Low</span></td><td>Minor violation, known business process, likely FP</td><td>&lt; 72 hours</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2>Investigation Steps</h2>
+        <ol class="steps">
+          <li><strong>Review Incident Details</strong><p>Examine detected content, user, timestamp, channel, and matched policy.</p></li>
+          <li><strong>Assess Context</strong><p>Is this a legitimate business process? Is the user authorized? What was the destination?</p></li>
+          <li><strong>Gather Evidence</strong><p>Screenshot incident, export logs, document chain of custody if escalation likely.</p></li>
+          <li><strong>Determine Root Cause</strong><p>User error, malicious intent, process gap, or false positive?</p></li>
+        </ol>
+        
+        <h2>Remediation Actions</h2>
+        <ul>
+          <li><strong>False Positive</strong> — Update detection rules, add exception, close incident</li>
+          <li><strong>User Error</strong> — Provide training, update process documentation</li>
+          <li><strong>Policy Violation</strong> — Manager notification, HR involvement per policy</li>
+          <li><strong>Malicious Activity</strong> — Escalate to security team, legal, HR; preserve evidence</li>
+        </ul>
+        
+        <nav class="page-nav">
+          <a href="dlp-operations.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Day-to-Day Ops</span></a>
+          <a href="dlp-operations.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">False Positive Mgmt</span></a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DLP alert configuration, management, and response including alert policies, severity levels, and notification workflows.">
+  <title>DLP Alerts | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Operations</div>
+          <a href="dlp-operations.html" class="nav-link" data-product="operations">Operations Overview</a>
+          <a href="dlp-alerts.html" class="nav-link active" data-product="operations">DLP Alerts</a>
+          <a href="incident-response.html" class="nav-link" data-product="operations">Incident Response</a>
+          <a href="siem-integration.html" class="nav-link" data-product="operations">SIEM Integration</a>
+          <a href="reporting-metrics.html" class="nav-link" data-product="operations">Reporting & Metrics</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="dlp-operations.html">Operations</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>DLP Alerts</span>
+        </nav>
+        
+        <h1>DLP Alerts Management</h1>
+        
+        <p>DLP alerts notify security teams when policy violations occur. Proper alert configuration prevents alert fatigue while ensuring critical incidents receive attention.</p>
+        
+        <h2 id="alert-flow">Alert Flow Architecture</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                          DLP ALERT LIFECYCLE                                     │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│  │   TRIGGER    │───▶│   GENERATE   │───▶│   NOTIFY     │───▶│   RESPOND    │  │
+│  │              │    │              │    │              │    │              │  │
+│  │ DLP policy   │    │ Alert created│    │ Email/Teams  │    │ Investigate  │  │
+│  │ matches      │    │ in Defender  │    │ notifications│    │ and resolve  │  │
+│  │ content      │    │ portal       │    │ sent         │    │              │  │
+│  └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘  │
+│         │                   │                   │                   │          │
+│         ▼                   ▼                   ▼                   ▼          │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│  │ Rule         │    │ Aggregation  │    │ Routing      │    │ Status       │  │
+│  │ conditions   │    │ settings     │    │ rules        │    │ tracking     │  │
+│  │ • SIT match  │    │ • Single     │    │ • Security   │    │ • New        │  │
+│  │ • Threshold  │    │ • Aggregate  │    │ • Manager    │    │ • In Progress│  │
+│  │ • Severity   │    │ • Time window│    │ • User       │    │ • Resolved   │  │
+│  └──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘  │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="alert-types">Alert Types</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Alert Type</th><th>Trigger</th><th>Default Severity</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Policy Match</strong></td>
+                <td>Content matches DLP rule</td>
+                <td>Based on rule severity</td>
+                <td>Standard DLP detection</td>
+              </tr>
+              <tr>
+                <td><strong>User Override</strong></td>
+                <td>User overrides policy block</td>
+                <td>Medium</td>
+                <td>Monitor override usage</td>
+              </tr>
+              <tr>
+                <td><strong>False Positive Report</strong></td>
+                <td>User reports false positive</td>
+                <td>Low</td>
+                <td>Policy tuning feedback</td>
+              </tr>
+              <tr>
+                <td><strong>High Volume</strong></td>
+                <td>Many matches in short time</td>
+                <td>High</td>
+                <td>Potential data exfiltration</td>
+              </tr>
+              <tr>
+                <td><strong>Repeat Violator</strong></td>
+                <td>Same user, multiple violations</td>
+                <td>Medium-High</td>
+                <td>User behavior concern</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="configuring-alerts">Configuring DLP Alerts</h2>
+        
+        <h3>Alert Settings in DLP Rules</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Configure Alert Generation</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Create DLP rule with alert configuration
+New-DlpComplianceRule -Name "High-Risk PII Detection" `
+    -Policy "Canada PII Protection" `
+    -ContentContainsSensitiveInformation @(
+        @{Name="Canada Social Insurance Number"; minCount="5"; confidenceLevel="High"}
+    ) `
+    -BlockAccess $true `
+    -GenerateAlert $true `
+    -AlertProperties @{
+        AggregationType = "None"  # Single alert per match
+        # AggregationType = "SimpleAggregation"  # Aggregate over time
+        # AggregationTimeWindow = 60  # Minutes for aggregation
+    } `
+    -NotifyUser "LastModifier", "SiteAdmin" `
+    -ReportSeverityLevel "High"
+
+# Update existing rule to enable alerts
+Set-DlpComplianceRule -Identity "Existing Rule" `
+    -GenerateAlert $true `
+    -ReportSeverityLevel "Medium"</code></pre>
+        </div>
+        
+        <h3>Alert Aggregation Options</h3>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">No Aggregation</button>
+            <button class="tab-button" role="tab">Simple Aggregation</button>
+            <button class="tab-button" role="tab">Volume Aggregation</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h4>No Aggregation (Single Alerts)</h4>
+            <p>One alert per policy match. Best for high-severity, low-volume rules.</p>
+            <ul>
+              <li><strong>Pro:</strong> Immediate visibility into each incident</li>
+              <li><strong>Con:</strong> Can cause alert fatigue for high-volume rules</li>
+              <li><strong>Use when:</strong> Critical data types, low expected volume</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Simple Aggregation</h4>
+            <p>Group alerts within a time window into a single alert.</p>
+            <ul>
+              <li><strong>Pro:</strong> Reduces alert volume, shows patterns</li>
+              <li><strong>Con:</strong> Delayed notification for first match</li>
+              <li><strong>Use when:</strong> Medium-severity rules, moderate volume</li>
+            </ul>
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              <pre><code>-AlertProperties @{
+    AggregationType = "SimpleAggregation"
+    AggregationTimeWindow = 60  # Aggregate over 60 minutes
+}</code></pre>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Volume-Based Aggregation</h4>
+            <p>Only alert when match count exceeds threshold in time window.</p>
+            <ul>
+              <li><strong>Pro:</strong> Eliminates low-volume noise</li>
+              <li><strong>Con:</strong> May miss single critical incidents</li>
+              <li><strong>Use when:</strong> Monitoring for bulk data movement</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="severity-levels">Alert Severity Levels</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Severity</th><th>Response Time</th><th>Typical Triggers</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="status-badge" style="background: #ef4444;">High</span></td>
+                <td>&lt; 1 hour</td>
+                <td>Blocked transfers of highly confidential data, bulk exfiltration attempts</td>
+                <td>Immediate SOC response</td>
+              </tr>
+              <tr>
+                <td><span class="status-badge" style="background: #f59e0b;">Medium</span></td>
+                <td>&lt; 4 hours</td>
+                <td>Warned transfers, policy overrides, repeat violations</td>
+                <td>Same-day triage</td>
+              </tr>
+              <tr>
+                <td><span class="status-badge" style="background: #3b82f6;">Low</span></td>
+                <td>&lt; 24 hours</td>
+                <td>Audit-only matches, single low-confidence detections</td>
+                <td>Batch review</td>
+              </tr>
+              <tr>
+                <td><span class="status-badge" style="background: #6b7280;">Informational</span></td>
+                <td>Weekly</td>
+                <td>Policy tips shown, training notifications</td>
+                <td>Trend analysis</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="notifications">Notification Configuration</h2>
+        
+        <h3>Email Notifications</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Configure Email Notifications</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Configure notification recipients
+Set-DlpComplianceRule -Identity "High-Risk Rule" `
+    -NotifyUser "LastModifier", "Owner", "SiteAdmin" `
+    -NotifyUserType "NotifyUser" `
+    -NotifyPolicyTipCustomText "This content contains sensitive data. Review required."
+
+# Add email notification to admin group
+Set-DlpComplianceRule -Identity "High-Risk Rule" `
+    -GenerateIncidentReport $true `
+    -IncidentReportContent "All" `
+    -NotifyEmailCustomText "DLP Alert: Sensitive data detected. Please review immediately."</code></pre>
+        </div>
+        
+        <h3>Microsoft Teams Notifications</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Power Automate - Teams Alert Flow</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Power Automate Flow for Teams DLP Alerts
+
+Trigger: When a new alert is created (Microsoft Defender)
+Filter: Alert provider equals "MDATP" AND Alert category equals "DataLossPrevention"
+
+Actions:
+1. Get alert details
+   - Alert ID: @{triggerOutputs()?['body/id']}
+
+2. Condition: Severity equals "High"
+   
+   If Yes:
+   - Post message to Teams channel
+     Team: Security Operations
+     Channel: DLP Alerts
+     Message: 
+       "🚨 HIGH SEVERITY DLP ALERT
+        
+        User: @{body('Get_alert')?['userStates']?[0]?['userPrincipalName']}
+        Policy: @{body('Get_alert')?['title']}
+        Time: @{body('Get_alert')?['createdDateTime']}
+        
+        [View Alert](https://security.microsoft.com/alerts/@{triggerOutputs()?['body/id']})"
+
+   - Create Planner task for SOC
+     Title: "DLP Alert - @{body('Get_alert')?['title']}"
+     Due: Today + 4 hours</code></pre>
+        </div>
+        
+        <h2 id="alert-management">Managing Alerts</h2>
+        
+        <h3>Alert Dashboard Location</h3>
+        
+        <ul>
+          <li><strong>Microsoft 365 Defender Portal:</strong> security.microsoft.com → Incidents & alerts → Alerts</li>
+          <li><strong>Purview Compliance Portal:</strong> compliance.microsoft.com → Data loss prevention → Alerts</li>
+          <li><strong>Microsoft Sentinel:</strong> If integrated, alerts appear in Sentinel incidents</li>
+        </ul>
+        
+        <h3>Alert Status Workflow</h3>
+        
+        <div class="code-block" data-language="text">
+          <div class="code-header">
+            <span class="code-lang">Alert Status Transitions</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>┌─────────┐    Analyst     ┌─────────────┐    Investigation    ┌──────────┐
+│   NEW   │───────────────▶│ IN PROGRESS │────────────────────▶│ RESOLVED │
+└─────────┘    assigns      └─────────────┘     complete        └──────────┘
+     │                            │                                   │
+     │                            │                                   │
+     │   Auto-resolve             │   Escalate                        │
+     │   (False positive)         │                                   │
+     │                            ▼                                   │
+     │                      ┌───────────┐                             │
+     └─────────────────────▶│ DISMISSED │◀────────────────────────────┘
+                            └───────────┘      False positive confirmed
+                            
+Resolution Classifications:
+• True Positive - Confirmed violation
+• False Positive - Detection error  
+• Benign True Positive - Valid detection, authorized activity
+• Inconclusive - Unable to determine</code></pre>
+        </div>
+        
+        <h3>Bulk Alert Management</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Bulk Alert Operations</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Get all DLP alerts from last 7 days
+Connect-MgGraph -Scopes "SecurityEvents.ReadWrite.All"
+
+$alerts = Get-MgSecurityAlert -Filter "category eq 'DataLossPrevention' and createdDateTime gt $((Get-Date).AddDays(-7).ToString('yyyy-MM-ddTHH:mm:ssZ'))"
+
+# Count by severity
+$alerts | Group-Object severity | Select-Object Name, Count
+
+# Bulk update status (use with caution)
+$lowSeverityAlerts = $alerts | Where-Object { $_.severity -eq "low" -and $_.status -eq "new" }
+
+foreach ($alert in $lowSeverityAlerts) {
+    Update-MgSecurityAlert -AlertId $alert.Id -Status "resolved" -Classification "falsePositive"
+}</code></pre>
+        </div>
+        
+        <h2 id="reducing-noise">Reducing Alert Noise</h2>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Alert Tuning Strategies
+          </div>
+          <ul>
+            <li><strong>Increase confidence levels</strong> — Use High confidence for blocking rules</li>
+            <li><strong>Raise thresholds</strong> — Require multiple matches (e.g., 5+ credit cards)</li>
+            <li><strong>Use aggregation</strong> — Combine related alerts into single notification</li>
+            <li><strong>Add exceptions</strong> — Exclude known-safe locations, users, or processes</li>
+            <li><strong>Tune SITs</strong> — Add keywords to increase accuracy</li>
+            <li><strong>Severity tiering</strong> — Only alert on High severity, audit Medium/Low</li>
+          </ul>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="dlp-operations.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Operations Overview</span>
+          </a>
+          <a href="incident-response.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Incident Response</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

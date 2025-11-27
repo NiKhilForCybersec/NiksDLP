@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Core DLP concepts including data states, protection strategies, and enterprise deployment considerations.">
+  <title>DLP Fundamentals | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Getting Started</div>
+          <a href="../../index.html" class="nav-link">Home</a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Fundamentals</div>
+          <a href="dlp-fundamentals.html" class="nav-link active">DLP Fundamentals</a>
+          <a href="data-classification.html" class="nav-link">Data Classification</a>
+          <a href="dlp-architecture.html" class="nav-link">DLP Architecture</a>
+          <a href="compliance-frameworks.html" class="nav-link">Compliance Frameworks</a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Microsoft Purview</div>
+          <a href="../purview/purview-overview.html" class="nav-link" data-product="purview">Overview & Licensing</a>
+          <a href="../purview/purview-endpoint-dlp.html" class="nav-link" data-product="purview">Endpoint DLP</a>
+          <a href="../purview/purview-policies.html" class="nav-link" data-product="purview">DLP Policies</a>
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="../symantec/symantec-overview.html" class="nav-link" data-product="symantec">Overview</a>
+          <a href="../symantec/symantec-architecture.html" class="nav-link" data-product="symantec">Architecture</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="dlp-fundamentals.html">Fundamentals</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>DLP Fundamentals</span>
+        </nav>
+        
+        <h1>DLP Fundamentals</h1>
+        
+        <p>Data Loss Prevention (DLP) is a strategy and set of technologies designed to detect and prevent potential data breaches or data exfiltration by monitoring, detecting, and blocking sensitive data while in-use, in-motion, and at-rest. This guide covers the core concepts every DLP administrator needs to understand.</p>
+        
+        <h2 id="what-is-dlp">What is DLP?</h2>
+        
+        <p>DLP solutions help organizations protect sensitive information by identifying where critical data resides, monitoring how it's used, and preventing unauthorized sharing or leakage. Modern DLP platforms combine content inspection, contextual analysis, and policy enforcement to provide comprehensive data protection.</p>
+        
+        <div class="callout info">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            Key Insight
+          </div>
+          <p>DLP is not just a product—it's a program. Successful DLP implementations require clear policies, stakeholder buy-in, user education, and continuous tuning to balance security with productivity.</p>
+        </div>
+        
+        <h2 id="data-states">The Three States of Data</h2>
+        
+        <p>Understanding data states is fundamental to DLP because different protection mechanisms apply to each state:</p>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                           THE THREE STATES OF DATA                               │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│    ┌────────────────────┐  ┌────────────────────┐  ┌────────────────────┐       │
+│    │   <span class="accent-green">DATA AT REST</span>     │  │  <span class="accent-orange">DATA IN MOTION</span>   │  │   <span class="accent-cyan">DATA IN USE</span>     │       │
+│    │                    │  │                    │  │                    │       │
+│    │  Stored on:        │  │  Transmitted via:  │  │  Actively used:    │       │
+│    │  • File servers    │  │  • Email           │  │  • Clipboard       │       │
+│    │  • Databases       │  │  • Web uploads     │  │  • Screen capture  │       │
+│    │  • SharePoint      │  │  • FTP/SFTP        │  │  • Print           │       │
+│    │  • Cloud storage   │  │  • USB transfer    │  │  • App access      │       │
+│    │  • Endpoints       │  │  • Network share   │  │  • Memory          │       │
+│    │                    │  │                    │  │                    │       │
+│    │  Protection:       │  │  Protection:       │  │  Protection:       │       │
+│    │  <span class="accent-purple">Discovery scans</span>   │  │  <span class="accent-purple">Network monitor</span>   │  │  <span class="accent-purple">Endpoint agent</span>    │       │
+│    │  <span class="accent-purple">Encryption</span>       │  │  <span class="accent-purple">Email gateway</span>    │  │  <span class="accent-purple">Application ctrl</span>  │       │
+│    │  <span class="accent-purple">Access controls</span>  │  │  <span class="accent-purple">Web proxy</span>        │  │  <span class="accent-purple">Process monitor</span>   │       │
+│    └────────────────────┘  └────────────────────┘  └────────────────────┘       │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3 id="data-at-rest">Data at Rest</h3>
+        
+        <p>Data at rest refers to inactive data stored physically on devices or storage systems. This includes files on servers, records in databases, documents in SharePoint, and archived emails. DLP discovery solutions scan these repositories to find sensitive data, assess risk exposure, and enable remediation actions like quarantine, encryption, or notification.</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Repository Type</th>
+                <th>DLP Approach</th>
+                <th>Common Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>File Servers (CIFS/SMB)</td>
+                <td>Agent-based or network scan</td>
+                <td>Tag, quarantine, encrypt, delete</td>
+              </tr>
+              <tr>
+                <td>Databases (SQL, Oracle)</td>
+                <td>JDBC/ODBC connectors</td>
+                <td>Alert, mask, tokenize</td>
+              </tr>
+              <tr>
+                <td>SharePoint</td>
+                <td>Native API integration</td>
+                <td>Label, restrict, notify owner</td>
+              </tr>
+              <tr>
+                <td>Cloud Storage</td>
+                <td>CASB or API scanning</td>
+                <td>Encrypt, revoke sharing, quarantine</td>
+              </tr>
+              <tr>
+                <td>Email Archives</td>
+                <td>Archive connector</td>
+                <td>Tag, legal hold, delete</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3 id="data-in-motion">Data in Motion</h3>
+        
+        <p>Data in motion (or data in transit) is actively moving between locations—across networks, to cloud services, or between devices. Network DLP solutions inspect traffic at strategic points to detect and block unauthorized data transfers.</p>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            SSL/TLS Consideration
+          </div>
+          <p>With 90%+ of web traffic encrypted, network DLP requires SSL inspection capabilities. This adds complexity around certificate deployment, privacy concerns, and exemptions for sensitive sites (banking, healthcare portals).</p>
+        </div>
+        
+        <p>Common data-in-motion channels include email (SMTP), web uploads (HTTP/HTTPS), FTP transfers, cloud sync applications, and instant messaging. Each channel may require different inspection methods and integration points.</p>
+        
+        <h3 id="data-in-use">Data in Use</h3>
+        
+        <p>Data in use is actively being accessed, processed, or manipulated by users or applications. Endpoint DLP agents monitor these activities at the operating system level to prevent data leakage through copy/paste, printing, screen capture, and application-level transfers.</p>
+        
+        <p>Endpoint DLP provides the most granular control but also requires careful tuning to avoid impacting user productivity. Modern solutions provide contextual policies that adapt based on user risk, device state, and network location.</p>
+        
+        <h2 id="dlp-components">Core DLP Components</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Detection Engine
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>The detection engine identifies sensitive content using multiple methods:</p>
+                <ul>
+                  <li><strong>Regular Expressions (Regex)</strong> — Pattern matching for structured data like credit cards, SSNs, and phone numbers</li>
+                  <li><strong>Keywords and Dictionaries</strong> — Lists of sensitive terms, project names, or classification labels</li>
+                  <li><strong>Document Fingerprinting</strong> — Hash-based matching of source documents or templates</li>
+                  <li><strong>Exact Data Match (EDM)</strong> — Database lookups for specific records (customer lists, employee data)</li>
+                  <li><strong>Machine Learning</strong> — Trainable classifiers for unstructured content (legal documents, financial reports)</li>
+                  <li><strong>File Metadata</strong> — Detection based on file properties, authorship, or modification dates</li>
+                </ul>
+                <p>Effective DLP combines multiple detection methods to reduce false positives while maintaining high detection rates.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Policy Engine
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>The policy engine defines rules for what happens when sensitive data is detected. Policies typically include:</p>
+                <ul>
+                  <li><strong>Conditions</strong> — What triggers the policy (content type, user, location, channel)</li>
+                  <li><strong>Actions</strong> — What to do when triggered (block, encrypt, quarantine, alert)</li>
+                  <li><strong>Exceptions</strong> — Who or what is exempt from the policy (executives, legal team, specific applications)</li>
+                  <li><strong>User Notifications</strong> — How to inform users about policy violations</li>
+                </ul>
+                <p>Policies should start in monitor-only mode before progressing to notify and block actions. This allows for tuning and stakeholder alignment.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Incident Management
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>When policies are triggered, DLP generates incidents for review and remediation:</p>
+                <ul>
+                  <li><strong>Incident Queue</strong> — Centralized view of all DLP events with severity, user, and content details</li>
+                  <li><strong>Workflow Assignment</strong> — Route incidents to appropriate teams based on data type or business unit</li>
+                  <li><strong>Investigation Tools</strong> — View detected content, context, and user activity history</li>
+                  <li><strong>Remediation Actions</strong> — Close as false positive, escalate, or take corrective action</li>
+                  <li><strong>Reporting</strong> — Trend analysis, compliance reports, and executive dashboards</li>
+                </ul>
+                <p>Mature DLP programs integrate incident data with SIEM platforms for correlation with other security events.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Reporting & Analytics
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p>Visibility into DLP effectiveness requires comprehensive reporting:</p>
+                <ul>
+                  <li><strong>Activity Reports</strong> — What data is being accessed, shared, or transferred</li>
+                  <li><strong>Policy Match Reports</strong> — Which rules are triggering and how often</li>
+                  <li><strong>User Risk Reports</strong> — Identify high-risk users based on behavior patterns</li>
+                  <li><strong>Compliance Reports</strong> — Demonstrate regulatory compliance to auditors</li>
+                  <li><strong>Trend Analysis</strong> — Track improvements over time and identify emerging risks</li>
+                </ul>
+                <p>Export DLP logs to SIEM platforms (Splunk, Sentinel, QRadar) for correlation with broader security telemetry.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="deployment-models">Deployment Models</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab" aria-selected="true">On-Premises</button>
+            <button class="tab-button" role="tab" aria-selected="false">Cloud-Native</button>
+            <button class="tab-button" role="tab" aria-selected="false">Hybrid</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>On-Premises DLP</h3>
+            <p>Traditional deployment model with servers, agents, and network appliances hosted in enterprise data centers. Provides maximum control over data residency and inspection points.</p>
+            
+            <div class="card-grid" style="margin-top: 1rem;">
+              <div class="card">
+                <h4 style="color: var(--success); margin-top: 0;">Advantages</h4>
+                <ul>
+                  <li>Full control over data—nothing leaves your network</li>
+                  <li>Custom integrations with legacy systems</li>
+                  <li>No dependency on external services</li>
+                  <li>Meets strict data sovereignty requirements</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h4 style="color: var(--error); margin-top: 0;">Challenges</h4>
+                <ul>
+                  <li>High infrastructure and maintenance costs</li>
+                  <li>Complex upgrades and patching</li>
+                  <li>Limited cloud and remote worker coverage</li>
+                  <li>Scalability constraints</li>
+                </ul>
+              </div>
+            </div>
+            
+            <p><strong>Examples:</strong> Symantec DLP (Enforce Server), Forcepoint DLP, Digital Guardian</p>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Cloud-Native DLP</h3>
+            <p>SaaS-delivered DLP with no on-premises infrastructure. Policies and detection run in vendor cloud with agents reporting to cloud management console.</p>
+            
+            <div class="card-grid" style="margin-top: 1rem;">
+              <div class="card">
+                <h4 style="color: var(--success); margin-top: 0;">Advantages</h4>
+                <ul>
+                  <li>Rapid deployment with no infrastructure</li>
+                  <li>Automatic updates and new features</li>
+                  <li>Native cloud app protection (O365, SaaS)</li>
+                  <li>Scales with your organization</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h4 style="color: var(--error); margin-top: 0;">Challenges</h4>
+                <ul>
+                  <li>Data processed in vendor cloud</li>
+                  <li>Internet connectivity required</li>
+                  <li>Limited customization options</li>
+                  <li>Vendor lock-in concerns</li>
+                </ul>
+              </div>
+            </div>
+            
+            <p><strong>Examples:</strong> Microsoft Purview DLP, Netskope, Zscaler DLP</p>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Hybrid DLP</h3>
+            <p>Combines on-premises and cloud components. On-prem for network inspection and legacy systems; cloud for endpoint management and SaaS protection.</p>
+            
+            <div class="card-grid" style="margin-top: 1rem;">
+              <div class="card">
+                <h4 style="color: var(--success); margin-top: 0;">Advantages</h4>
+                <ul>
+                  <li>Best of both deployment models</li>
+                  <li>Gradual cloud migration path</li>
+                  <li>Covers all data locations</li>
+                  <li>Flexibility for regulatory requirements</li>
+                </ul>
+              </div>
+              <div class="card">
+                <h4 style="color: var(--error); margin-top: 0;">Challenges</h4>
+                <ul>
+                  <li>Complex architecture to manage</li>
+                  <li>Multiple consoles and interfaces</li>
+                  <li>Policy synchronization challenges</li>
+                  <li>Higher total cost</li>
+                </ul>
+              </div>
+            </div>
+            
+            <p><strong>Examples:</strong> Symantec + CloudSOC, Microsoft Purview + on-prem MIP scanner</p>
+          </div>
+        </div>
+        
+        <h2 id="implementation-phases">DLP Implementation Phases</h2>
+        
+        <p>Successful DLP programs follow a phased approach to minimize disruption while building organizational maturity:</p>
+        
+        <ol class="steps">
+          <li>
+            <strong>Discovery & Assessment</strong>
+            <p>Identify where sensitive data exists across the organization. Conduct data discovery scans, classify repositories by risk, and interview business stakeholders about critical data types. Output: Data inventory and risk assessment.</p>
+          </li>
+          <li>
+            <strong>Policy Definition</strong>
+            <p>Define DLP policies aligned with regulatory requirements and business objectives. Prioritize high-risk data types (PII, PHI, PCI) and critical channels. Start with 3-5 policies rather than attempting to address everything at once.</p>
+          </li>
+          <li>
+            <strong>Monitor Mode Deployment</strong>
+            <p>Deploy DLP in monitoring mode with no blocking actions. Collect data on policy matches, false positives, and user behavior patterns. Run for 2-4 weeks minimum to establish baseline.</p>
+          </li>
+          <li>
+            <strong>Tune & Refine</strong>
+            <p>Analyze monitoring data to identify false positives and coverage gaps. Adjust detection rules, add exceptions for legitimate business processes, and refine policy conditions. Iterate until false positive rate is acceptable.</p>
+          </li>
+          <li>
+            <strong>User Notification</strong>
+            <p>Enable policy tips and user notifications for violations. Educate users about DLP policies and acceptable data handling. This phase builds awareness before enforcement begins.</p>
+          </li>
+          <li>
+            <strong>Enforcement</strong>
+            <p>Enable blocking actions for high-confidence policy matches. Start with the most critical data types and expand gradually. Maintain incident review process to catch false positives.</p>
+          </li>
+          <li>
+            <strong>Continuous Improvement</strong>
+            <p>Regularly review policy effectiveness, add new data types, and adapt to changing business needs. Integrate DLP with broader security operations (SIEM, SOAR, user risk scoring).</p>
+          </li>
+        </ol>
+        
+        <h2 id="common-pitfalls">Common DLP Pitfalls</h2>
+        
+        <div class="callout error">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="15" y1="9" x2="9" y2="15"></line>
+              <line x1="9" y1="9" x2="15" y2="15"></line>
+            </svg>
+            Avoid These Mistakes
+          </div>
+          <p>Many DLP implementations fail not due to technology but due to poor planning and change management.</p>
+        </div>
+        
+        <ul>
+          <li><strong>Blocking Too Soon</strong> — Enforcing policies before adequate tuning leads to user frustration and business disruption. Always start in monitor mode.</li>
+          <li><strong>Over-Detection</strong> — Policies that are too broad generate noise and alert fatigue. Focus on specific, high-value data types first.</li>
+          <li><strong>Ignoring False Positives</strong> — Every false positive erodes trust. Allocate time for ongoing tuning and exception management.</li>
+          <li><strong>No Stakeholder Buy-In</strong> — DLP affects business processes. Engage HR, Legal, and business unit leaders early and often.</li>
+          <li><strong>Treating DLP as "Set and Forget"</strong> — Data landscape changes constantly. Establish processes for regular policy review and updates.</li>
+          <li><strong>Inadequate User Communication</strong> — Users need to understand why DLP exists and how to handle policy tips. Invest in awareness training.</li>
+        </ul>
+        
+        <h2 id="success-metrics">Measuring DLP Success</h2>
+        
+        <p>Track these KPIs to demonstrate DLP program value:</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Description</th>
+                <th>Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>False Positive Rate</td>
+                <td>Percentage of alerts that are not true violations</td>
+                <td>&lt; 10%</td>
+              </tr>
+              <tr>
+                <td>Mean Time to Remediate</td>
+                <td>Average time from incident creation to resolution</td>
+                <td>&lt; 24 hours</td>
+              </tr>
+              <tr>
+                <td>Policy Coverage</td>
+                <td>Percentage of critical data types with active policies</td>
+                <td>&gt; 90%</td>
+              </tr>
+              <tr>
+                <td>Endpoint Coverage</td>
+                <td>Percentage of endpoints with DLP agents installed</td>
+                <td>&gt; 95%</td>
+              </tr>
+              <tr>
+                <td>Incidents Blocked</td>
+                <td>Count of prevented data exfiltration attempts</td>
+                <td>Trending down</td>
+              </tr>
+              <tr>
+                <td>User Compliance</td>
+                <td>Percentage of users with no violations in period</td>
+                <td>&gt; 95%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <!-- Page Navigation -->
+        <nav class="page-nav">
+          <a href="../../index.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Home</span>
+          </a>
+          <a href="data-classification.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Data Classification</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

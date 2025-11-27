@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <div class="sidebar-overlay"></div>
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header"><a href="../../index.html" class="sidebar-logo"><svg viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/></svg>DLP Docs</a></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Endpoint DLP</div>
+          <a href="edlp-concepts.html" class="nav-link active" data-product="endpoint">Concepts</a>
+          <a href="edlp-channels.html" class="nav-link" data-product="endpoint">Channels</a>
+          <a href="edlp-comparison.html" class="nav-link" data-product="endpoint">Vendor Comparison</a>
+          <a href="edlp-comparison.html" class="nav-link" data-product="endpoint">Deployment</a>
+        </div>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs"><a href="../../index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
+        <h1>Endpoint DLP Concepts</h1>
+        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        
+        <h2>Why Endpoint DLP?</h2>
+        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
+        <ul>
+          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
+          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
+          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
+          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
+          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
+        </ul>
+        
+        <h2>How Endpoint DLP Works</h2>
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      ENDPOINT DLP OPERATION FLOW                                 │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
+│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
+│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
+│    │ file to USB │        │ hooks file  │        │ engine runs │               │
+│    │             │        │ system ops  │        │ SITs/rules  │               │
+│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
+│                                                         │                       │
+│    4. POLICY EVAL         5. ACTION                    │                       │
+│    ┌─────────────┐        ┌─────────────┐              │                       │
+│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
+│    │ Check rules │───────▶│ response    │                                      │
+│    └─────────────┘        │ (block/warn)│                                      │
+│                           └─────────────┘                                      │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2>Key Components</h2>
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="accordion-content"><div class="accordion-body">
+              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
+            </div></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="accordion-content"><div class="accordion-body">
+              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
+            </div></div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+            <div class="accordion-content"><div class="accordion-body">
+              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
+            </div></div>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="../../index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
+          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

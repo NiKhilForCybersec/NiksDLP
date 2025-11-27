@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Symantec DLP architecture including Enforce Server, Detection Servers, Endpoint Agents, and Oracle database backend.">
+  <title>Symantec DLP Architecture | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Symantec DLP</div>
+          <a href="symantec-overview.html" class="nav-link" data-product="symantec">Overview</a>
+          <a href="symantec-architecture.html" class="nav-link active" data-product="symantec">Architecture</a>
+          <a href="symantec-endpoint.html" class="nav-link" data-product="symantec">Endpoint DLP</a>
+          <a href="symantec-network.html" class="nav-link" data-product="symantec">Network DLP</a>
+          <a href="symantec-detection.html" class="nav-link" data-product="symantec">Detection Methods</a>
+          <a href="symantec-policies.html" class="nav-link" data-product="symantec">Policies & Rules</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="symantec-overview.html">Symantec DLP</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Architecture</span>
+        </nav>
+        
+        <h1>Symantec DLP Architecture</h1>
+        
+        <p>Symantec DLP uses a multi-tier architecture with centralized policy management (Enforce Server), distributed detection (Detection Servers), and endpoint agents. Understanding this architecture is essential for deployment planning, troubleshooting, and migration.</p>
+        
+        <h2 id="architecture-overview">Architecture Overview</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        SYMANTEC DLP ARCHITECTURE                                 │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│                         ┌─────────────────────────┐                              │
+│                         │    <span class="accent-purple">ENFORCE SERVER</span>       │                              │
+│                         │                         │                              │
+│                         │  • Web Console (UI)     │                              │
+│                         │  • Policy Engine        │                              │
+│                         │  • Incident Manager     │                              │
+│                         │  • Reporting Engine     │                              │
+│                         │  • Agent Management     │                              │
+│                         └───────────┬─────────────┘                              │
+│                                     │                                            │
+│                         ┌───────────┴───────────┐                                │
+│                         │    <span class="accent-orange">ORACLE DATABASE</span>     │                                │
+│                         │                       │                                │
+│                         │  • Policies           │                                │
+│                         │  • Incidents          │                                │
+│                         │  • Configuration      │                                │
+│                         │  • Audit Logs         │                                │
+│                         └───────────┬───────────┘                                │
+│                                     │                                            │
+│         ┌───────────────────────────┼───────────────────────────┐                │
+│         │                           │                           │                │
+│         ▼                           ▼                           ▼                │
+│  ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐          │
+│  │ <span class="accent-green">NETWORK SERVERS</span> │      │ <span class="accent-cyan">DISCOVER SERVERS</span>│      │ <span class="accent-blue">ENDPOINT AGENTS</span> │          │
+│  │                 │      │                 │      │                 │          │
+│  │ • Monitor       │      │ • File Server   │      │ • Windows       │          │
+│  │ • Prevent Email │      │ • SharePoint    │      │ • macOS         │          │
+│  │ • Prevent Web   │      │ • Database      │      │ • Linux         │          │
+│  │ • ICAP          │      │ • Exchange      │      │                 │          │
+│  └────────┬────────┘      └────────┬────────┘      └────────┬────────┘          │
+│           │                        │                        │                   │
+│           ▼                        ▼                        ▼                   │
+│  ┌─────────────────────────────────────────────────────────────────────┐        │
+│  │                        DATA SOURCES                                  │        │
+│  │  ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐  │        │
+│  │  │ Email  │ │  Web   │ │  FTP   │ │ Files  │ │Database│ │Endpoint│  │        │
+│  │  │ SMTP   │ │HTTP/S  │ │        │ │ CIFS   │ │ Oracle │ │ USB/   │  │        │
+│  │  │        │ │ ICAP   │ │        │ │ NFS    │ │ SQL    │ │ Print  │  │        │
+│  │  └────────┘ └────────┘ └────────┘ └────────┘ └────────┘ └────────┘  │        │
+│  └─────────────────────────────────────────────────────────────────────┘        │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="enforce-server">Enforce Server</h2>
+        
+        <p>The Enforce Server is the central management platform for Symantec DLP. It hosts the web console, policy engine, and incident management system.</p>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Core Components
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ul>
+                  <li><strong>Enforce Console</strong> — Web-based administration interface (HTTPS on port 443)</li>
+                  <li><strong>Enforce Manager</strong> — Core service managing policies and incidents</li>
+                  <li><strong>Detection Engine</strong> — Processes content from detection servers and agents</li>
+                  <li><strong>Incident Workflow</strong> — Manages incident lifecycle, assignments, remediation</li>
+                  <li><strong>Reporting Engine</strong> — Generates dashboards and scheduled reports</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              System Requirements
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="table-wrapper">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Component</th>
+                        <th>Minimum</th>
+                        <th>Recommended</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Operating System</td>
+                        <td>Windows Server 2016</td>
+                        <td>Windows Server 2019/2022</td>
+                      </tr>
+                      <tr>
+                        <td>CPU</td>
+                        <td>8 cores</td>
+                        <td>16+ cores</td>
+                      </tr>
+                      <tr>
+                        <td>RAM</td>
+                        <td>32 GB</td>
+                        <td>64 GB+</td>
+                      </tr>
+                      <tr>
+                        <td>Disk</td>
+                        <td>500 GB SSD</td>
+                        <td>1 TB+ SSD</td>
+                      </tr>
+                      <tr>
+                        <td>Database</td>
+                        <td>Oracle 12c</td>
+                        <td>Oracle 19c</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Key Services & Ports
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="text">
+                  <div class="code-header">
+                    <span class="code-lang">Network Ports</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Enforce Server Ports
+443/TCP   - Web Console (HTTPS)
+8443/TCP  - Detection Server communication
+8100/TCP  - Agent communication (legacy)
+8200/TCP  - Agent communication (current)
+1521/TCP  - Oracle Database connection
+
+# Windows Services
+SymantecDLPEnforceServer    - Main Enforce service
+SymantecDLPManager          - Management service
+SymantecDLPDetectionServer  - Local detection (if co-located)</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="detection-servers">Detection Servers</h2>
+        
+        <p>Detection Servers perform content inspection for network traffic and data-at-rest scanning. They communicate with the Enforce Server to receive policies and send incidents.</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Server Type</th>
+                <th>Function</th>
+                <th>Deployment Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Network Monitor</strong></td>
+                <td>Passive traffic inspection via TAP/SPAN port</td>
+                <td>Network core, data center</td>
+              </tr>
+              <tr>
+                <td><strong>Network Prevent for Email</strong></td>
+                <td>Inline SMTP inspection, block/redirect</td>
+                <td>MTA integration point</td>
+              </tr>
+              <tr>
+                <td><strong>Network Prevent for Web</strong></td>
+                <td>ICAP integration with web proxy</td>
+                <td>Proxy farm</td>
+              </tr>
+              <tr>
+                <td><strong>Network Discover</strong></td>
+                <td>File server, SharePoint, database scanning</td>
+                <td>Near storage infrastructure</td>
+              </tr>
+              <tr>
+                <td><strong>Network Protect</strong></td>
+                <td>Automated remediation (quarantine, encrypt)</td>
+                <td>Co-located with Discover</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Single-Tier vs. Two-Tier Detection</h3>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    DETECTION SERVER ARCHITECTURES                                │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  <span class="accent-green">SINGLE-TIER</span> (Small deployments)        <span class="accent-purple">TWO-TIER</span> (Large deployments)           │
+│                                                                                  │
+│  ┌─────────────────────┐               ┌─────────────────────┐                  │
+│  │  Detection Server   │               │  Detection Server   │                  │
+│  │                     │               │     (Indexer)       │                  │
+│  │  • Detection        │               │                     │                  │
+│  │  • Indexing         │               │  • Indexing only    │                  │
+│  │  • All-in-one       │               │  • IDM/EDM storage  │                  │
+│  └─────────────────────┘               └──────────┬──────────┘                  │
+│           │                                       │                             │
+│           ▼                                       ▼                             │
+│  ┌─────────────────────┐               ┌─────────────────────┐                  │
+│  │   Enforce Server    │               │  Detection Server   │                  │
+│  │                     │               │    (Detector)       │                  │
+│  │                     │               │                     │                  │
+│  │                     │               │  • Content scanning │                  │
+│  └─────────────────────┘               │  • Multiple servers │                  │
+│                                        │  • Load balanced    │                  │
+│                                        └──────────┬──────────┘                  │
+│  Best for:                                        │                             │
+│  • < 5,000 users                                  ▼                             │
+│  • Low incident volume                  ┌─────────────────────┐                 │
+│  • Simple deployments                   │   Enforce Server    │                 │
+│                                         └─────────────────────┘                 │
+│                                                                                  │
+│                                         Best for:                               │
+│                                         • > 5,000 users                         │
+│                                         • High incident volume                  │
+│                                         • IDM/EDM heavy use                     │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="endpoint-architecture">Endpoint Agent Architecture</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      ENDPOINT AGENT ARCHITECTURE                                 │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                         ENDPOINT DEVICE                                  │    │
+│  │                                                                          │    │
+│  │  ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐      │    │
+│  │  │  <span class="accent-blue">DLP Agent</span>      │    │  <span class="accent-green">File System</span>    │    │  <span class="accent-orange">Applications</span>  │      │    │
+│  │  │                 │    │   Filter        │    │   Monitors      │      │    │
+│  │  │  • Policy cache │◄──►│                 │◄──►│                 │      │    │
+│  │  │  • Detection    │    │  • File access  │    │  • Outlook      │      │    │
+│  │  │  • Response     │    │  • Copy/Move    │    │  • Browser      │      │    │
+│  │  │  • Reporting    │    │  • USB monitor  │    │  • IM clients   │      │    │
+│  │  └────────┬────────┘    └─────────────────┘    └─────────────────┘      │    │
+│  │           │                                                              │    │
+│  └───────────┼──────────────────────────────────────────────────────────────┘    │
+│              │                                                                   │
+│              │ HTTPS (8200)                                                      │
+│              ▼                                                                   │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                       ENFORCE SERVER                                     │    │
+│  │                                                                          │    │
+│  │  • Policy distribution          • Agent status monitoring                │    │
+│  │  • Incident collection          • Remote agent configuration             │    │
+│  │  • Agent updates                • Endpoint Discover scans                │    │
+│  │                                                                          │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h3>Agent Communication Modes</h3>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Online Mode</button>
+            <button class="tab-button" role="tab">Offline Mode</button>
+            <button class="tab-button" role="tab">Disconnected Mode</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h4>Online Mode</h4>
+            <p>Agent has direct connectivity to Enforce Server:</p>
+            <ul>
+              <li>Real-time policy updates</li>
+              <li>Immediate incident reporting</li>
+              <li>Full detection capabilities</li>
+              <li>IDM/EDM fingerprint access</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Offline Mode</h4>
+            <p>Agent operates with cached policies when temporarily disconnected:</p>
+            <ul>
+              <li>Continues enforcement with cached policies</li>
+              <li>Queues incidents for later upload</li>
+              <li>Limited to cached IDM/EDM fingerprints</li>
+              <li>Reconnects automatically when network available</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h4>Disconnected Mode</h4>
+            <p>For air-gapped or permanently offline endpoints:</p>
+            <ul>
+              <li>Pre-configured policy package</li>
+              <li>Local incident storage</li>
+              <li>Manual incident export/import</li>
+              <li>No automatic updates</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="database">Oracle Database Schema</h2>
+        
+        <p>The Oracle database stores all DLP configuration, policies, incidents, and audit data.</p>
+        
+        <div class="code-block" data-language="sql">
+          <div class="code-header">
+            <span class="code-lang">SQL - Key Database Tables</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code>-- Key tables in Symantec DLP database
+
+-- Policy tables
+POLICIES                  -- Policy definitions
+POLICY_GROUPS             -- Policy group hierarchy
+RULES                     -- Detection rules within policies
+RESPONSE_RULES            -- Response actions for policy matches
+
+-- Incident tables
+INCIDENTS                 -- All DLP incidents
+INCIDENT_MESSAGES         -- Incident details and content
+INCIDENT_ATTACHMENTS      -- Captured attachments
+INCIDENT_HISTORY          -- Incident workflow history
+
+-- Agent tables
+AGENTS                    -- Registered endpoint agents
+AGENT_STATUS              -- Agent health and status
+AGENT_GROUPS              -- Agent group membership
+
+-- Detection tables
+IDM_PROFILES              -- Indexed Document Matching profiles
+EDM_PROFILES              -- Exact Data Match profiles
+VML_PROFILES              -- Vector Machine Learning profiles
+
+-- User/Role tables
+USERS                     -- DLP console users
+ROLES                     -- Permission roles
+USER_ROLES                -- User-role assignments
+
+-- Example: Query active policies
+SELECT 
+    p.policy_id,
+    p.policy_name,
+    pg.policy_group_name,
+    COUNT(r.rule_id) as rule_count
+FROM policies p
+JOIN policy_groups pg ON p.policy_group_id = pg.policy_group_id
+LEFT JOIN rules r ON p.policy_id = r.policy_id
+WHERE p.is_enabled = 1 AND p.is_deleted = 0
+GROUP BY p.policy_id, p.policy_name, pg.policy_group_name
+ORDER BY pg.policy_group_name, p.policy_name;</code></pre>
+        </div>
+        
+        <div class="callout warning">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Database Warning
+          </div>
+          <p>Direct database modifications are not supported and may corrupt your DLP installation. Always use the Enforce Console or supported APIs for configuration changes.</p>
+        </div>
+        
+        <h2 id="high-availability">High Availability Options</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Component</th>
+                <th>HA Method</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Enforce Server</td>
+                <td>Active/Passive cluster</td>
+                <td>Windows Failover Clustering or VMware HA</td>
+              </tr>
+              <tr>
+                <td>Oracle Database</td>
+                <td>Oracle RAC or Data Guard</td>
+                <td>Requires additional Oracle licensing</td>
+              </tr>
+              <tr>
+                <td>Detection Servers</td>
+                <td>Multiple servers + load balancing</td>
+                <td>Scale horizontally for throughput</td>
+              </tr>
+              <tr>
+                <td>Network Prevent</td>
+                <td>Active/Active with load balancer</td>
+                <td>MTA or ICAP load balancing</td>
+              </tr>
+              <tr>
+                <td>Endpoint Agents</td>
+                <td>Offline mode resilience</td>
+                <td>Continue with cached policies</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="symantec-overview.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Overview</span>
+          </a>
+          <a href="symantec-endpoint.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Endpoint DLP</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

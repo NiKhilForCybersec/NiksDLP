@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="KQL query library for Microsoft Purview DLP, Microsoft Sentinel, and Microsoft Defender including incident analysis, user behavior, and compliance queries.">
+  <title>KQL Query Library | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Reference</div>
+          <a href="kql-library.html" class="nav-link active" data-product="purview">KQL Query Library</a>
+          <a href="regex-patterns.html" class="nav-link" data-product="reference">Regex Patterns</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>KQL Query Library</span>
+        </nav>
+        
+        <h1>KQL Query Library</h1>
+        
+        <p>Ready-to-use KQL queries for Microsoft Purview DLP, Microsoft Sentinel, and Microsoft Defender. Copy and customize these queries for your environment.</p>
+        
+        <h2 id="incident-analysis">Incident Analysis Queries</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              DLP Incidents Overview (24 Hours)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// DLP Incidents Summary - Last 24 Hours
+CloudAppEvents
+| where Timestamp > ago(24h)
+| where ActionType has "Dlp"
+| extend 
+    Severity = tostring(RawEventData.Severity),
+    PolicyName = tostring(RawEventData.PolicyName),
+    ActionTaken = tostring(RawEventData.ActionTaken)
+| summarize 
+    TotalIncidents = count(),
+    HighSeverity = countif(Severity == "High"),
+    MediumSeverity = countif(Severity == "Medium"),
+    LowSeverity = countif(Severity == "Low"),
+    Blocked = countif(ActionTaken == "Block"),
+    UniqueUsers = dcount(AccountUpn),
+    UniquePolicies = dcount(PolicyName)
+| project 
+    TotalIncidents,
+    HighSeverity,
+    MediumSeverity,
+    LowSeverity,
+    Blocked,
+    UniqueUsers,
+    UniquePolicies</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              High Severity Incidents - Detailed
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// High Severity DLP Incidents for SOC Investigation
+CloudAppEvents
+| where Timestamp > ago(7d)
+| where ActionType has "Dlp"
+| extend 
+    Severity = tostring(RawEventData.Severity),
+    PolicyName = tostring(RawEventData.PolicyName),
+    SensitiveInfoTypes = tostring(RawEventData.SensitiveInfoTypeData),
+    ActionTaken = tostring(RawEventData.ActionTaken),
+    FileName = tostring(RawEventData.FileName),
+    FileSize = tolong(RawEventData.FileSize)
+| where Severity == "High"
+| project 
+    Timestamp,
+    User = AccountUpn,
+    PolicyName,
+    SensitiveInfoTypes,
+    ActionTaken,
+    FileName,
+    FileSize,
+    Application,
+    IPAddress,
+    DeviceType
+| order by Timestamp desc
+| take 100</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Incidents by Policy and Trend
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// DLP Policy Incident Trend - Last 30 Days
+CloudAppEvents
+| where Timestamp > ago(30d)
+| where ActionType has "Dlp"
+| extend PolicyName = tostring(RawEventData.PolicyName)
+| summarize Incidents = count() by PolicyName, bin(Timestamp, 1d)
+| order by Timestamp asc
+| render timechart</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="endpoint-dlp">Endpoint DLP Queries</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              USB/Removable Media Activity
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// Endpoint DLP - USB and Removable Media Events
+DeviceEvents
+| where Timestamp > ago(7d)
+| where ActionType in ("UsbDriveMount", "UsbDriveDismount", 
+                       "FileCopiedToRemovableMedia", "RemovableStoragePolicyTriggered")
+| extend 
+    DLPAction = tostring(AdditionalFields.DlpAction),
+    PolicyMatched = tostring(AdditionalFields.PolicyMatched),
+    FileName = tostring(AdditionalFields.FileName),
+    DeviceId = tostring(AdditionalFields.RemovableStorageDeviceId)
+| summarize 
+    Events = count(),
+    UniqueDevices = dcount(DeviceId),
+    PolicyMatches = countif(isnotempty(PolicyMatched))
+    by User = InitiatingProcessAccountName, 
+       DeviceName, 
+       ActionType
+| order by Events desc</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Print Activity with DLP Triggers
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// Endpoint DLP - Print Events
+DeviceEvents
+| where Timestamp > ago(7d)
+| where ActionType == "PrintJobEvent"
+| extend 
+    PrinterName = tostring(AdditionalFields.PrinterName),
+    FileName = tostring(AdditionalFields.FileName),
+    DLPPolicyTriggered = tostring(AdditionalFields.DlpPolicyMatched),
+    DLPAction = tostring(AdditionalFields.DlpAction)
+| where isnotempty(DLPPolicyTriggered)
+| project 
+    Timestamp,
+    User = InitiatingProcessAccountName,
+    DeviceName,
+    FileName,
+    PrinterName,
+    DLPPolicyTriggered,
+    DLPAction
+| order by Timestamp desc</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Cloud Upload Monitoring
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// Endpoint DLP - Browser Upload Events
+DeviceEvents
+| where Timestamp > ago(24h)
+| where ActionType in ("BrowserFileUpload", "CloudSyncFileUpload")
+| extend 
+    TargetDomain = tostring(AdditionalFields.TargetDomain),
+    FileName = tostring(AdditionalFields.FileName),
+    FileSize = tolong(AdditionalFields.FileSize),
+    DLPAction = tostring(AdditionalFields.DlpAction),
+    PolicyMatched = tostring(AdditionalFields.PolicyMatched)
+| summarize 
+    Uploads = count(),
+    TotalSizeMB = round(sum(FileSize) / 1048576.0, 2),
+    DLPBlocks = countif(DLPAction == "Block")
+    by User = InitiatingProcessAccountName, 
+       TargetDomain
+| order by TotalSizeMB desc</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="user-behavior">User Behavior Queries</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Top DLP Violators (30 Days)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// Top DLP Violators with Risk Score
+CloudAppEvents
+| where Timestamp > ago(30d)
+| where ActionType has "Dlp"
+| extend 
+    Severity = tostring(RawEventData.Severity),
+    ActionTaken = tostring(RawEventData.ActionTaken)
+| summarize 
+    TotalIncidents = count(),
+    HighSeverity = countif(Severity == "High"),
+    MediumSeverity = countif(Severity == "Medium"),
+    BlockedActions = countif(ActionTaken == "Block"),
+    FirstSeen = min(Timestamp),
+    LastSeen = max(Timestamp)
+    by User = AccountUpn
+| extend 
+    RiskScore = (HighSeverity * 10) + (MediumSeverity * 3) + TotalIncidents,
+    ActiveDays = datetime_diff('day', LastSeen, FirstSeen) + 1
+| where TotalIncidents >= 3
+| order by RiskScore desc
+| take 25
+| project 
+    User,
+    TotalIncidents,
+    HighSeverity,
+    MediumSeverity,
+    BlockedActions,
+    RiskScore,
+    ActiveDays,
+    LastSeen</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              User Activity Timeline
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// User DLP Activity Timeline (for investigation)
+let targetUser = "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7c090f190e3c1f13110c1d1205521f1311">[email&#160;protected]</a>";
+//
+CloudAppEvents
+| where Timestamp > ago(30d)
+| where AccountUpn =~ targetUser
+| where ActionType has "Dlp"
+| extend 
+    Severity = tostring(RawEventData.Severity),
+    PolicyName = tostring(RawEventData.PolicyName),
+    ActionTaken = tostring(RawEventData.ActionTaken),
+    FileName = tostring(RawEventData.FileName),
+    SITs = tostring(RawEventData.SensitiveInfoTypeData)
+| project 
+    Timestamp,
+    PolicyName,
+    Severity,
+    ActionTaken,
+    FileName,
+    SITs,
+    Application,
+    IPAddress
+| order by Timestamp desc</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Anomalous User Behavior Detection
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// Detect users with sudden spike in DLP incidents
+let baseline_period = ago(30d)..ago(7d);
+let current_period = ago(7d)..now();
+//
+let baseline = CloudAppEvents
+| where Timestamp between (baseline_period)
+| where ActionType has "Dlp"
+| summarize BaselineAvg = count() / 23.0 by User = AccountUpn;  // 23 days baseline
+//
+let current = CloudAppEvents
+| where Timestamp between (current_period)
+| where ActionType has "Dlp"
+| summarize CurrentCount = count() by User = AccountUpn;
+//
+current
+| join kind=leftouter baseline on User
+| extend 
+    BaselineAvg = coalesce(BaselineAvg, 0.0),
+    Spike = iff(BaselineAvg > 0, CurrentCount / BaselineAvg, CurrentCount * 1.0)
+| where Spike > 3 or (BaselineAvg == 0 and CurrentCount > 5)  // 3x spike or new violator
+| project 
+    User,
+    CurrentWeekIncidents = CurrentCount,
+    BaselineWeeklyAvg = round(BaselineAvg * 7, 1),
+    SpikeMultiplier = round(Spike, 1)
+| order by CurrentWeekIncidents desc</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="sensitive-data">Sensitive Data Detection Queries</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Sensitive Info Types Distribution
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// Sensitive Information Types - Detection Distribution
+CloudAppEvents
+| where Timestamp > ago(30d)
+| where ActionType has "Dlp"
+| extend SITs = tostring(RawEventData.SensitiveInfoTypeData)
+| where isnotempty(SITs)
+| mv-expand SIT = parse_json(SITs)
+| extend 
+    SITName = tostring(SIT.Name),
+    SITCount = toint(SIT.Count),
+    Confidence = tostring(SIT.Confidence)
+| summarize 
+    Detections = count(),
+    TotalMatches = sum(SITCount),
+    AvgPerFile = round(avg(SITCount), 1),
+    UniqueFiles = dcount(tostring(RawEventData.FileName))
+    by SITName
+| order by Detections desc
+| take 20</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Canadian PII Detection (SIN Focus)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// Canadian SIN Detection Analysis
+CloudAppEvents
+| where Timestamp > ago(30d)
+| where ActionType has "Dlp"
+| extend SITs = tostring(RawEventData.SensitiveInfoTypeData)
+| where SITs has "Canada Social Insurance Number" 
+     or SITs has "Canadian SIN"
+| extend 
+    ActionTaken = tostring(RawEventData.ActionTaken),
+    FileName = tostring(RawEventData.FileName),
+    Severity = tostring(RawEventData.Severity)
+| summarize 
+    SINDetections = count(),
+    Blocked = countif(ActionTaken == "Block"),
+    HighSeverity = countif(Severity == "High"),
+    UniqueFiles = dcount(FileName),
+    UniqueUsers = dcount(AccountUpn)
+    by bin(Timestamp, 1d)
+| order by Timestamp asc
+| render timechart</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="external-sharing">External Sharing Queries</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Sensitive Files Shared Externally
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// Files with Sensitivity Labels Shared Externally
+CloudAppEvents
+| where Timestamp > ago(7d)
+| where ActionType in ("FileSharedExternally", "SharingLinkCreated", 
+                       "AnonymousLinkCreated")
+| extend 
+    FileName = tostring(RawEventData.FileName),
+    SensitivityLabel = tostring(RawEventData.SensitivityLabelId),
+    SharedWith = tostring(RawEventData.TargetUserOrGroupName),
+    SharingType = tostring(RawEventData.SharingType)
+| where isnotempty(SensitivityLabel)
+| project 
+    Timestamp,
+    User = AccountUpn,
+    FileName,
+    SensitivityLabel,
+    SharedWith,
+    SharingType,
+    Application
+| order by Timestamp desc</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="analytics-rules">Sentinel Analytics Rule Templates</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Multiple High-Severity DLP Alerts
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL - Analytics Rule</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// ANALYTICS RULE: Multiple High-Severity DLP Alerts from Single User
+// Triggers when user has 5+ high-severity DLP incidents in 1 hour
+// Severity: High
+// Frequency: 15 minutes
+// Lookback: 1 hour
+
+CloudAppEvents
+| where Timestamp > ago(1h)
+| where ActionType has "Dlp"
+| extend Severity = tostring(RawEventData.Severity)
+| where Severity == "High"
+| summarize 
+    AlertCount = count(),
+    Policies = make_set(tostring(RawEventData.PolicyName)),
+    FirstAlert = min(Timestamp),
+    LastAlert = max(Timestamp),
+    Applications = make_set(Application)
+    by AccountUpn, AccountObjectId
+| where AlertCount >= 5
+| extend 
+    AlertWindow = datetime_diff('minute', LastAlert, FirstAlert),
+    AlertDescription = strcat(AccountUpn, " triggered ", AlertCount, 
+                              " high-severity DLP alerts in ", 
+                              AlertWindow, " minutes")
+| project 
+    AccountUpn,
+    AccountObjectId,
+    AlertCount,
+    AlertWindow,
+    Policies,
+    Applications,
+    FirstAlert,
+    LastAlert,
+    AlertDescription</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              DLP Alerts After Hours
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="kql">
+                  <div class="code-header">
+                    <span class="code-lang">KQL - Analytics Rule</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>// ANALYTICS RULE: DLP Alerts Outside Business Hours
+// Triggers on high-severity DLP incidents between 8 PM and 6 AM
+// Severity: Medium
+// Frequency: 1 hour
+// Lookback: 1 hour
+
+CloudAppEvents
+| where Timestamp > ago(1h)
+| where ActionType has "Dlp"
+| extend 
+    Severity = tostring(RawEventData.Severity),
+    HourOfDay = hourofday(Timestamp)
+| where Severity in ("High", "Medium")
+| where HourOfDay >= 20 or HourOfDay < 6  // 8 PM to 6 AM
+| project 
+    Timestamp,
+    AccountUpn,
+    PolicyName = tostring(RawEventData.PolicyName),
+    Severity,
+    ActionTaken = tostring(RawEventData.ActionTaken),
+    FileName = tostring(RawEventData.FileName),
+    Application,
+    IPAddress,
+    HourOfDay</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="../operations/reporting-metrics.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Reporting & Metrics</span>
+          </a>
+          <a href="../../index.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Home</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DLP Operations | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <div class="sidebar-overlay"></div>
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header"><a href="../../index.html" class="sidebar-logo"><svg viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/></svg>DLP Docs</a></div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Operations</div>
+          <a href="dlp-operations.html" class="nav-link active">Day-to-Day Ops</a>
+          <a href="incident-response.html" class="nav-link">Incident Response</a>
+          <a href="incident-response.html" class="nav-link">False Positive Mgmt</a>
+          <a href="siem-integration.html" class="nav-link">SIEM Integration</a>
+        </div>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs"><a href="../../index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>DLP Operations</span></nav>
+        <h1>Day-to-Day DLP Operations</h1>
+        <p>Effective DLP requires ongoing operational processes beyond initial deployment. This guide covers the daily, weekly, and monthly tasks for maintaining a healthy DLP program.</p>
+        
+        <h2>Daily Tasks</h2>
+        <ul>
+          <li><strong>Review High-Severity Alerts</strong> — Triage incidents marked as critical or high severity</li>
+          <li><strong>Monitor System Health</strong> — Check agent connectivity, server status, policy sync</li>
+          <li><strong>Process User Requests</strong> — Handle business justification reviews and exception requests</li>
+        </ul>
+        
+        <h2>Weekly Tasks</h2>
+        <ul>
+          <li><strong>Policy Match Review</strong> — Analyze top triggering policies for tuning opportunities</li>
+          <li><strong>False Positive Analysis</strong> — Review reported FPs and adjust detection rules</li>
+          <li><strong>User Risk Review</strong> — Identify repeat offenders for HR escalation</li>
+          <li><strong>Agent Coverage Report</strong> — Ensure endpoint agents are deployed and healthy</li>
+        </ul>
+        
+        <h2>Monthly Tasks</h2>
+        <ul>
+          <li><strong>Executive Reporting</strong> — Prepare DLP metrics for leadership</li>
+          <li><strong>Policy Review</strong> — Assess policy effectiveness and coverage gaps</li>
+          <li><strong>Compliance Audit</strong> — Verify DLP meets regulatory requirements</li>
+          <li><strong>EDM Data Refresh</strong> — Update Exact Data Match databases</li>
+        </ul>
+        
+        <h2>Key Metrics to Track</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead><tr><th>Metric</th><th>Target</th><th>Frequency</th></tr></thead>
+            <tbody>
+              <tr><td>False Positive Rate</td><td>&lt; 10%</td><td>Weekly</td></tr>
+              <tr><td>Mean Time to Triage</td><td>&lt; 4 hours</td><td>Daily</td></tr>
+              <tr><td>Endpoint Coverage</td><td>&gt; 95%</td><td>Weekly</td></tr>
+              <tr><td>Policy Sync Success</td><td>&gt; 99%</td><td>Daily</td></tr>
+              <tr><td>Incidents Blocked</td><td>Trending down</td><td>Monthly</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="../../index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
+          <a href="incident-response.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Incident Response</span></a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/main.js"></script>
+</body>
+</html>

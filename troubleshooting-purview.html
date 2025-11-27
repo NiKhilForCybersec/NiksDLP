@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Troubleshooting Microsoft Purview DLP issues including onboarding failures, policy sync, Activity Explorer, and endpoint agent problems.">
+  <title>Purview Troubleshooting | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Troubleshooting</div>
+          <a href="troubleshooting-overview.html" class="nav-link">Overview</a>
+          <a href="troubleshooting-purview.html" class="nav-link active" data-product="purview">Purview DLP</a>
+          <a href="troubleshooting-symantec.html" class="nav-link" data-product="symantec">Symantec DLP</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="troubleshooting-overview.html">Troubleshooting</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Purview DLP</span>
+        </nav>
+        
+        <h1>Purview DLP Troubleshooting</h1>
+        
+        <p>This guide covers common issues with Microsoft Purview DLP including endpoint onboarding, policy deployment, Activity Explorer data gaps, and agent health problems.</p>
+        
+        <h2 id="onboarding">Endpoint Onboarding Issues</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item active">
+            <button class="accordion-header" aria-expanded="true">
+              Device not appearing in Device Inventory
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Symptoms:</strong> Device onboarded but not visible in Compliance Portal device list.</p>
+                
+                <p><strong>Resolution Steps:</strong></p>
+                <ol>
+                  <li>Wait 24 hours for initial sync (can take time)</li>
+                  <li>Verify MDE onboarding status first:
+                    <div class="code-block" data-language="powershell">
+                      <div class="code-header">
+                        <span class="code-lang">PowerShell</span>
+                        <button class="code-copy">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                          </svg>
+                          Copy
+                        </button>
+                      </div>
+                      <pre><code># Check MDE onboarding status
+Get-MpComputerStatus | Select-Object AMRunningMode, OnboardingState
+
+# Check connectivity
+Test-NetConnection -ComputerName winatp-gw-cus.microsoft.com -Port 443</code></pre>
+                    </div>
+                  </li>
+                  <li>Verify Endpoint DLP is enabled in Compliance settings</li>
+                  <li>Check that device meets minimum OS requirements (Windows 10 1809+)</li>
+                  <li>Re-run onboarding package if needed</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Onboarding script fails with error
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Common Errors:</strong></p>
+                <ul>
+                  <li><code>Error 0x80070005</code> — Access denied (run as admin)</li>
+                  <li><code>Error 0x8024402c</code> — Network connectivity issue</li>
+                  <li><code>Error 0x80070490</code> — Service not found (check Windows Defender)</li>
+                </ul>
+                
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell - Diagnostic Commands</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check Windows Defender service
+Get-Service WinDefend, Sense | Select-Object Name, Status, StartType
+
+# Start Sense service (MDE)
+Start-Service Sense
+
+# Check event logs for onboarding errors
+Get-WinEvent -LogName "Microsoft-Windows-SENSE/Operational" -MaxEvents 50 | 
+    Where-Object { $_.LevelDisplayName -eq "Error" }</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Intune onboarding not working
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Verification Steps:</strong></p>
+                <ol>
+                  <li>Confirm device is enrolled in Intune (check Intune portal)</li>
+                  <li>Verify EDR configuration profile is assigned to device</li>
+                  <li>Check profile deployment status</li>
+                  <li>Force Intune sync: <code>Settings > Accounts > Access work or school > Info > Sync</code></li>
+                </ol>
+                
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell - Intune Troubleshooting</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check Intune enrollment
+dsregcmd /status | Select-String "AzureAdJoined|DeviceId|TenantId"
+
+# Force Intune policy sync
+Start-Process "intunemanagementextension://syncapp"
+
+# Check MDM enrollment
+Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Provisioning\OMADM\Accounts\*" | 
+    Select-Object PSChildName, ServerUrl</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="policy-issues">Policy Deployment Issues</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Policy not triggering on endpoint
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Troubleshooting Steps:</strong></p>
+                <ol>
+                  <li>Confirm policy is in "Enforce" mode (not Test)</li>
+                  <li>Verify "Devices" location is enabled in policy</li>
+                  <li>Check that device is in targeted group/scope</li>
+                  <li>Wait for policy sync (up to 4 hours)</li>
+                  <li>Verify policy priority order</li>
+                </ol>
+                
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell - Check Policy Status</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Connect to Security & Compliance
+Connect-IPPSSession
+
+# Check policy status
+Get-DlpCompliancePolicy | Select-Object Name, Mode, Enabled, Workload
+
+# Check if Endpoint location is enabled
+Get-DlpCompliancePolicy -Identity "Your Policy" | 
+    Select-Object EndpointDlpLocation, EndpointDlpLocationException
+
+# Force policy republish
+Set-DlpCompliancePolicy -Identity "Your Policy" -Force</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Policy shows "Pending" status
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Common Causes:</strong></p>
+                <ul>
+                  <li>Policy changes are propagating (normal, wait 1-4 hours)</li>
+                  <li>Complex rule conditions causing slow deployment</li>
+                  <li>Service health issues</li>
+                </ul>
+                
+                <p><strong>Resolution:</strong></p>
+                <ol>
+                  <li>Check Microsoft 365 Service Health dashboard</li>
+                  <li>Wait 4 hours for propagation</li>
+                  <li>If still pending, try disabling and re-enabling policy</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Too many false positives
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Tuning Recommendations:</strong></p>
+                <ul>
+                  <li>Increase SIT confidence level (Medium → High)</li>
+                  <li>Increase minimum match count</li>
+                  <li>Add keyword proximity requirements</li>
+                  <li>Exclude specific file types or locations</li>
+                  <li>Add user/group exceptions for legitimate use cases</li>
+                </ul>
+                
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell - Adjust Rule Sensitivity</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Update rule to require higher confidence and count
+Set-DlpComplianceRule -Identity "Your Rule" `
+    -ContentContainsSensitiveInformation @(
+        @{
+            Name = "Credit Card Number"
+            minCount = 5          # Increase from 1
+            confidenceLevel = "High"  # Increase from Medium
+        }
+    )
+
+# Add file extension exceptions
+Set-DlpComplianceRule -Identity "Your Rule" `
+    -ExceptIfDocumentIsUnsupported $true</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="activity-explorer">Activity Explorer Issues</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              No data in Activity Explorer
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Verification Steps:</strong></p>
+                <ol>
+                  <li>Data can take 24-48 hours to appear initially</li>
+                  <li>Verify audit logging is enabled:
+                    <div class="code-block" data-language="powershell">
+                      <div class="code-header">
+                        <span class="code-lang">PowerShell</span>
+                        <button class="code-copy">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                          </svg>
+                          Copy
+                        </button>
+                      </div>
+                      <pre><code># Check unified audit log status
+Get-AdminAuditLogConfig | Select-Object UnifiedAuditLogIngestionEnabled
+
+# Enable if disabled
+Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true</code></pre>
+                    </div>
+                  </li>
+                  <li>Check that you have proper RBAC permissions (Compliance Administrator or higher)</li>
+                  <li>Verify policy is generating events (check DLP Alerts page)</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Missing endpoint activities
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <p><strong>Possible Causes:</strong></p>
+                <ul>
+                  <li>Endpoint not properly onboarded</li>
+                  <li>Network connectivity issues from endpoint</li>
+                  <li>Endpoint DLP settings not enabled</li>
+                </ul>
+                
+                <p><strong>Diagnostic Steps:</strong></p>
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell - Endpoint Diagnostics</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Check endpoint connectivity to cloud
+MDATPClientAnalyzer.cmd
+
+# Review local DLP events (if available)
+Get-WinEvent -LogName "Microsoft-Windows-DeviceGuard/Operational" -MaxEvents 20
+
+# Verify SENSE service is sending telemetry
+Get-MpComputerStatus | Select-Object AMRunningMode, RealTimeProtectionEnabled</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="common-errors">Common Error Codes</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Error</th><th>Description</th><th>Resolution</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>DLP_POLICY_SYNC_ERROR</code></td>
+                <td>Policy failed to sync to endpoints</td>
+                <td>Wait and retry; check service health</td>
+              </tr>
+              <tr>
+                <td><code>ENDPOINT_NOT_COMPLIANT</code></td>
+                <td>Device doesn't meet DLP requirements</td>
+                <td>Verify OS version, MDE onboarding</td>
+              </tr>
+              <tr>
+                <td><code>SIT_EVALUATION_TIMEOUT</code></td>
+                <td>Content inspection timed out</td>
+                <td>Simplify rules or exclude large files</td>
+              </tr>
+              <tr>
+                <td><code>CLASSIFICATION_FAILED</code></td>
+                <td>Content classification error</td>
+                <td>Check file format support</td>
+              </tr>
+              <tr>
+                <td><code>INSUFFICIENT_PERMISSIONS</code></td>
+                <td>User lacks RBAC permissions</td>
+                <td>Assign Compliance Admin role</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="diagnostic-tools">Diagnostic Tools</h2>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Comprehensive Diagnostics</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># === ENDPOINT DIAGNOSTICS ===
+
+# 1. Check MDE/DLP service status
+Get-Service Sense, WinDefend | Format-Table Name, Status, StartType
+
+# 2. Verify onboarding state
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows Advanced Threat Protection\Status"
+Get-ItemProperty $regPath | Select-Object OnboardingState, OrgId
+
+# 3. Test cloud connectivity
+$urls = @(
+    "winatp-gw-cus.microsoft.com",
+    "us.vortex-win.data.microsoft.com",
+    "settings-win.data.microsoft.com"
+)
+foreach ($url in $urls) {
+    $result = Test-NetConnection -ComputerName $url -Port 443
+    Write-Host "$url : $($result.TcpTestSucceeded)"
+}
+
+# 4. Check for recent DLP-related events
+Get-WinEvent -LogName "Microsoft-Windows-Windows Defender/Operational" -MaxEvents 50 | 
+    Where-Object { $_.Message -like "*DLP*" -or $_.Message -like "*Data Loss*" }
+
+# === COMPLIANCE CENTER DIAGNOSTICS ===
+
+# 5. List all DLP policies and status
+Connect-IPPSSession
+Get-DlpCompliancePolicy | Select-Object Name, Mode, Enabled, Workload | Format-Table
+
+# 6. Check specific policy deployment
+Get-DlpCompliancePolicy -Identity "Your Policy Name" | 
+    Select-Object DistributionStatus, DistributionErrors
+
+# 7. View recent DLP activity
+Search-UnifiedAuditLog -StartDate (Get-Date).AddDays(-7) -EndDate (Get-Date) `
+    -RecordType DLPEndpoint -ResultSize 100</code></pre>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="troubleshooting-overview.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Troubleshooting Overview</span>
+          </a>
+          <a href="troubleshooting-symantec.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Symantec Troubleshooting</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

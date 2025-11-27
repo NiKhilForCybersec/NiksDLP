@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Microsoft Purview Sensitivity Labels for classification, protection, and encryption of documents and emails.">
+  <title>Purview Sensitivity Labels | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Microsoft Purview</div>
+          <a href="purview-overview.html" class="nav-link" data-product="purview">Overview</a>
+          <a href="purview-endpoint-dlp.html" class="nav-link" data-product="purview">Endpoint DLP</a>
+          <a href="purview-sensitive-info-types.html" class="nav-link" data-product="purview">Sensitive Info Types</a>
+          <a href="purview-policies.html" class="nav-link" data-product="purview">DLP Policies</a>
+          <a href="purview-labels.html" class="nav-link active" data-product="purview">Sensitivity Labels</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="purview-overview.html">Microsoft Purview</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Sensitivity Labels</span>
+        </nav>
+        
+        <h1>Sensitivity Labels</h1>
+        
+        <p>Sensitivity labels classify and protect documents and emails based on their sensitivity level. Labels can apply encryption, watermarks, headers/footers, and access restrictions that persist with the content.</p>
+        
+        <h2 id="label-hierarchy">Label Hierarchy</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    SENSITIVITY LABEL HIERARCHY                                   │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  <span class="accent-red">HIGHEST</span>                                                                        │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-red">HIGHLY CONFIDENTIAL</span>                                                       │    │
+│  │  Board materials, M&A documents, trade secrets                          │    │
+│  │  Protection: Encryption required, No forwarding, Watermark              │    │
+│  │  ├── Highly Confidential \ All Employees                                │    │
+│  │  └── Highly Confidential \ Executive Only                               │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-orange">CONFIDENTIAL</span>                                                              │    │
+│  │  Internal projects, customer data, financial info                       │    │
+│  │  Protection: Encryption optional, Headers/Footers                       │    │
+│  │  ├── Confidential \ All Employees                                       │    │
+│  │  ├── Confidential \ Finance                                             │    │
+│  │  └── Confidential \ HR                                                  │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-cyan">INTERNAL</span>                                                                  │    │
+│  │  General business information, internal communications                  │    │
+│  │  Protection: Footer marking, No external sharing                        │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │  <span class="accent-green">PUBLIC</span>                                                                    │    │
+│  │  Marketing materials, published content                                 │    │
+│  │  Protection: None                                                       │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│  <span class="accent-green">LOWEST</span>                                                                         │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="label-capabilities">Label Capabilities</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th>Description</th>
+                <th>Applies To</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Encryption</strong></td>
+                <td>Azure RMS encryption with access controls</td>
+                <td>Files, Emails</td>
+              </tr>
+              <tr>
+                <td><strong>Content Marking</strong></td>
+                <td>Headers, footers, watermarks</td>
+                <td>Files, Emails</td>
+              </tr>
+              <tr>
+                <td><strong>Access Control</strong></td>
+                <td>Specify who can access content</td>
+                <td>Files, Emails</td>
+              </tr>
+              <tr>
+                <td><strong>Usage Rights</strong></td>
+                <td>View, Edit, Print, Copy, Forward permissions</td>
+                <td>Files, Emails</td>
+              </tr>
+              <tr>
+                <td><strong>Expiration</strong></td>
+                <td>Content access expires after date</td>
+                <td>Files, Emails</td>
+              </tr>
+              <tr>
+                <td><strong>Offline Access</strong></td>
+                <td>Allow/deny offline document access</td>
+                <td>Files</td>
+              </tr>
+              <tr>
+                <td><strong>Site/Container Labels</strong></td>
+                <td>Label SharePoint sites, Teams, Groups</td>
+                <td>Containers</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="creating-labels">Creating Sensitivity Labels</h2>
+        
+        <h3>Using the Compliance Portal</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Navigate to Labels</strong>
+            <p>Go to compliance.microsoft.com → Information protection → Labels</p>
+          </li>
+          <li>
+            <strong>Create Label</strong>
+            <p>Click "Create a label" and provide name, display name, description</p>
+          </li>
+          <li>
+            <strong>Define Scope</strong>
+            <p>Choose: Items (files/emails), Groups & sites, or Schematized data assets</p>
+          </li>
+          <li>
+            <strong>Configure Protection</strong>
+            <p>Set encryption, content marking, access controls</p>
+          </li>
+          <li>
+            <strong>Auto-labeling (Optional)</strong>
+            <p>Configure conditions for automatic label application</p>
+          </li>
+          <li>
+            <strong>Publish Label</strong>
+            <p>Create label policy to publish to users</p>
+          </li>
+        </ol>
+        
+        <h3>PowerShell Label Creation</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Connect to Security & Compliance PowerShell
+Connect-IPPSSession -UserPrincipalName <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="badbded7d3d4fad9d5d4ced5c9d594d9d5d7">[email&#160;protected]</a>
+
+# Create parent label
+New-Label -Name "Confidential" `
+    -DisplayName "Confidential" `
+    -Tooltip "Business data that could cause harm if disclosed" `
+    -Comment "Parent label for confidential content"
+
+# Create sub-label with encryption
+New-Label -Name "Confidential-AllEmployees" `
+    -DisplayName "Confidential \ All Employees" `
+    -ParentId (Get-Label -Identity "Confidential").Guid `
+    -Tooltip "Confidential - All employees can access" `
+    -EncryptionEnabled $true `
+    -EncryptionProtectionType "Template" `
+    -EncryptionTemplateId "All Employees - Confidential" `
+    -ContentMarkingHeaderEnabled $true `
+    -ContentMarkingHeaderText "CONFIDENTIAL" `
+    -ContentMarkingHeaderFontColor "#FF0000" `
+    -ContentMarkingHeaderFontSize 12 `
+    -ContentMarkingFooterEnabled $true `
+    -ContentMarkingFooterText "This document is confidential. Do not distribute."
+
+# Create sub-label for Finance
+New-Label -Name "Confidential-Finance" `
+    -DisplayName "Confidential \ Finance" `
+    -ParentId (Get-Label -Identity "Confidential").Guid `
+    -Tooltip "Confidential - Finance team only" `
+    -EncryptionEnabled $true `
+    -EncryptionProtectionType "UserDefined" `
+    -EncryptionDoNotForward $false `
+    -EncryptionPromptUser $true
+
+# View created labels
+Get-Label | Select-Object Name, DisplayName, ParentId, Priority</code></pre>
+        </div>
+        
+        <h2 id="encryption">Encryption Settings</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">Assign Permissions Now</button>
+            <button class="tab-button" role="tab">Let Users Assign</button>
+            <button class="tab-button" role="tab">Double Key Encryption</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>Assign Permissions Now (Admin-defined)</h3>
+            <p>Administrator pre-defines who can access content with this label.</p>
+            
+            <ul>
+              <li>Specify users, groups, or domains</li>
+              <li>Choose permission level (Viewer, Reviewer, Co-Author, Co-Owner)</li>
+              <li>Set content expiration and offline access</li>
+            </ul>
+            
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr><th>Permission Level</th><th>Rights Included</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Viewer</td><td>View, Open, Read</td></tr>
+                  <tr><td>Reviewer</td><td>View, Edit, Save (no Print)</td></tr>
+                  <tr><td>Co-Author</td><td>View, Edit, Save, Print, Copy</td></tr>
+                  <tr><td>Co-Owner</td><td>All rights including change permissions</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Let Users Assign Permissions</h3>
+            <p>Users choose recipients when applying the label in Outlook or Office apps.</p>
+            
+            <ul>
+              <li><strong>Do Not Forward</strong> — Recipients can't forward, print, or copy</li>
+              <li><strong>Encrypt-Only</strong> — Encrypts but allows all permissions</li>
+              <li><strong>Custom</strong> — User selects recipients and permissions</li>
+            </ul>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Double Key Encryption (DKE)</h3>
+            <p>For highest sensitivity data requiring customer-controlled keys.</p>
+            
+            <ul>
+              <li>Content encrypted with two keys</li>
+              <li>One key held by Microsoft, one by customer</li>
+              <li>Microsoft cannot decrypt without customer key</li>
+              <li>Requires additional infrastructure setup</li>
+            </ul>
+            
+            <div class="callout warning">
+              <div class="callout-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+                DKE Consideration
+              </div>
+              <p>DKE content cannot be processed by Microsoft services (search, eDiscovery, Copilot). Use only for data that must never leave your control.</p>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="content-marking">Content Marking</h2>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Content Marking</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Configure header
+Set-Label -Identity "Highly-Confidential" `
+    -ContentMarkingHeaderEnabled $true `
+    -ContentMarkingHeaderText "HIGHLY CONFIDENTIAL" `
+    -ContentMarkingHeaderFontName "Arial" `
+    -ContentMarkingHeaderFontSize 14 `
+    -ContentMarkingHeaderFontColor "#C41E3A" `
+    -ContentMarkingHeaderAlignment "Center" `
+    -ContentMarkingHeaderMargin 10
+
+# Configure footer
+Set-Label -Identity "Highly-Confidential" `
+    -ContentMarkingFooterEnabled $true `
+    -ContentMarkingFooterText "© Contoso Corp. Unauthorized disclosure prohibited." `
+    -ContentMarkingFooterFontSize 10 `
+    -ContentMarkingFooterFontColor "#666666" `
+    -ContentMarkingFooterAlignment "Center"
+
+# Configure watermark
+Set-Label -Identity "Highly-Confidential" `
+    -ContentMarkingWatermarkEnabled $true `
+    -ContentMarkingWatermarkText "CONFIDENTIAL" `
+    -ContentMarkingWatermarkFontSize 72 `
+    -ContentMarkingWatermarkFontColor "#808080" `
+    -ContentMarkingWatermarkLayout "Diagonal"</code></pre>
+        </div>
+        
+        <h2 id="auto-labeling">Auto-Labeling</h2>
+        
+        <p>Auto-labeling automatically applies labels based on content conditions.</p>
+        
+        <h3>Client-side Auto-Labeling</h3>
+        <p>Runs in Office apps, recommends or applies labels as users work:</p>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Auto-labeling Condition</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Set auto-labeling for client (recommend)
+Set-Label -Identity "Confidential-Finance" `
+    -AutoApplyType "Recommend" `
+    -SensitiveInformationTypes @(
+        @{Name = "Credit Card Number"; minCount = 1},
+        @{Name = "Canada Social Insurance Number"; minCount = 1}
+    ) `
+    -LocaleSettings @{
+        LocaleKey = "DisplayName"
+        Settings = @(
+            @{Key = "en-us"; Value = "Recommended: Confidential - Finance"}
+        )
+    }</code></pre>
+        </div>
+        
+        <h3>Service-side Auto-Labeling</h3>
+        <p>Runs in SharePoint, OneDrive, Exchange to label content at rest:</p>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Service Auto-labeling Policy</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Create auto-labeling policy for SharePoint/OneDrive
+New-AutoSensitivityLabelPolicy -Name "Auto-Label PII Documents" `
+    -SharePointLocation "All" `
+    -OneDriveLocation "All" `
+    -ApplyContentLabel "Confidential-AllEmployees" `
+    -Mode "TestWithoutNotifications"
+
+# Create rule for the policy
+New-AutoSensitivityLabelRule -Name "PII Detection Rule" `
+    -Policy "Auto-Label PII Documents" `
+    -ContentContainsSensitiveInformation @(
+        @{Name = "Canada Social Insurance Number"; minCount = 1; confidenceLevel = "High"},
+        @{Name = "Canada Passport Number"; minCount = 1; confidenceLevel = "High"}
+    ) `
+    -WorkLoad "SharePoint,OneDriveForBusiness"
+
+# After testing, enable enforcement
+Set-AutoSensitivityLabelPolicy -Identity "Auto-Label PII Documents" `
+    -Mode "Enable"</code></pre>
+        </div>
+        
+        <h2 id="publishing">Publishing Labels</h2>
+        
+        <p>Labels must be published via a label policy to be available to users:</p>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Label Policy</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Create label policy for all users
+New-LabelPolicy -Name "Global Sensitivity Labels" `
+    -Labels "Public","Internal","Confidential","Confidential-AllEmployees",
+            "Confidential-Finance","Highly-Confidential" `
+    -ExchangeLocation "All" `
+    -SharePointLocation "All" `
+    -OneDriveLocation "All" `
+    -ModernGroupLocation "All" `
+    -Comment "Standard sensitivity labels for all employees"
+
+# Configure policy settings
+Set-LabelPolicy -Identity "Global Sensitivity Labels" `
+    -AdvancedSettings @{
+        RequireDowngradeJustification = "True"
+        OutlookDefaultLabel = "Internal"
+        PowerBIDefaultLabel = "Internal"
+    }
+
+# Require label for documents
+Set-LabelPolicy -Identity "Global Sensitivity Labels" `
+    -MandatoryLabel $true `
+    -MandatoryLabelJustificationRequired $true
+
+# Check policy deployment status
+Get-LabelPolicy | Select-Object Name, Mode, Workload, DistributionStatus</code></pre>
+        </div>
+        
+        <h2 id="dlp-integration">DLP Integration</h2>
+        
+        <p>Sensitivity labels work with DLP policies for enhanced protection:</p>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - DLP Policy Using Labels</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># DLP policy that triggers on sensitivity label
+New-DlpComplianceRule -Name "Block External Sharing of Highly Confidential" `
+    -Policy "External Sharing Protection" `
+    -ContentContainsSensitivityLabels "Highly-Confidential" `
+    -BlockAccess $true `
+    -BlockAccessScope "PerAnonymousUser" `
+    -NotifyUser "SiteAdmin" `
+    -GenerateAlert $true
+
+# Combine label + SIT for higher confidence
+New-DlpComplianceRule -Name "Protect Labeled PII" `
+    -Policy "PII Protection" `
+    -ContentContainsSensitivityLabels "Confidential-AllEmployees" `
+    -ContentContainsSensitiveInformation @(
+        @{Name = "Canada Social Insurance Number"; minCount = 1}
+    ) `
+    -BlockAccess $true `
+    -NotifyUser "LastModifier"</code></pre>
+        </div>
+        
+        <h2 id="best-practices">Best Practices</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Start Simple</h4>
+            <p>Begin with 3-5 labels. Users won't use a complex taxonomy. Expand later based on needs.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Default Label</h4>
+            <p>Set a default label (e.g., "Internal") so unlabeled content is rare.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Require Justification</h4>
+            <p>Require justification when downgrading labels to track intentional changes.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Use Sub-labels</h4>
+            <p>Create sub-labels for department-specific protection under common parent labels.</p>
+          </div>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="purview-policies.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">DLP Policies</span>
+          </a>
+          <a href="../migration/migration-symantec-to-purview.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Migration Guide</span>
+               </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

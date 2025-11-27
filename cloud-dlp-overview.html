@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cloud DLP overview covering CASB integration, SaaS application protection, and cloud-native DLP capabilities.">
+  <title>Cloud DLP Overview | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Cloud DLP</div>
+          <a href="cloud-dlp-overview.html" class="nav-link active" data-product="cloud">Overview</a>
+          <a href="cloud-casb-integration.html" class="nav-link" data-product="cloud">CASB Integration</a>
+          <a href="cloud-saas-protection.html" class="nav-link" data-product="cloud">SaaS Protection</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Cloud DLP</span>
+        </nav>
+        
+        <h1>Cloud DLP Overview</h1>
+        
+        <p>Cloud DLP extends data protection to SaaS applications, cloud storage, and IaaS/PaaS environments. As organizations move data to the cloud, traditional perimeter-based DLP must evolve to protect data wherever it resides.</p>
+        
+        <h2 id="cloud-challenges">Cloud Data Protection Challenges</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    TRADITIONAL VS CLOUD DATA FLOWS                               │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  <span class="accent-orange">TRADITIONAL (On-Premises)</span>                                                       │
+│  ┌─────────┐                    ┌─────────┐                    ┌─────────┐      │
+│  │  User   │───── Corporate ────│ Network │───── Firewall ─────│ Internet│      │
+│  │         │      Network       │   DLP   │                    │         │      │
+│  └─────────┘                    └─────────┘                    └─────────┘      │
+│       ▲                              ▲                                          │
+│       └──── All traffic passes through corporate network ────┘                  │
+│                                                                                  │
+│  <span class="accent-cyan">CLOUD ERA (Direct-to-Cloud)</span>                                                     │
+│  ┌─────────┐                                                   ┌─────────┐      │
+│  │  User   │─────────────────── Direct Access ─────────────────│  SaaS   │      │
+│  │ (Remote)│                                                   │  Apps   │      │
+│  └─────────┘                                                   └─────────┘      │
+│       │                                                             │           │
+│       │         ┌─────────────────────────────────┐                 │           │
+│       └────────▶│       <span class="accent-green">CLOUD DLP / CASB</span>          │◀────────────────┘           │
+│                 │  API + Proxy + Endpoint Agent   │                             │
+│                 └─────────────────────────────────┘                             │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="deployment-modes">Cloud DLP Deployment Modes</h2>
+        
+        <div class="tabs">
+          <div class="tab-list" role="tablist">
+            <button class="tab-button active" role="tab">API Mode</button>
+            <button class="tab-button" role="tab">Proxy Mode</button>
+            <button class="tab-button" role="tab">Agent Mode</button>
+          </div>
+          
+          <div class="tab-panel active">
+            <h3>API Mode (Out-of-Band)</h3>
+            <p>Connects directly to SaaS application APIs to scan data at rest and monitor activities.</p>
+            
+            <div class="card-grid">
+              <div class="card" style="border-left: 3px solid var(--accent-green);">
+                <h4 style="margin-top: 0; color: var(--accent-green);">Advantages</h4>
+                <ul>
+                  <li>No network changes required</li>
+                  <li>Scans historical data</li>
+                  <li>Works with any device/network</li>
+                  <li>Deep visibility into cloud storage</li>
+                </ul>
+              </div>
+              <div class="card" style="border-left: 3px solid var(--accent-orange);">
+                <h4 style="margin-top: 0; color: var(--accent-orange);">Limitations</h4>
+                <ul>
+                  <li>Near-real-time (not instant)</li>
+                  <li>Cannot block in real-time</li>
+                  <li>Dependent on SaaS API capabilities</li>
+                  <li>API rate limits may apply</li>
+                </ul>
+              </div>
+            </div>
+            
+            <p><strong>Best For:</strong> Discovery, compliance scanning, data-at-rest protection, sanctioned app monitoring</p>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Proxy Mode (Inline)</h3>
+            <p>Routes cloud traffic through a proxy for real-time inspection and blocking.</p>
+            
+            <div class="card-grid">
+              <div class="card" style="border-left: 3px solid var(--accent-green);">
+                <h4 style="margin-top: 0; color: var(--accent-green);">Advantages</h4>
+                <ul>
+                  <li>Real-time blocking</li>
+                  <li>Works with any cloud app</li>
+                  <li>Deep content inspection</li>
+                  <li>Session-level controls</li>
+                </ul>
+              </div>
+              <div class="card" style="border-left: 3px solid var(--accent-orange);">
+                <h4 style="margin-top: 0; color: var(--accent-orange);">Limitations</h4>
+                <ul>
+                  <li>Requires traffic routing (PAC/proxy)</li>
+                  <li>SSL inspection complexity</li>
+                  <li>Potential latency impact</li>
+                  <li>May break some apps</li>
+                </ul>
+              </div>
+            </div>
+            
+            <p><strong>Best For:</strong> Real-time protection, unsanctioned app blocking, shadow IT discovery</p>
+          </div>
+          
+          <div class="tab-panel">
+            <h3>Agent Mode (Endpoint)</h3>
+            <p>Endpoint agent monitors cloud app activity directly on user devices.</p>
+            
+            <div class="card-grid">
+              <div class="card" style="border-left: 3px solid var(--accent-green);">
+                <h4 style="margin-top: 0; color: var(--accent-green);">Advantages</h4>
+                <ul>
+                  <li>Works off-network</li>
+                  <li>Unified endpoint + cloud DLP</li>
+                  <li>No proxy infrastructure needed</li>
+                  <li>User-level context</li>
+                </ul>
+              </div>
+              <div class="card" style="border-left: 3px solid var(--accent-orange);">
+                <h4 style="margin-top: 0; color: var(--accent-orange);">Limitations</h4>
+                <ul>
+                  <li>Requires agent deployment</li>
+                  <li>Limited to managed devices</li>
+                  <li>OS/browser compatibility</li>
+                  <li>Agent maintenance overhead</li>
+                </ul>
+              </div>
+            </div>
+            
+            <p><strong>Best For:</strong> Remote workforce, BYOD scenarios, unified endpoint/cloud protection</p>
+          </div>
+        </div>
+        
+        <h2 id="cloud-dlp-solutions">Cloud DLP Solutions by Vendor</h2>
+        
+        <div class="table-wrapper">
+          <table class="comparison-table">
+            <thead>
+              <tr>
+                <th>Solution</th>
+                <th>API Mode</th>
+                <th>Proxy Mode</th>
+                <th>Agent Mode</th>
+                <th>Key Integrations</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Microsoft Defender for Cloud Apps</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>M365, Azure, 25+ SaaS apps</td>
+              </tr>
+              <tr>
+                <td><strong>Symantec CloudSOC</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>Symantec DLP, 100+ apps</td>
+              </tr>
+              <tr>
+                <td><strong>Netskope</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>Multi-cloud, extensive SaaS</td>
+              </tr>
+              <tr>
+                <td><strong>Zscaler</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>ZIA integration, SASE</td>
+              </tr>
+              <tr>
+                <td><strong>Palo Alto Prisma</strong></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td><span class="status-badge supported">✓</span></td>
+                <td>Prisma Access/Cloud</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="microsoft-cloud">Microsoft Cloud DLP Ecosystem</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    MICROSOFT CLOUD DLP ECOSYSTEM                                 │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│                        ┌─────────────────────────┐                               │
+│                        │    <span class="accent-purple">MICROSOFT PURVIEW</span>    │                               │
+│                        │   Unified DLP Policies   │                               │
+│                        │   Sensitivity Labels     │                               │
+│                        │   Data Classification    │                               │
+│                        └───────────┬─────────────┘                               │
+│                                    │                                             │
+│         ┌──────────────────────────┼──────────────────────────┐                  │
+│         │                          │                          │                  │
+│         ▼                          ▼                          ▼                  │
+│  ┌─────────────────┐    ┌─────────────────────┐    ┌─────────────────────┐       │
+│  │   <span class="accent-cyan">EXCHANGE</span>       │    │   <span class="accent-green">SHAREPOINT/OD</span>      │    │   <span class="accent-orange">DEFENDER CLOUD</span>   │       │
+│  │   ONLINE        │    │   FOR BUSINESS      │    │   <span class="accent-orange">APPS (MDCA)</span>      │       │
+│  │                 │    │                     │    │                     │       │
+│  │ • Email DLP     │    │ • File DLP          │    │ • Shadow IT         │       │
+│  │ • Transport     │    │ • Sharing controls  │    │ • SaaS protection   │       │
+│  │   rules         │    │ • External sharing  │    │ • Session controls  │       │
+│  └─────────────────┘    └─────────────────────┘    └─────────────────────┘       │
+│                                                              │                   │
+│                                                              ▼                   │
+│                                                    ┌─────────────────────┐       │
+│                                                    │   <span class="accent-orange">THIRD-PARTY SAAS</span>  │       │
+│                                                    │   Box, Dropbox,     │       │
+│                                                    │   Salesforce, etc.  │       │
+│                                                    └─────────────────────┘       │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="key-capabilities">Key Cloud DLP Capabilities</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Capability</th><th>Description</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Shadow IT Discovery</strong></td>
+                <td>Identify unsanctioned cloud apps in use</td>
+                <td>Risk assessment, policy enforcement</td>
+              </tr>
+              <tr>
+                <td><strong>Data-at-Rest Scanning</strong></td>
+                <td>Scan cloud storage for sensitive data</td>
+                <td>Compliance, data inventory</td>
+              </tr>
+              <tr>
+                <td><strong>Real-time Protection</strong></td>
+                <td>Block uploads/downloads of sensitive data</td>
+                <td>Data exfiltration prevention</td>
+              </tr>
+              <tr>
+                <td><strong>Session Controls</strong></td>
+                <td>Conditional access based on context</td>
+                <td>BYOD, risky sign-in protection</td>
+              </tr>
+              <tr>
+                <td><strong>File Sharing Controls</strong></td>
+                <td>Monitor and restrict external sharing</td>
+                <td>Prevent accidental exposure</td>
+              </tr>
+              <tr>
+                <td><strong>Activity Monitoring</strong></td>
+                <td>Track user activities in cloud apps</td>
+                <td>Insider threat detection, audit</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="best-practices">Cloud DLP Best Practices</h2>
+        
+        <div class="callout tip">
+          <div class="callout-header">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Cloud DLP Best Practices
+          </div>
+          <ul>
+            <li><strong>Start with discovery</strong> — Know what cloud apps are in use before enforcing policies</li>
+            <li><strong>Prioritize sanctioned apps</strong> — Focus API integration on approved business applications</li>
+            <li><strong>Use unified policies</strong> — Apply same DLP rules across cloud and on-premises where possible</li>
+            <li><strong>Enable session controls</strong> — For sensitive apps accessed from unmanaged devices</li>
+            <li><strong>Monitor sharing</strong> — External sharing is the #1 cloud data leak vector</li>
+            <li><strong>Integrate with IdP</strong> — Leverage identity context for conditional access</li>
+          </ul>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="../fundamentals/dlp-fundamentals.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">DLP Fundamentals</span>
+          </a>
+          <a href="cloud-casb-integration.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">CASB Integration</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

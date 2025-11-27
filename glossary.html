@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DLP terminology glossary including definitions for sensitive info types, policies, CASB, and data protection concepts.">
+  <title>DLP Glossary | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Reference</div>
+          <a href="kql-library.html" class="nav-link" data-product="purview">KQL Query Library</a>
+          <a href="regex-patterns.html" class="nav-link" data-product="reference">Regex Patterns</a>
+          <a href="powershell-scripts.html" class="nav-link" data-product="reference">PowerShell Scripts</a>
+          <a href="glossary.html" class="nav-link active" data-product="reference">Glossary</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Glossary</span>
+        </nav>
+        
+        <h1>DLP Glossary</h1>
+        
+        <p>Comprehensive glossary of Data Loss Prevention terminology, acronyms, and concepts.</p>
+        
+        <h2 id="a">A</h2>
+        
+        <dl class="glossary">
+          <dt id="activity-explorer">Activity Explorer</dt>
+          <dd>Microsoft Purview tool that shows user activities on sensitive content, including DLP policy matches, label changes, and file operations.</dd>
+          
+          <dt id="auto-labeling">Auto-Labeling</dt>
+          <dd>Automatic application of sensitivity labels to content based on sensitive information detection. Can be client-side (Office apps) or service-side (SharePoint/OneDrive at rest).</dd>
+        </dl>
+        
+        <h2 id="c">C</h2>
+        
+        <dl class="glossary">
+          <dt id="casb">CASB (Cloud Access Security Broker)</dt>
+          <dd>Security solution that provides visibility and control over cloud application usage. Acts as intermediary between users and cloud services. Examples: Microsoft Defender for Cloud Apps, Symantec CloudSOC, Netskope.</dd>
+          
+          <dt id="classification">Classification</dt>
+          <dd>Process of categorizing data based on sensitivity level, content type, or business value. Can be manual (user-applied) or automatic (system-detected).</dd>
+          
+          <dt id="confidence-level">Confidence Level</dt>
+          <dd>Measure of detection accuracy for sensitive information types. Levels: Low (65%), Medium (75%), High (85%). Higher confidence = fewer false positives.</dd>
+          
+          <dt id="content-explorer">Content Explorer</dt>
+          <dd>Microsoft Purview tool showing where sensitive content exists across Microsoft 365. Provides inventory of classified data by type and location.</dd>
+          
+          <dt id="corroborative-evidence">Corroborative Evidence</dt>
+          <dd>Supporting keywords or patterns that increase confidence in sensitive data detection. Example: "Credit Card" near a 16-digit number.</dd>
+        </dl>
+        
+        <h2 id="d">D</h2>
+        
+        <dl class="glossary">
+          <dt id="data-at-rest">Data at Rest</dt>
+          <dd>Data stored in repositories (file servers, databases, cloud storage) rather than actively being transmitted. Scanned by discovery tools.</dd>
+          
+          <dt id="data-in-motion">Data in Motion</dt>
+          <dd>Data being transmitted across networks (email, web uploads, file transfers). Monitored by network DLP and email DLP.</dd>
+          
+          <dt id="data-in-use">Data in Use</dt>
+          <dd>Data actively being accessed or modified on endpoints. Monitored by endpoint DLP agents.</dd>
+          
+          <dt id="dcm">DCM (Described Content Matching)</dt>
+          <dd>Symantec detection method using patterns, keywords, and data identifiers to find sensitive content.</dd>
+          
+          <dt id="dke">DKE (Double Key Encryption)</dt>
+          <dd>Microsoft encryption method where customer controls one encryption key. Microsoft cannot decrypt content even with legal order.</dd>
+          
+          <dt id="dlp">DLP (Data Loss Prevention)</dt>
+          <dd>Technology and processes to detect and prevent unauthorized transmission or exposure of sensitive data.</dd>
+        </dl>
+        
+        <h2 id="e">E</h2>
+        
+        <dl class="glossary">
+          <dt id="edm">EDM (Exact Data Matching)</dt>
+          <dd>Detection method matching content against exact values from a database (employee IDs, customer records). Near-zero false positives.</dd>
+          
+          <dt id="endpoint-dlp">Endpoint DLP</dt>
+          <dd>DLP protection on user devices monitoring activities like USB copy, print, clipboard, cloud upload.</dd>
+          
+          <dt id="enforce-server">Enforce Server</dt>
+          <dd>Central management server in Symantec DLP architecture. Hosts policies, database, and console.</dd>
+        </dl>
+        
+        <h2 id="f">F</h2>
+        
+        <dl class="glossary">
+          <dt id="false-positive">False Positive</dt>
+          <dd>Incorrect detection where legitimate content is flagged as sensitive. Key metric for DLP effectiveness.</dd>
+          
+          <dt id="fingerprinting">Fingerprinting</dt>
+          <dd>Creating unique hash signatures of sensitive documents for detection even when content is modified. Used in IDM.</dd>
+        </dl>
+        
+        <h2 id="i">I</h2>
+        
+        <dl class="glossary">
+          <dt id="icap">ICAP (Internet Content Adaptation Protocol)</dt>
+          <dd>Protocol for integrating DLP with web proxies. Allows proxy to send content to DLP for inspection.</dd>
+          
+          <dt id="idm">IDM (Indexed Document Matching)</dt>
+          <dd>Symantec detection method using fingerprints of sensitive documents. Detects content fragments even in modified form.</dd>
+          
+          <dt id="incident">Incident</dt>
+          <dd>Record of a DLP policy violation including details about content, user, and action taken.</dd>
+        </dl>
+        
+        <h2 id="l">L</h2>
+        
+        <dl class="glossary">
+          <dt id="luhn">Luhn Algorithm</dt>
+          <dd>Checksum formula used to validate credit card numbers, SINs, and other identification numbers. Helps reduce false positives.</dd>
+        </dl>
+        
+        <h2 id="m">M</h2>
+        
+        <dl class="glossary">
+          <dt id="mdca">MDCA (Microsoft Defender for Cloud Apps)</dt>
+          <dd>Microsoft's CASB solution providing cloud app discovery, DLP integration, and session controls.</dd>
+          
+          <dt id="mde">MDE (Microsoft Defender for Endpoint)</dt>
+          <dd>Endpoint protection platform. Provides foundation for Purview Endpoint DLP functionality.</dd>
+          
+          <dt id="mip">MIP (Microsoft Information Protection)</dt>
+          <dd>Former name for Microsoft's classification and labeling technology. Now part of Microsoft Purview.</dd>
+        </dl>
+        
+        <h2 id="n">N</h2>
+        
+        <dl class="glossary">
+          <dt id="network-dlp">Network DLP</dt>
+          <dd>DLP monitoring network traffic (email, web, FTP) via TAP/SPAN ports or inline inspection.</dd>
+          
+          <dt id="network-monitor">Network Monitor</dt>
+          <dd>Symantec passive DLP component monitoring network traffic without blocking.</dd>
+          
+          <dt id="network-prevent">Network Prevent</dt>
+          <dd>Symantec inline DLP component that can block or modify traffic containing sensitive data.</dd>
+        </dl>
+        
+        <h2 id="o">O</h2>
+        
+        <dl class="glossary">
+          <dt id="ocr">OCR (Optical Character Recognition)</dt>
+          <dd>Technology to extract text from images for DLP inspection. Detects sensitive data in screenshots, scanned documents.</dd>
+          
+          <dt id="override">Override</dt>
+          <dd>User action to bypass a DLP block, typically requiring justification. Tracked for audit purposes.</dd>
+        </dl>
+        
+        <h2 id="p">P</h2>
+        
+        <dl class="glossary">
+          <dt id="pii">PII (Personally Identifiable Information)</dt>
+          <dd>Information that can identify an individual: name, SSN/SIN, address, email, phone, etc.</dd>
+          
+          <dt id="phi">PHI (Protected Health Information)</dt>
+          <dd>Health information protected under regulations like HIPAA. Includes medical records, insurance info, treatment data.</dd>
+          
+          <dt id="pipeda">PIPEDA</dt>
+          <dd>Personal Information Protection and Electronic Documents Act. Canadian federal privacy law governing private sector data handling.</dd>
+          
+          <dt id="policy">Policy</dt>
+          <dd>DLP configuration defining what sensitive data to detect and what actions to take. Contains rules with conditions and actions.</dd>
+          
+          <dt id="policy-tip">Policy Tip</dt>
+          <dd>Notification shown to users when content matches a DLP policy. Can warn or explain why action is blocked.</dd>
+        </dl>
+        
+        <h2 id="r">R</h2>
+        
+        <dl class="glossary">
+          <dt id="retention-label">Retention Label</dt>
+          <dd>Microsoft Purview label defining how long content should be retained and what happens at end of retention period.</dd>
+          
+          <dt id="rule">Rule</dt>
+          <dd>Component of DLP policy defining specific conditions (what to detect) and actions (what to do). Policies contain one or more rules.</dd>
+        </dl>
+        
+        <h2 id="s">S</h2>
+        
+        <dl class="glossary">
+          <dt id="sase">SASE (Secure Access Service Edge)</dt>
+          <dd>Cloud architecture combining network security (including DLP) with WAN capabilities. Examples: Zscaler, Netskope.</dd>
+          
+          <dt id="sensitivity-label">Sensitivity Label</dt>
+          <dd>Classification tag applied to content indicating sensitivity level. Can enforce encryption, watermarks, access controls.</dd>
+          
+          <dt id="sin">SIN (Social Insurance Number)</dt>
+          <dd>Canadian 9-digit identifier for tax, employment, and government services. Key PII type for Canadian DLP.</dd>
+          
+          <dt id="sit">SIT (Sensitive Information Type)</dt>
+          <dd>Pattern definition for detecting specific sensitive data (credit cards, SSN, SIN). Combines regex, keywords, checksums.</dd>
+        </dl>
+        
+        <h2 id="t">T</h2>
+        
+        <dl class="glossary">
+          <dt id="trainable-classifier">Trainable Classifier</dt>
+          <dd>Machine learning model trained to recognize document types (resumes, contracts, source code) without explicit patterns.</dd>
+          
+          <dt id="true-positive">True Positive</dt>
+          <dd>Correct detection where content actually contains sensitive data. Opposite of false positive.</dd>
+        </dl>
+        
+        <h2 id="u">U</h2>
+        
+        <dl class="glossary">
+          <dt id="unified-audit-log">Unified Audit Log</dt>
+          <dd>Microsoft 365 central audit log containing all user and admin activities including DLP events.</dd>
+        </dl>
+        
+        <h2 id="v">V</h2>
+        
+        <dl class="glossary">
+          <dt id="vml">VML (Vector Machine Learning)</dt>
+          <dd>Symantec ML-based detection method trained on document samples to classify similar content.</dd>
+        </dl>
+        
+        <h2 id="w">W</h2>
+        
+        <dl class="glossary">
+          <dt id="watermark">Watermark</dt>
+          <dd>Visual marking (text or image) added to documents by sensitivity labels. Can be header, footer, or background.</dd>
+          
+          <dt id="workload">Workload</dt>
+          <dd>Microsoft 365 service location for DLP: Exchange, SharePoint, OneDrive, Teams, Devices.</dd>
+        </dl>
+        
+        <nav class="page-nav">
+          <a href="powershell-scripts.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">PowerShell Scripts</span>
+          </a>
+          <a href="../../index.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Home</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>

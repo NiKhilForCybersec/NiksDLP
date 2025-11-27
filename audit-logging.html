@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DLP audit logging configuration and analysis including Unified Audit Log, retention settings, and compliance reporting.">
+  <title>Audit Logging | DLP Documentation Hub</title>
+  <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
+  <div class="sidebar-overlay"></div>
+  
+  <div class="page-wrapper">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="../../index.html" class="sidebar-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          DLP Docs
+        </a>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Operations</div>
+          <a href="dlp-operations.html" class="nav-link" data-product="operations">Operations Overview</a>
+          <a href="dlp-alerts.html" class="nav-link" data-product="operations">DLP Alerts</a>
+          <a href="incident-response.html" class="nav-link" data-product="operations">Incident Response</a>
+          <a href="audit-logging.html" class="nav-link active" data-product="operations">Audit Logging</a>
+          <a href="siem-integration.html" class="nav-link" data-product="operations">SIEM Integration</a>
+          <a href="reporting-metrics.html" class="nav-link" data-product="operations">Reporting & Metrics</a>
+        </div>
+      </nav>
+    </aside>
+    
+    <main class="main-content">
+      <div class="content-wrapper">
+        <nav class="breadcrumbs">
+          <a href="../../index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <a href="dlp-operations.html">Operations</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Audit Logging</span>
+        </nav>
+        
+        <h1>DLP Audit Logging</h1>
+        
+        <p>Audit logs provide the foundation for DLP investigations, compliance reporting, and trend analysis. Understanding how to access, query, and retain audit data is essential for DLP operations.</p>
+        
+        <h2 id="overview">Audit Log Sources</h2>
+        
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                         DLP AUDIT LOG ARCHITECTURE                               │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌──────────────────────────────────────────────────────────────────────────┐   │
+│  │                      MICROSOFT 365 SERVICES                               │   │
+│  │                                                                           │   │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │   │
+│  │  │Exchange │  │SharePoint│  │OneDrive │  │ Teams   │  │Endpoint │        │   │
+│  │  │ Online  │  │ Online  │  │   ODB   │  │         │  │   DLP   │        │   │
+│  │  └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘        │   │
+│  │       │            │            │            │            │              │   │
+│  └───────┴────────────┴────────────┴────────────┴────────────┴──────────────┘   │
+│                                    │                                            │
+│                                    ▼                                            │
+│                    ┌──────────────────────────────┐                             │
+│                    │    <span class="accent-cyan">UNIFIED AUDIT LOG</span>         │                             │
+│                    │                              │                             │
+│                    │  • All DLP policy matches    │                             │
+│                    │  • User activities           │                             │
+│                    │  • Admin changes             │                             │
+│                    │  • Label operations          │                             │
+│                    └──────────────┬───────────────┘                             │
+│                                   │                                             │
+│          ┌────────────────────────┼────────────────────────┐                    │
+│          │                        │                        │                    │
+│          ▼                        ▼                        ▼                    │
+│   ┌─────────────┐         ┌─────────────┐         ┌─────────────┐              │
+│   │  Purview    │         │  Microsoft  │         │    SIEM     │              │
+│   │  Compliance │         │   Sentinel  │         │ (Splunk,etc)│              │
+│   │  Portal     │         │             │         │             │              │
+│   └─────────────┘         └─────────────┘         └─────────────┘              │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+          </pre>
+        </div>
+        
+        <h2 id="enable-audit">Enable Audit Logging</h2>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Enable Unified Audit Log</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Connect to Exchange Online
+Connect-ExchangeOnline
+
+# Check if audit logging is enabled
+Get-AdminAuditLogConfig | Select-Object UnifiedAuditLogIngestionEnabled
+
+# Enable if disabled
+Set-AdminAuditLogConfig -UnifiedAuditLogIngestionEnabled $true
+
+# Verify status
+Get-AdminAuditLogConfig | Format-List *Audit*</code></pre>
+        </div>
+        
+        <h2 id="dlp-events">DLP Audit Event Types</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Record Type</th><th>Events Captured</th><th>Use Case</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>DLP</strong></td>
+                <td>Policy matches in Exchange, SharePoint, OneDrive</td>
+                <td>Cloud DLP monitoring</td>
+              </tr>
+              <tr>
+                <td><strong>DLPEndpoint</strong></td>
+                <td>Endpoint DLP activities (USB, print, clipboard)</td>
+                <td>Device DLP monitoring</td>
+              </tr>
+              <tr>
+                <td><strong>MipLabel</strong></td>
+                <td>Sensitivity label application, changes, removal</td>
+                <td>Label usage tracking</td>
+              </tr>
+              <tr>
+                <td><strong>MipAutoLabel</strong></td>
+                <td>Auto-labeling policy matches</td>
+                <td>Auto-classification monitoring</td>
+              </tr>
+              <tr>
+                <td><strong>ComplianceDLPSharePoint</strong></td>
+                <td>SharePoint-specific DLP events</td>
+                <td>SharePoint DLP details</td>
+              </tr>
+              <tr>
+                <td><strong>ComplianceDLPExchange</strong></td>
+                <td>Exchange-specific DLP events</td>
+                <td>Email DLP details</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="searching">Searching Audit Logs</h2>
+        
+        <h3>Compliance Portal Search</h3>
+        
+        <ol class="steps">
+          <li>
+            <strong>Navigate to Audit</strong>
+            <p>compliance.microsoft.com → Audit</p>
+          </li>
+          <li>
+            <strong>Set Date Range</strong>
+            <p>Select start and end dates (max 90 days)</p>
+          </li>
+          <li>
+            <strong>Filter by Activities</strong>
+            <p>Select "Data loss prevention" activities</p>
+          </li>
+          <li>
+            <strong>Run Search</strong>
+            <p>Click Search and wait for results</p>
+          </li>
+        </ol>
+        
+        <h3>PowerShell Search</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Search DLP Audit Logs</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Search all DLP events (last 7 days)
+$startDate = (Get-Date).AddDays(-7)
+$endDate = Get-Date
+
+$dlpLogs = Search-UnifiedAuditLog `
+    -StartDate $startDate `
+    -EndDate $endDate `
+    -RecordType DLP `
+    -ResultSize 5000
+
+# Search endpoint DLP events
+$endpointLogs = Search-UnifiedAuditLog `
+    -StartDate $startDate `
+    -EndDate $endDate `
+    -RecordType DLPEndpoint `
+    -ResultSize 5000
+
+# Search by specific user
+$userLogs = Search-UnifiedAuditLog `
+    -StartDate $startDate `
+    -EndDate $endDate `
+    -RecordType DLP `
+    -UserIds "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="47323422350724282a3726293e6924282a">[email&#160;protected]</a>" `
+    -ResultSize 1000
+
+# Search by specific operation
+$policyMatchLogs = Search-UnifiedAuditLog `
+    -StartDate $startDate `
+    -EndDate $endDate `
+    -Operations "DLPRuleMatch" `
+    -ResultSize 5000</code></pre>
+        </div>
+        
+        <h3>Parsing Audit Data</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Parse DLP Audit Results</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Parse audit data into usable format
+$parsedLogs = $dlpLogs | ForEach-Object {
+    $auditData = $_.AuditData | ConvertFrom-Json
+    
+    [PSCustomObject]@{
+        Timestamp = $_.CreationDate
+        User = $_.UserIds
+        Operation = $_.Operations
+        Workload = $auditData.Workload
+        PolicyName = $auditData.PolicyDetails.PolicyName
+        RuleName = $auditData.PolicyDetails.Rules.RuleName
+        Actions = ($auditData.PolicyDetails.Rules.Actions) -join ", "
+        SensitiveInfoTypes = ($auditData.SensitiveInfoTypeData | 
+            ForEach-Object { $_.SensitiveInfoTypeName }) -join ", "
+        MatchCount = ($auditData.SensitiveInfoTypeData | 
+            Measure-Object -Property Count -Sum).Sum
+        FileName = $auditData.ObjectId
+        SiteUrl = $auditData.SiteUrl
+    }
+}
+
+# View results
+$parsedLogs | Format-Table Timestamp, User, PolicyName, SensitiveInfoTypes, MatchCount -AutoSize
+
+# Export to CSV
+$parsedLogs | Export-Csv -Path "DLP_Audit_Report.csv" -NoTypeInformation</code></pre>
+        </div>
+        
+        <h2 id="retention">Audit Log Retention</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>License</th><th>Default Retention</th><th>Maximum Retention</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Microsoft 365 E3</strong></td>
+                <td>90 days</td>
+                <td>90 days</td>
+              </tr>
+              <tr>
+                <td><strong>Microsoft 365 E5</strong></td>
+                <td>90 days</td>
+                <td>1 year (with policy)</td>
+              </tr>
+              <tr>
+                <td><strong>E5 + Audit (Premium)</strong></td>
+                <td>1 year</td>
+                <td>10 years</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h3>Configure Retention Policy</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Create Audit Retention Policy</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Create 1-year retention for DLP events (requires E5)
+New-UnifiedAuditLogRetentionPolicy -Name "DLP Audit Retention - 1 Year" `
+    -Description "Retain DLP audit logs for compliance" `
+    -RecordTypes "DLP", "DLPEndpoint", "MipLabel" `
+    -RetentionDuration "TwelveMonths" `
+    -Priority 100
+
+# Create 10-year retention for high-priority events (requires Audit Premium)
+New-UnifiedAuditLogRetentionPolicy -Name "DLP Critical - 10 Year" `
+    -Description "Long-term retention for critical DLP events" `
+    -RecordTypes "DLP" `
+    -Operations "DLPRuleMatch" `
+    -RetentionDuration "TenYears" `
+    -Priority 50
+
+# View existing retention policies
+Get-UnifiedAuditLogRetentionPolicy | Format-Table Name, RecordTypes, RetentionDuration</code></pre>
+        </div>
+        
+        <h2 id="common-queries">Common Audit Queries</h2>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              All DLP Policy Matches (Last 30 Days)
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>Search-UnifiedAuditLog `
+    -StartDate (Get-Date).AddDays(-30) `
+    -EndDate (Get-Date) `
+    -Operations "DLPRuleMatch" `
+    -ResultSize 5000</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Label Changes by User
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>Search-UnifiedAuditLog `
+    -StartDate (Get-Date).AddDays(-7) `
+    -EndDate (Get-Date) `
+    -RecordType MipLabel `
+    -UserIds "<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="403533253200232f2d30212e396e232f2d">[email&#160;protected]</a>" `
+    -ResultSize 500</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              Endpoint DLP Blocked Activities
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code>$endpointBlocks = Search-UnifiedAuditLog `
+    -StartDate (Get-Date).AddDays(-7) `
+    -EndDate (Get-Date) `
+    -RecordType DLPEndpoint `
+    -ResultSize 1000
+
+$endpointBlocks | ForEach-Object {
+    $data = $_.AuditData | ConvertFrom-Json
+    if ($data.PolicyDetails.Rules.Actions -contains "Block") {
+        $_
+    }
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              DLP Policy Admin Changes
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <div class="code-block" data-language="powershell">
+                  <div class="code-header">
+                    <span class="code-lang">PowerShell</span>
+                    <button class="code-copy">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      Copy
+                    </button>
+                  </div>
+                  <pre><code># Track who changed DLP policies
+Search-UnifiedAuditLog `
+    -StartDate (Get-Date).AddDays(-30) `
+    -EndDate (Get-Date) `
+    -Operations "New-DlpCompliancePolicy", "Set-DlpCompliancePolicy", 
+                "Remove-DlpCompliancePolicy", "New-DlpComplianceRule",
+                "Set-DlpComplianceRule", "Remove-DlpComplianceRule" `
+    -ResultSize 500</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <h2 id="export-archive">Export and Archive</h2>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Export Audit Logs for Archive</span>
+            <button class="code-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <pre><code># Export DLP audit logs for long-term archive
+# Run monthly as scheduled task
+
+$startDate = (Get-Date).AddMonths(-1).Date
+$endDate = (Get-Date).Date
+$outputPath = "C:\AuditArchive\DLP_Audit_$($startDate.ToString('yyyyMM')).json"
+
+# Collect all DLP events
+$allLogs = @()
+$sessionId = [Guid]::NewGuid().ToString()
+$pageCount = 0
+
+do {
+    $pageCount++
+    $results = Search-UnifiedAuditLog `
+        -StartDate $startDate `
+        -EndDate $endDate `
+        -RecordType DLP, DLPEndpoint, MipLabel `
+        -SessionId $sessionId `
+        -SessionCommand ReturnLargeSet `
+        -ResultSize 5000
+    
+    if ($results) {
+        $allLogs += $results
+        Write-Host "Page $pageCount : Retrieved $($results.Count) records"
+    }
+} while ($results.Count -eq 5000)
+
+Write-Host "Total records: $($allLogs.Count)"
+
+# Export to JSON
+$allLogs | ConvertTo-Json -Depth 10 | Out-File $outputPath
+
+# Compress for storage
+Compress-Archive -Path $outputPath -DestinationPath "$outputPath.zip" -Force
+Remove-Item $outputPath
+
+Write-Host "Archived to: $outputPath.zip"</code></pre>
+        </div>
+        
+        <nav class="page-nav">
+          <a href="incident-response.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Incident Response</span>
+          </a>
+          <a href="siem-integration.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">SIEM Integration</span>
+          </a>
+        </nav>
+      </div>
+    </main>
+  </div>
+  
+  <script src="../../js/main.js"></script>
+</body>
+</html>
