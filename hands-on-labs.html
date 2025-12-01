@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <meta name="description" content="DLP Hands-on Labs with step-by-step exercises for Microsoft Purview, Symantec, and endpoint DLP practice environments.">
+  <title>Hands-on Labs | DLP Documentation Hub</title>
   <style>
 /* DLP Documentation - Dark Cyberpunk Aesthetic
    Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
@@ -1657,10 +1658,85 @@ li::marker {
 }
 
 </style>
+  <style>
+    .lab-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+    }
+    .lab-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+    .lab-difficulty {
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .lab-beginner { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .lab-intermediate { background: rgba(234, 179, 8, 0.2); color: var(--warning); }
+    .lab-advanced { background: rgba(239, 68, 68, 0.2); color: var(--error); }
+    .lab-time {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+    .lab-step {
+      background: var(--bg-tertiary);
+      border-left: 3px solid var(--purview);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    .lab-step h4 {
+      margin-top: 0;
+      color: var(--purview);
+    }
+    .checkpoint {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid var(--success);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+    }
+    .checkpoint::before {
+      content: "✓ Checkpoint: ";
+      font-weight: 600;
+      color: var(--success);
+    }
+    .prereq-box {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid var(--purview);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+    }
+    .test-data {
+      background: var(--bg-tertiary);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+    }
+  </style>
 </head>
 <body>
-  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="sidebar-overlay"></div>
+  
   <div class="page-wrapper">
     <aside class="sidebar">
       <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
@@ -1898,76 +1974,495 @@ li::marker {
         </div>
       </nav>
     </aside>
+    
     <main class="main-content">
       <div class="content-wrapper">
-        <nav class="breadcrumbs"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
-        <h1>Endpoint DLP Concepts</h1>
-        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        <nav class="breadcrumbs">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Hands-on Labs</span>
+        </nav>
         
-        <h2>Why Endpoint DLP?</h2>
-        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
-        <ul>
-          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
-          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
-          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
-          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
-          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
-        </ul>
+        <h1>🔬 Hands-on DLP Labs</h1>
         
-        <h2>How Endpoint DLP Works</h2>
-        <div class="ascii-diagram">
-          <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      ENDPOINT DLP OPERATION FLOW                                 │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
-│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
-│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
-│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
-│    │ file to USB │        │ hooks file  │        │ engine runs │               │
-│    │             │        │ system ops  │        │ SITs/rules  │               │
-│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
-│                                                         │                       │
-│    4. POLICY EVAL         5. ACTION                    │                       │
-│    ┌─────────────┐        ┌─────────────┐              │                       │
-│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
-│    │ Check rules │───────▶│ response    │                                      │
-│    └─────────────┘        │ (block/warn)│                                      │
-│                           └─────────────┘                                      │
-│                                                                                  │
-└─────────────────────────────────────────────────────────────────────────────────┘
-          </pre>
+        <p>Learn by doing! These step-by-step labs will give you practical experience with DLP implementation, policy creation, and incident response.</p>
+        
+        <h2 id="lab-environment">🖥️ Lab Environment Setup</h2>
+        
+        <div class="prereq-box">
+          <h4 style="margin-top: 0;">Prerequisites for Purview Labs</h4>
+          <ul style="margin-bottom: 0;">
+            <li>Microsoft 365 E5 trial or developer tenant (<a href="https://developer.microsoft.com/microsoft-365/dev-program" target="_blank">Get free developer tenant</a>)</li>
+            <li>Global Admin or Compliance Admin role</li>
+            <li>PowerShell 7+ with ExchangeOnlineManagement module</li>
+            <li>Test user accounts (at least 2)</li>
+          </ul>
         </div>
         
-        <h2>Key Components</h2>
-        <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
-            </div></div>
+        <h3>Test Data for Labs</h3>
+        <p>Use these Luhn-valid test numbers (they pass checksum but aren't real):</p>
+        
+        <div class="test-data">
+          <strong>Credit Cards:</strong><br>
+          Visa: 4111-1111-1111-1111<br>
+          MasterCard: 5500-0000-0000-0004<br>
+          Amex: 3400-0000-0000-009<br><br>
+          
+          <strong>Canadian SIN:</strong><br>
+          Test SIN: 046-454-286 (Luhn valid)<br><br>
+          
+          <strong>Test Document Content:</strong><br>
+          "Customer payment received via Visa 4111-1111-1111-1111, expiry 12/25"
+        </div>
+        
+        <h2 id="beginner-labs">🟢 Beginner Labs</h2>
+        
+        <div class="lab-card">
+          <div class="lab-header">
+            <h3 style="margin: 0;">Lab 1: Your First DLP Policy</h3>
+            <div>
+              <span class="lab-difficulty lab-beginner">Beginner</span>
+              <span class="lab-time">⏱️ 30 min</span>
+            </div>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
-            </div></div>
+          
+          <p><strong>Objective:</strong> Create a basic DLP policy to detect credit card numbers in email.</p>
+          
+          <div class="lab-step">
+            <h4>Step 1: Access the Compliance Portal</h4>
+            <ol>
+              <li>Navigate to <code>compliance.microsoft.com</code></li>
+              <li>Sign in with your admin account</li>
+              <li>Go to <strong>Data loss prevention</strong> → <strong>Policies</strong></li>
+            </ol>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
-            </div></div>
+          
+          <div class="lab-step">
+            <h4>Step 2: Create Policy from Template</h4>
+            <ol>
+              <li>Click <strong>+ Create policy</strong></li>
+              <li>Select <strong>Financial</strong> → <strong>U.S. Financial Data</strong></li>
+              <li>Name it: <code>Lab 1 - Credit Card Detection</code></li>
+              <li>Click <strong>Next</strong></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 3: Choose Locations</h4>
+            <ol>
+              <li>Toggle ON: <strong>Exchange email</strong></li>
+              <li>Toggle OFF: Everything else (for focused testing)</li>
+              <li>Click <strong>Next</strong></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 4: Configure Policy Settings</h4>
+            <ol>
+              <li>Keep default detection rules</li>
+              <li>Actions: Select <strong>Show policy tip to users</strong></li>
+              <li>Click <strong>Next</strong></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 5: Test Mode</h4>
+            <ol>
+              <li>Select <strong>Run the policy in test mode</strong></li>
+              <li>Check <strong>Show policy tips while in test mode</strong></li>
+              <li>Click <strong>Submit</strong></li>
+            </ol>
+          </div>
+          
+          <div class="checkpoint">Wait 15-30 minutes for policy to sync</div>
+          
+          <div class="lab-step">
+            <h4>Step 6: Test the Policy</h4>
+            <ol>
+              <li>Open Outlook (web or desktop)</li>
+              <li>Compose new email to external address</li>
+              <li>Type: "Please process payment for Visa 4111-1111-1111-1111"</li>
+              <li>Observe the policy tip that appears</li>
+            </ol>
+          </div>
+          
+          <div class="checkpoint">You should see a yellow policy tip warning about sensitive content</div>
+          
+          <div class="lab-step">
+            <h4>Step 7: Review in Activity Explorer</h4>
+            <ol>
+              <li>Go to <strong>Data classification</strong> → <strong>Activity explorer</strong></li>
+              <li>Filter by your policy name</li>
+              <li>View the detected activity</li>
+            </ol>
+          </div>
+          
+          <div class="callout callout-info">
+            <strong>🎓 What You Learned:</strong>
+            <ul style="margin-bottom: 0;">
+              <li>How to create a DLP policy from template</li>
+              <li>How to scope to specific locations</li>
+              <li>How test mode works with policy tips</li>
+              <li>How to verify detection in Activity Explorer</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="lab-card">
+          <div class="lab-header">
+            <h3 style="margin: 0;">Lab 2: Create a Custom Sensitive Info Type</h3>
+            <div>
+              <span class="lab-difficulty lab-beginner">Beginner</span>
+              <span class="lab-time">⏱️ 25 min</span>
+            </div>
+          </div>
+          
+          <p><strong>Objective:</strong> Create a custom SIT to detect your company's employee ID format.</p>
+          
+          <div class="lab-step">
+            <h4>Step 1: Navigate to SIT Management</h4>
+            <ol>
+              <li>Go to <code>compliance.microsoft.com</code></li>
+              <li>Navigate to <strong>Data classification</strong> → <strong>Classifiers</strong> → <strong>Sensitive info types</strong></li>
+              <li>Click <strong>+ Create sensitive info type</strong></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 2: Define the SIT</h4>
+            <ol>
+              <li>Name: <code>Contoso Employee ID</code></li>
+              <li>Description: <code>Detects employee IDs in format EMP-XXXXX</code></li>
+              <li>Click <strong>Next</strong></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 3: Create Pattern</h4>
+            <ol>
+              <li>Click <strong>+ Create pattern</strong></li>
+              <li>Confidence level: <strong>High</strong></li>
+              <li>Primary element: <strong>Regular expression</strong></li>
+              <li>Enter regex: <code>EMP-\d{5}</code></li>
+              <li>Add supporting element (keyword): <code>employee, staff, worker</code></li>
+              <li>Click <strong>Done</strong></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 4: Test the Pattern</h4>
+            <ol>
+              <li>Click <strong>Test</strong></li>
+              <li>Upload or paste text containing: <code>Employee EMP-12345 started today</code></li>
+              <li>Verify it detects the pattern</li>
+              <li>Click <strong>Finish</strong> → <strong>Create</strong></li>
+            </ol>
+          </div>
+          
+          <div class="checkpoint">Your custom SIT is now available for use in DLP policies</div>
+          
+          <div class="callout callout-info">
+            <strong>🎓 What You Learned:</strong>
+            <ul style="margin-bottom: 0;">
+              <li>How to create custom Sensitive Info Types</li>
+              <li>Basic regex pattern creation</li>
+              <li>Using supporting elements for accuracy</li>
+              <li>Testing patterns before deployment</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="intermediate-labs">🟡 Intermediate Labs</h2>
+        
+        <div class="lab-card">
+          <div class="lab-header">
+            <h3 style="margin: 0;">Lab 3: PowerShell Policy Management</h3>
+            <div>
+              <span class="lab-difficulty lab-intermediate">Intermediate</span>
+              <span class="lab-time">⏱️ 45 min</span>
+            </div>
+          </div>
+          
+          <p><strong>Objective:</strong> Create and manage DLP policies using PowerShell for automation.</p>
+          
+          <div class="lab-step">
+            <h4>Step 1: Connect to Security & Compliance PowerShell</h4>
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">Copy</button>
+              </div>
+              <pre><code># Install module if needed
+Install-Module -Name ExchangeOnlineManagement -Force
+
+# Connect
+Connect-IPPSSession -UserPrincipalName admin@yourtenant.onmicrosoft.com</code></pre>
+            </div>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 2: List Existing Policies</h4>
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">Copy</button>
+              </div>
+              <pre><code># List all DLP policies
+Get-DlpCompliancePolicy | Select-Object Name, Mode, Enabled, CreatedBy | Format-Table
+
+# Get detailed policy info
+Get-DlpCompliancePolicy -Identity "Lab 1 - Credit Card Detection" | Format-List</code></pre>
+            </div>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 3: Create Policy via PowerShell</h4>
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">Copy</button>
+              </div>
+              <pre><code># Create new policy
+New-DlpCompliancePolicy -Name "Lab 3 - Canadian PII" `
+    -Mode TestWithNotifications `
+    -ExchangeLocation All `
+    -SharePointLocation All `
+    -OneDriveLocation All
+
+# Create rule for the policy
+New-DlpComplianceRule -Name "Detect Canadian SIN" `
+    -Policy "Lab 3 - Canadian PII" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Canada Social Insurance Number"
+        minCount = 1
+        confidenceLevel = "High"
+    } `
+    -NotifyUser "Owner" `
+    -NotifyPolicyTipCustomText "This document contains a Canadian SIN. Handle with care."</code></pre>
+            </div>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 4: Modify and Enable</h4>
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">Copy</button>
+              </div>
+              <pre><code># Switch from Test to Enforce
+Set-DlpCompliancePolicy -Identity "Lab 3 - Canadian PII" -Mode Enable
+
+# Verify change
+Get-DlpCompliancePolicy -Identity "Lab 3 - Canadian PII" | Select Name, Mode</code></pre>
+            </div>
+          </div>
+          
+          <div class="checkpoint">Your policy is now created and enabled via PowerShell</div>
+          
+          <div class="callout callout-info">
+            <strong>🎓 What You Learned:</strong>
+            <ul style="margin-bottom: 0;">
+              <li>Connecting to Security & Compliance PowerShell</li>
+              <li>Creating policies and rules programmatically</li>
+              <li>Policy mode transitions</li>
+              <li>Foundation for automation scripts</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="lab-card">
+          <div class="lab-header">
+            <h3 style="margin: 0;">Lab 4: Endpoint DLP Configuration</h3>
+            <div>
+              <span class="lab-difficulty lab-intermediate">Intermediate</span>
+              <span class="lab-time">⏱️ 60 min</span>
+            </div>
+          </div>
+          
+          <p><strong>Objective:</strong> Configure Endpoint DLP to block USB transfers of sensitive data.</p>
+          
+          <div class="lab-step">
+            <h4>Step 1: Verify MDE Onboarding</h4>
+            <ol>
+              <li>On test Windows device, open Command Prompt as Admin</li>
+              <li>Run: <code>mdatp health</code></li>
+              <li>Verify <code>licensed: true</code> and <code>real_time_protection_enabled: true</code></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 2: Enable Device Onboarding</h4>
+            <ol>
+              <li>Go to <code>compliance.microsoft.com</code></li>
+              <li>Navigate to <strong>Settings</strong> → <strong>Device onboarding</strong></li>
+              <li>Verify your device appears in the list</li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 3: Create Endpoint DLP Policy</h4>
+            <ol>
+              <li>Go to <strong>Data loss prevention</strong> → <strong>Policies</strong></li>
+              <li>Click <strong>+ Create policy</strong></li>
+              <li>Choose <strong>Custom policy</strong></li>
+              <li>Name: <code>Lab 4 - Endpoint USB Block</code></li>
+              <li>Locations: Toggle ON only <strong>Devices</strong></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 4: Configure USB Block Rule</h4>
+            <ol>
+              <li>Create rule: <code>Block Credit Cards to USB</code></li>
+              <li>Condition: Content contains Credit Card Number (High confidence)</li>
+              <li>Action: <strong>Audit or restrict activities on devices</strong></li>
+              <li>Under "Service domain and browser activities": Select activities</li>
+              <li>For <strong>Copy to removable USB device</strong>: Select <strong>Block</strong></li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 5: Test the Block</h4>
+            <ol>
+              <li>Create a text file with: <code>Credit card: 4111-1111-1111-1111</code></li>
+              <li>Insert USB drive</li>
+              <li>Attempt to copy the file to USB</li>
+              <li>Observe the block notification</li>
+            </ol>
+          </div>
+          
+          <div class="checkpoint">USB transfer should be blocked with a toast notification</div>
+        </div>
+        
+        <h2 id="advanced-labs">🔴 Advanced Labs</h2>
+        
+        <div class="lab-card">
+          <div class="lab-header">
+            <h3 style="margin: 0;">Lab 5: DLP + Sensitivity Labels + Auto-labeling</h3>
+            <div>
+              <span class="lab-difficulty lab-advanced">Advanced</span>
+              <span class="lab-time">⏱️ 90 min</span>
+            </div>
+          </div>
+          
+          <p><strong>Objective:</strong> Create an end-to-end solution combining sensitivity labels, auto-labeling, and DLP protection.</p>
+          
+          <div class="lab-step">
+            <h4>Step 1: Create Sensitivity Label</h4>
+            <ol>
+              <li>Go to <strong>Information protection</strong> → <strong>Labels</strong></li>
+              <li>Create label: <code>Confidential - Financial</code></li>
+              <li>Enable: Content marking (header: "CONFIDENTIAL")</li>
+              <li>Enable: Encryption (let users assign permissions)</li>
+              <li>Publish to all users</li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 2: Create Auto-labeling Policy</h4>
+            <ol>
+              <li>Go to <strong>Information protection</strong> → <strong>Auto-labeling</strong></li>
+              <li>Create policy for: Financial data SIT</li>
+              <li>Apply label: <code>Confidential - Financial</code></li>
+              <li>Scope: SharePoint and OneDrive</li>
+              <li>Run in simulation first</li>
+            </ol>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 3: Create DLP Policy Based on Labels</h4>
+            <div class="code-block" data-language="powershell">
+              <div class="code-header">
+                <span class="code-lang">PowerShell</span>
+                <button class="code-copy">Copy</button>
+              </div>
+              <pre><code># Create policy that triggers on labeled content
+New-DlpCompliancePolicy -Name "Lab 5 - Protect Labeled Content" `
+    -ExchangeLocation All `
+    -SharePointLocation All `
+    -OneDriveLocation All `
+    -Mode Enable
+
+New-DlpComplianceRule -Name "Block External Sharing of Confidential" `
+    -Policy "Lab 5 - Protect Labeled Content" `
+    -ContentContainsSensitiveInformation @{
+        operator = "And"
+        groups = @(
+            @{
+                name = "Label Check"
+                operator = "Or"
+                labels = @(
+                    @{name = "Confidential - Financial"; type = "Sensitivity"}
+                )
+            }
+        )
+    } `
+    -BlockAccess $true `
+    -BlockAccessScope "NotInOrganization"</code></pre>
+            </div>
+          </div>
+          
+          <div class="lab-step">
+            <h4>Step 4: Test End-to-End Flow</h4>
+            <ol>
+              <li>Upload document with credit card to SharePoint</li>
+              <li>Wait for auto-labeling to apply "Confidential - Financial"</li>
+              <li>Try to share externally</li>
+              <li>Verify DLP blocks the share based on label</li>
+            </ol>
+          </div>
+          
+          <div class="checkpoint">Document should be auto-labeled and external sharing blocked</div>
+        </div>
+        
+        <h2 id="practice-scenarios">🎯 Practice Scenarios</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Scenario A: Healthcare</h4>
+            <p>Create policies to protect PHI (patient names + medical record numbers) for HIPAA compliance.</p>
+            <ul>
+              <li>Custom SIT for MRN format</li>
+              <li>Block external email</li>
+              <li>Allow internal with encryption</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Scenario B: Finance</h4>
+            <p>Protect quarterly earnings data before public release.</p>
+            <ul>
+              <li>Keyword-based detection</li>
+              <li>Time-based policy (disable after release)</li>
+              <li>Executive exception group</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Scenario C: Legal</h4>
+            <p>Protect attorney-client privileged documents.</p>
+            <ul>
+              <li>Document fingerprinting</li>
+              <li>Sensitivity label integration</li>
+              <li>Block all external sharing</li>
+            </ul>
           </div>
         </div>
         
         <nav class="page-nav">
-          <a href="index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
-          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+          <a href="interview-prep.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Interview Preparation</span>
+          </a>
+          <a href="case-studies.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Real-world Case Studies</span>
+          </a>
         </nav>
       </div>
     </main>
   </div>
+  
   <script>
 /**
  * DLP Documentation - Interactive Components

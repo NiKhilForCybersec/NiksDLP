@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <meta name="description" content="DLP Certification Guide including SC-400, Security+, and other relevant certifications for security engineers.">
+  <title>Certification Guide | DLP Documentation Hub</title>
   <style>
 /* DLP Documentation - Dark Cyberpunk Aesthetic
    Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
@@ -1657,10 +1658,94 @@ li::marker {
 }
 
 </style>
+  <style>
+    .cert-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-lg);
+    }
+    .cert-header {
+      display: flex;
+      gap: var(--space-lg);
+      align-items: flex-start;
+      margin-bottom: var(--space-lg);
+    }
+    .cert-logo {
+      width: 80px;
+      height: 80px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .cert-meta {
+      display: flex;
+      gap: var(--space-lg);
+      flex-wrap: wrap;
+      margin: var(--space-md) 0;
+    }
+    .cert-meta-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+    .relevance-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: var(--space-sm);
+    }
+    .relevance-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    .study-resource {
+      background: var(--bg-tertiary);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-sm) 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .exam-domain {
+      background: var(--bg-tertiary);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-sm) 0;
+    }
+    .domain-weight {
+      float: right;
+      background: var(--purview);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
-  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="sidebar-overlay"></div>
+  
   <div class="page-wrapper">
     <aside class="sidebar">
       <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
@@ -1898,76 +1983,312 @@ li::marker {
         </div>
       </nav>
     </aside>
+    
     <main class="main-content">
       <div class="content-wrapper">
-        <nav class="breadcrumbs"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
-        <h1>Endpoint DLP Concepts</h1>
-        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        <nav class="breadcrumbs">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Certification Guide</span>
+        </nav>
         
-        <h2>Why Endpoint DLP?</h2>
-        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
-        <ul>
-          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
-          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
-          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
-          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
-          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
-        </ul>
+        <h1>🎓 DLP Certification Guide</h1>
         
-        <h2>How Endpoint DLP Works</h2>
-        <div class="ascii-diagram">
-          <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      ENDPOINT DLP OPERATION FLOW                                 │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
-│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
-│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
-│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
-│    │ file to USB │        │ hooks file  │        │ engine runs │               │
-│    │             │        │ system ops  │        │ SITs/rules  │               │
-│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
-│                                                         │                       │
-│    4. POLICY EVAL         5. ACTION                    │                       │
-│    ┌─────────────┐        ┌─────────────┐              │                       │
-│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
-│    │ Check rules │───────▶│ response    │                                      │
-│    └─────────────┘        │ (block/warn)│                                      │
-│                           └─────────────┘                                      │
-│                                                                                  │
-└─────────────────────────────────────────────────────────────────────────────────┘
-          </pre>
+        <p>Strategic certifications to validate your DLP expertise and advance your career. Focus on these for maximum ROI.</p>
+        
+        <div class="callout callout-info">
+          <strong>💡 Certification Strategy:</strong> Start with SC-400 if you're Microsoft-focused. Add Security+ for foundational credibility, then specialize based on your environment.
         </div>
         
-        <h2>Key Components</h2>
-        <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
-            </div></div>
+        <h2 id="primary-certs">🏆 Primary DLP Certifications</h2>
+        
+        <div class="cert-card">
+          <div class="cert-header">
+            <div class="cert-logo">🔷</div>
+            <div>
+              <h3 style="margin: 0;">SC-400: Microsoft Information Protection Administrator</h3>
+              <p style="margin: var(--space-xs) 0 0; color: var(--text-secondary);">The gold standard for Microsoft Purview DLP</p>
+              <div class="cert-meta">
+                <span class="cert-meta-item">💰 $165 USD</span>
+                <span class="cert-meta-item">⏱️ 120 minutes</span>
+                <span class="cert-meta-item">📊 40-60 questions</span>
+                <span class="cert-meta-item">✅ 700 to pass</span>
+              </div>
+            </div>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
-            </div></div>
+          
+          <h4>DLP Relevance</h4>
+          <div class="relevance-bar">
+            <div class="relevance-fill" style="width: 95%; background: var(--success);"></div>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
-            </div></div>
+          <p style="font-size: 0.875rem; color: var(--text-muted);">95% directly applicable to DLP work</p>
+          
+          <h4>Exam Domains</h4>
+          <div class="exam-domain">
+            <span class="domain-weight">35-40%</span>
+            <strong>Implement information protection</strong>
+            <p style="margin: var(--space-xs) 0 0; font-size: 0.875rem; color: var(--text-secondary);">Sensitivity labels, encryption, auto-labeling</p>
+          </div>
+          <div class="exam-domain">
+            <span class="domain-weight">30-35%</span>
+            <strong>Implement data loss prevention</strong>
+            <p style="margin: var(--space-xs) 0 0; font-size: 0.875rem; color: var(--text-secondary);">DLP policies, SITs, endpoint DLP, Activity Explorer</p>
+          </div>
+          <div class="exam-domain">
+            <span class="domain-weight">25-30%</span>
+            <strong>Implement information governance</strong>
+            <p style="margin: var(--space-xs) 0 0; font-size: 0.875rem; color: var(--text-secondary);">Retention, records management, eDiscovery</p>
+          </div>
+          
+          <h4>Study Resources</h4>
+          <div class="study-resource">
+            <span>Microsoft Learn (Free)</span>
+            <a href="https://learn.microsoft.com/en-us/certifications/information-protection-administrator/" target="_blank">learn.microsoft.com →</a>
+          </div>
+          <div class="study-resource">
+            <span>This Documentation Site</span>
+            <span>You're here! 🎉</span>
+          </div>
+          <div class="study-resource">
+            <span>Hands-on Labs</span>
+            <a href="hands-on-labs.html">Practice labs →</a>
+          </div>
+          
+          <h4>Key Topics from This Site</h4>
+          <ul>
+            <li><a href="purview-sensitive-info-types.html">Sensitive Information Types</a> — Custom SITs, EDM, trainable classifiers</li>
+            <li><a href="purview-policies.html">DLP Policies</a> — Policy creation, conditions, actions</li>
+            <li><a href="purview-labels.html">Sensitivity Labels</a> — Label taxonomy, encryption, auto-labeling</li>
+            <li><a href="purview-endpoint-dlp.html">Endpoint DLP</a> — Device onboarding, activity restrictions</li>
+          </ul>
+        </div>
+        
+        <div class="cert-card">
+          <div class="cert-header">
+            <div class="cert-logo">🟣</div>
+            <div>
+              <h3 style="margin: 0;">Broadcom Certified Specialist - Data Loss Prevention</h3>
+              <p style="margin: var(--space-xs) 0 0; color: var(--text-secondary);">For Symantec/Broadcom DLP environments</p>
+              <div class="cert-meta">
+                <span class="cert-meta-item">💰 $250 USD</span>
+                <span class="cert-meta-item">⏱️ 90 minutes</span>
+                <span class="cert-meta-item">📊 60 questions</span>
+              </div>
+            </div>
+          </div>
+          
+          <h4>DLP Relevance</h4>
+          <div class="relevance-bar">
+            <div class="relevance-fill" style="width: 100%; background: var(--symantec);"></div>
+          </div>
+          <p style="font-size: 0.875rem; color: var(--text-muted);">100% Symantec DLP focused</p>
+          
+          <h4>Exam Domains</h4>
+          <div class="exam-domain">
+            <strong>Enforce Server Administration</strong>
+            <p style="margin: var(--space-xs) 0 0; font-size: 0.875rem; color: var(--text-secondary);">Oracle DB, policy management, user roles</p>
+          </div>
+          <div class="exam-domain">
+            <strong>Detection Server Configuration</strong>
+            <p style="margin: var(--space-xs) 0 0; font-size: 0.875rem; color: var(--text-secondary);">Network Monitor/Prevent, Discover, Email Prevent</p>
+          </div>
+          <div class="exam-domain">
+            <strong>Policy Development</strong>
+            <p style="margin: var(--space-xs) 0 0; font-size: 0.875rem; color: var(--text-secondary);">DCM, IDM, EDM, VML configuration</p>
+          </div>
+          <div class="exam-domain">
+            <strong>Endpoint Agent Deployment</strong>
+            <p style="margin: var(--space-xs) 0 0; font-size: 0.875rem; color: var(--text-secondary);">Agent installation, policy sync, troubleshooting</p>
+          </div>
+          
+          <h4>Key Topics from This Site</h4>
+          <ul>
+            <li><a href="symantec-architecture.html">Symantec Architecture</a> — Enforce, Detection Servers, Agents</li>
+            <li><a href="symantec-detection.html">Detection Methods</a> — DCM, IDM, EDM, VML</li>
+            <li><a href="symantec-policies.html">Policy Configuration</a> — Rules, responses, exceptions</li>
+            <li><a href="troubleshooting-symantec.html">Troubleshooting</a> — Common issues and fixes</li>
+          </ul>
+        </div>
+        
+        <h2 id="foundational-certs">📚 Foundational Certifications</h2>
+        
+        <div class="cert-card">
+          <div class="cert-header">
+            <div class="cert-logo">🔴</div>
+            <div>
+              <h3 style="margin: 0;">CompTIA Security+</h3>
+              <p style="margin: var(--space-xs) 0 0; color: var(--text-secondary);">Industry-standard security foundation</p>
+              <div class="cert-meta">
+                <span class="cert-meta-item">💰 $392 USD</span>
+                <span class="cert-meta-item">⏱️ 90 minutes</span>
+                <span class="cert-meta-item">📊 90 questions</span>
+                <span class="cert-meta-item">✅ 750 to pass</span>
+              </div>
+            </div>
+          </div>
+          
+          <h4>DLP Relevance</h4>
+          <div class="relevance-bar">
+            <div class="relevance-fill" style="width: 40%; background: var(--warning);"></div>
+          </div>
+          <p style="font-size: 0.875rem; color: var(--text-muted);">40% relevant (covers DLP concepts, broader security context)</p>
+          
+          <h4>Why It Matters for DLP</h4>
+          <ul>
+            <li>Validates foundational security knowledge</li>
+            <li>Covers data classification, encryption basics</li>
+            <li>Required/preferred by many employers</li>
+            <li>DoD 8570 compliant for government work</li>
+          </ul>
+        </div>
+        
+        <div class="cert-card">
+          <div class="cert-header">
+            <div class="cert-logo">☁️</div>
+            <div>
+              <h3 style="margin: 0;">SC-900: Microsoft Security Fundamentals</h3>
+              <p style="margin: var(--space-xs) 0 0; color: var(--text-secondary);">Entry point to Microsoft security certifications</p>
+              <div class="cert-meta">
+                <span class="cert-meta-item">💰 $99 USD</span>
+                <span class="cert-meta-item">⏱️ 45 minutes</span>
+                <span class="cert-meta-item">📊 40-60 questions</span>
+              </div>
+            </div>
+          </div>
+          
+          <h4>DLP Relevance</h4>
+          <div class="relevance-bar">
+            <div class="relevance-fill" style="width: 25%; background: var(--info);"></div>
+          </div>
+          <p style="font-size: 0.875rem; color: var(--text-muted);">25% relevant (intro to Purview concepts)</p>
+          
+          <h4>Best For</h4>
+          <ul>
+            <li>New to Microsoft security ecosystem</li>
+            <li>Want quick credential before SC-400</li>
+            <li>Non-technical stakeholders understanding security</li>
+          </ul>
+        </div>
+        
+        <h2 id="advanced-certs">🚀 Advanced/Complementary Certifications</h2>
+        
+        <div class="cert-card">
+          <div class="cert-header">
+            <div class="cert-logo">🛡️</div>
+            <div>
+              <h3 style="margin: 0;">SC-200: Microsoft Security Operations Analyst</h3>
+              <p style="margin: var(--space-xs) 0 0; color: var(--text-secondary);">SOC operations with Microsoft Sentinel & Defender</p>
+            </div>
+          </div>
+          
+          <h4>Why Pair with DLP</h4>
+          <ul>
+            <li>DLP alerts flow to SOC for response</li>
+            <li>Sentinel integration for DLP monitoring</li>
+            <li>Incident response procedures</li>
+            <li>KQL skills for DLP analysis (see <a href="kql-library.html">KQL Library</a>)</li>
+          </ul>
+        </div>
+        
+        <div class="cert-card">
+          <div class="cert-header">
+            <div class="cert-logo">🔐</div>
+            <div>
+              <h3 style="margin: 0;">CISSP</h3>
+              <p style="margin: var(--space-xs) 0 0; color: var(--text-secondary);">Certified Information Systems Security Professional</p>
+            </div>
+          </div>
+          
+          <h4>Why It Matters</h4>
+          <ul>
+            <li>Gold standard for security leadership</li>
+            <li>Domain 2 (Asset Security) covers data classification</li>
+            <li>Required for senior/architect roles</li>
+            <li>5 years experience prerequisite</li>
+          </ul>
+        </div>
+        
+        <h2 id="study-plan">📅 Recommended Study Plan</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Week</th><th>Focus Area</th><th>Resources</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1-2</td>
+                <td>DLP Fundamentals & Data Classification</td>
+                <td><a href="dlp-fundamentals.html">Fundamentals</a>, <a href="data-classification.html">Classification</a></td>
+              </tr>
+              <tr>
+                <td>3-4</td>
+                <td>Sensitive Info Types & Custom SITs</td>
+                <td><a href="purview-sensitive-info-types.html">SITs</a>, <a href="hands-on-labs.html">Labs 1-2</a></td>
+              </tr>
+              <tr>
+                <td>5-6</td>
+                <td>DLP Policies & Actions</td>
+                <td><a href="purview-policies.html">Policies</a>, <a href="hands-on-labs.html">Lab 3</a></td>
+              </tr>
+              <tr>
+                <td>7-8</td>
+                <td>Sensitivity Labels & Encryption</td>
+                <td><a href="purview-labels.html">Labels</a>, Microsoft Learn modules</td>
+              </tr>
+              <tr>
+                <td>9-10</td>
+                <td>Endpoint DLP & MDCA</td>
+                <td><a href="purview-endpoint-dlp.html">Endpoint DLP</a>, <a href="cloud-casb-integration.html">CASB</a></td>
+              </tr>
+              <tr>
+                <td>11-12</td>
+                <td>Practice Tests & Review</td>
+                <td><a href="cheat-sheet.html">Cheat Sheet</a>, <a href="mnemonics.html">Mnemonics</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="exam-tips">💡 Exam Day Tips</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Before the Exam</h4>
+            <ul style="margin-bottom: 0;">
+              <li>Get hands-on with a trial tenant</li>
+              <li>Review <a href="cheat-sheet.html">Cheat Sheet</a> the night before</li>
+              <li>Sleep well, eat breakfast</li>
+              <li>Arrive 15 minutes early</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">During the Exam</h4>
+            <ul style="margin-bottom: 0;">
+              <li>Read questions carefully (watch for NOT/EXCEPT)</li>
+              <li>Flag difficult questions, return later</li>
+              <li>Eliminate obviously wrong answers</li>
+              <li>Don't overthink — first instinct often correct</li>
+            </ul>
           </div>
         </div>
         
         <nav class="page-nav">
-          <a href="index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
-          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+          <a href="case-studies.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Case Studies</span>
+          </a>
+          <a href="career-path.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Career Path</span>
+          </a>
         </nav>
       </div>
     </main>
   </div>
+  
   <script>
 /**
  * DLP Documentation - Interactive Components

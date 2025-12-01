@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <meta name="description" content="Real-world DLP case studies from enterprise implementations including lessons learned, challenges, and solutions.">
+  <title>Case Studies | DLP Documentation Hub</title>
   <style>
 /* DLP Documentation - Dark Cyberpunk Aesthetic
    Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
@@ -1657,10 +1658,118 @@ li::marker {
 }
 
 </style>
+  <style>
+    .case-study {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+    }
+    .case-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-lg);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .case-industry {
+      background: var(--purview-glow);
+      color: var(--purview);
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .case-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-lg) 0;
+    }
+    .stat-box {
+      background: var(--bg-tertiary);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--purview);
+      font-family: var(--font-display);
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .lesson-box {
+      background: rgba(34, 197, 94, 0.1);
+      border-left: 4px solid var(--success);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    .challenge-box {
+      background: rgba(239, 68, 68, 0.1);
+      border-left: 4px solid var(--error);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    .solution-box {
+      background: rgba(59, 130, 246, 0.1);
+      border-left: 4px solid var(--purview);
+      padding: var(--space-md);
+      margin: var(--space-md) 0;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    .timeline {
+      position: relative;
+      padding-left: var(--space-xl);
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-color);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: var(--space-lg);
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--space-xl) + 4px);
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--purview);
+    }
+    .timeline-date {
+      font-size: 0.8rem;
+      color: var(--purview);
+      font-weight: 600;
+    }
+  </style>
 </head>
 <body>
-  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="sidebar-overlay"></div>
+  
   <div class="page-wrapper">
     <aside class="sidebar">
       <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
@@ -1898,76 +2007,324 @@ li::marker {
         </div>
       </nav>
     </aside>
+    
     <main class="main-content">
       <div class="content-wrapper">
-        <nav class="breadcrumbs"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
-        <h1>Endpoint DLP Concepts</h1>
-        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        <nav class="breadcrumbs">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Case Studies</span>
+        </nav>
         
-        <h2>Why Endpoint DLP?</h2>
-        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
-        <ul>
-          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
-          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
-          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
-          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
-          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
-        </ul>
+        <h1>📖 Real-World Case Studies</h1>
         
-        <h2>How Endpoint DLP Works</h2>
-        <div class="ascii-diagram">
-          <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      ENDPOINT DLP OPERATION FLOW                                 │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
-│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
-│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
-│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
-│    │ file to USB │        │ hooks file  │        │ engine runs │               │
-│    │             │        │ system ops  │        │ SITs/rules  │               │
-│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
-│                                                         │                       │
-│    4. POLICY EVAL         5. ACTION                    │                       │
-│    ┌─────────────┐        ┌─────────────┐              │                       │
-│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
-│    │ Check rules │───────▶│ response    │                                      │
-│    └─────────────┘        │ (block/warn)│                                      │
-│                           └─────────────┘                                      │
-│                                                                                  │
-└─────────────────────────────────────────────────────────────────────────────────┘
-          </pre>
+        <p>Learn from actual enterprise DLP implementations. These case studies are based on real projects with details anonymized.</p>
+        
+        <div class="case-study">
+          <div class="case-header">
+            <div>
+              <h2 style="margin: 0;">Case Study 1: Manufacturing Giant Migration</h2>
+              <p style="margin: var(--space-sm) 0 0; color: var(--text-secondary);">Symantec DLP to Microsoft Purview</p>
+            </div>
+            <span class="case-industry">Manufacturing</span>
+          </div>
+          
+          <div class="case-stats">
+            <div class="stat-box">
+              <div class="stat-number">12,000</div>
+              <div class="stat-label">Employees</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">50+</div>
+              <div class="stat-label">Policies Migrated</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">6 months</div>
+              <div class="stat-label">Timeline</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">40%</div>
+              <div class="stat-label">Cost Reduction</div>
+            </div>
+          </div>
+          
+          <h3>Background</h3>
+          <p>A global manufacturing company with facilities in Canada, US, and Mexico was running Symantec DLP 15.7 on aging infrastructure. With their Microsoft 365 E5 investment, leadership wanted to consolidate to Purview DLP.</p>
+          
+          <div class="challenge-box">
+            <h4 style="margin-top: 0; color: var(--error);">🚨 Challenges</h4>
+            <ul style="margin-bottom: 0;">
+              <li>50+ complex Symantec policies with custom IDM fingerprints</li>
+              <li>Network Prevent for inline blocking (no direct Purview equivalent)</li>
+              <li>Oracle database with 3 years of incident history</li>
+              <li>Workforce resistant to change ("Symantec works fine")</li>
+              <li>Zero tolerance for protection gaps during transition</li>
+            </ul>
+          </div>
+          
+          <div class="solution-box">
+            <h4 style="margin-top: 0; color: var(--purview);">💡 Solution Approach</h4>
+            <ol style="margin-bottom: 0;">
+              <li><strong>Policy Mapping (4 weeks):</strong> Documented every Symantec policy, identified Purview equivalents, flagged gaps requiring MDCA or workarounds</li>
+              <li><strong>Parallel Running (8 weeks):</strong> Both systems active, compared detection rates, tuned Purview until parity achieved</li>
+              <li><strong>Phased Cutover (4 weeks):</strong> Endpoint first (MDE integration), then email, then SharePoint, finally disabled Symantec</li>
+              <li><strong>Network DLP Gap:</strong> Deployed Microsoft Defender for Cloud Apps with inline session controls for critical web apps</li>
+            </ol>
+          </div>
+          
+          <h3>Timeline</h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-date">Month 1-2</div>
+              <p>Discovery and policy mapping. Identified 50 active policies, 12 using IDM, 8 using EDM.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Month 2-3</div>
+              <p>Built Purview policies in Test mode. Created custom SITs for company-specific patterns.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Month 3-4</div>
+              <p>Parallel running. Achieved 95% detection parity. Tuned false positives.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Month 4-5</div>
+              <p>Phased enforcement. Enabled Purview blocking, disabled Symantec blocking.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">Month 6</div>
+              <p>Full cutover. Decommissioned Symantec servers. Archive exported to cold storage.</p>
+            </div>
+          </div>
+          
+          <div class="lesson-box">
+            <h4 style="margin-top: 0; color: var(--success);">✅ Key Lessons</h4>
+            <ul style="margin-bottom: 0;">
+              <li><strong>Parallel running is essential</strong> — Revealed 15 detection gaps we would have missed</li>
+              <li><strong>Involve business users early</strong> — Finance team input prevented 3 weeks of troubleshooting</li>
+              <li><strong>Network DLP requires CASB</strong> — Can't replicate Symantec Network Prevent directly</li>
+              <li><strong>Document everything</strong> — Symantec policy exports saved during parallel running</li>
+            </ul>
+          </div>
         </div>
         
-        <h2>Key Components</h2>
-        <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
-            </div></div>
+        <div class="case-study">
+          <div class="case-header">
+            <div>
+              <h2 style="margin: 0;">Case Study 2: Healthcare PIPEDA Compliance</h2>
+              <p style="margin: var(--space-sm) 0 0; color: var(--text-secondary);">Greenfield Purview Implementation</p>
+            </div>
+            <span class="case-industry">Healthcare</span>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
-            </div></div>
+          
+          <div class="case-stats">
+            <div class="stat-box">
+              <div class="stat-number">3,500</div>
+              <div class="stat-label">Employees</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">15</div>
+              <div class="stat-label">Clinics</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">8 weeks</div>
+              <div class="stat-label">To Production</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">95%</div>
+              <div class="stat-label">Detection Rate</div>
+            </div>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
-            </div></div>
+          
+          <h3>Background</h3>
+          <p>A regional healthcare network in Ontario needed DLP to comply with PIPEDA and provincial health privacy legislation. They had no existing DLP solution and faced an upcoming audit.</p>
+          
+          <div class="challenge-box">
+            <h4 style="margin-top: 0; color: var(--error);">🚨 Challenges</h4>
+            <ul style="margin-bottom: 0;">
+              <li>Tight 8-week deadline before regulatory audit</li>
+              <li>Complex data: Patient names, OHIP numbers, health records, prescriptions</li>
+              <li>Clinicians resistant to anything that slows patient care</li>
+              <li>Mix of modern and legacy EMR systems</li>
+              <li>No dedicated security team (IT generalists)</li>
+            </ul>
+          </div>
+          
+          <div class="solution-box">
+            <h4 style="margin-top: 0; color: var(--purview);">💡 Solution Approach</h4>
+            <ol style="margin-bottom: 0;">
+              <li><strong>Risk-Based Prioritization:</strong> Focus on email external sharing first (highest risk), defer endpoint</li>
+              <li><strong>Custom Canadian SITs:</strong> Built OHIP-specific pattern with provincial health keywords</li>
+              <li><strong>Warn, Don't Block:</strong> Clinicians get override capability with justification for urgent patient care</li>
+              <li><strong>Heavy User Training:</strong> 2-hour mandatory training before enforcement</li>
+            </ol>
+          </div>
+          
+          <h3>Policy Design</h3>
+          <table>
+            <thead>
+              <tr><th>Data Type</th><th>Internal Action</th><th>External Action</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Patient Name + OHIP</td><td>Audit only</td><td>Block with override</td></tr>
+              <tr><td>Diagnosis codes (ICD-10)</td><td>Audit only</td><td>Warn</td></tr>
+              <tr><td>Prescription data</td><td>Audit only</td><td>Block</td></tr>
+              <tr><td>Credit card (payments)</td><td>Warn</td><td>Block</td></tr>
+            </tbody>
+          </table>
+          
+          <div class="lesson-box">
+            <h4 style="margin-top: 0; color: var(--success);">✅ Key Lessons</h4>
+            <ul style="margin-bottom: 0;">
+              <li><strong>Healthcare needs override</strong> — Emergency situations require flexibility</li>
+              <li><strong>Train before enforce</strong> — Reduced help desk tickets by 70%</li>
+              <li><strong>Audit mode first</strong> — Discovered legitimate workflows we would have broken</li>
+              <li><strong>Provincial variations matter</strong> — OHIP is Ontario-specific, other provinces differ</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="case-study">
+          <div class="case-header">
+            <div>
+              <h2 style="margin: 0;">Case Study 3: Financial Services Hybrid SOC</h2>
+              <p style="margin: var(--space-sm) 0 0; color: var(--text-secondary);">Multi-vendor DLP with SIEM Integration</p>
+            </div>
+            <span class="case-industry">Financial Services</span>
+          </div>
+          
+          <div class="case-stats">
+            <div class="stat-box">
+              <div class="stat-number">8,000</div>
+              <div class="stat-label">Employees</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">3</div>
+              <div class="stat-label">DLP Platforms</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">2M+</div>
+              <div class="stat-label">Events/Day</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-number">15 min</div>
+              <div class="stat-label">Mean Response Time</div>
+            </div>
+          </div>
+          
+          <h3>Background</h3>
+          <p>A Canadian bank needed to maintain multiple DLP platforms (Symantec for network, Purview for M365, Netskope for CASB) due to regulatory requirements and technical constraints. The challenge was creating unified visibility and response.</p>
+          
+          <h3>Architecture</h3>
+          <div class="ascii-diagram">
+            <pre>
+┌─────────────────────────────────────────────────────────────────────┐
+│                    UNIFIED DLP OPERATIONS                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐                  │
+│  │  Symantec   │  │   Purview   │  │  Netskope   │                  │
+│  │  Network    │  │    M365     │  │    CASB     │                  │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘                  │
+│         │                │                │                          │
+│         └────────────────┼────────────────┘                          │
+│                          │                                           │
+│                          ▼                                           │
+│              ┌───────────────────────┐                               │
+│              │    <span class="accent-cyan">SPLUNK ENTERPRISE</span>    │                               │
+│              │    SECURITY (SIEM)    │                               │
+│              └───────────┬───────────┘                               │
+│                          │                                           │
+│              ┌───────────▼───────────┐                               │
+│              │        <span class="accent-purple">XSOAR</span>          │                               │
+│              │    (Orchestration)    │                               │
+│              └───────────────────────┘                               │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+            </pre>
+          </div>
+          
+          <div class="solution-box">
+            <h4 style="margin-top: 0; color: var(--purview);">💡 Integration Approach</h4>
+            <ol style="margin-bottom: 0;">
+              <li><strong>Normalized Data Model:</strong> Created common schema for DLP events across all platforms</li>
+              <li><strong>Splunk Correlation Rules:</strong> Cross-platform alerting (same user in Symantec + Purview = escalate)</li>
+              <li><strong>XSOAR Playbooks:</strong> Automated triage and enrichment, analyst gets complete context</li>
+              <li><strong>Unified Dashboard:</strong> Single pane showing all DLP incidents regardless of source</li>
+            </ol>
+          </div>
+          
+          <h3>KQL for Cross-Platform Analysis (Sentinel)</h3>
+          <div class="code-block" data-language="kql">
+            <div class="code-header">
+              <span class="code-lang">KQL - Multi-Source DLP Correlation</span>
+              <button class="code-copy">Copy</button>
+            </div>
+            <pre><code>// Combine DLP events from multiple sources
+let PurviewDLP = DLPPolicyMatchInfo
+| extend Source = "Purview", Severity = case(PolicyAction == "Block", "High", "Medium");
+
+let SymantecDLP = Syslog
+| where ProcessName == "SymantecDLP"
+| extend Source = "Symantec", UserPrincipalName = extract("user=([^,]+)", 1, SyslogMessage);
+
+let NetskopeDLP = CommonSecurityLog
+| where DeviceVendor == "Netskope" and Activity == "DLP"
+| extend Source = "Netskope";
+
+union PurviewDLP, SymantecDLP, NetskopeDLP
+| summarize EventCount = count(), Sources = make_set(Source) by UserPrincipalName, bin(TimeGenerated, 1h)
+| where array_length(Sources) > 1  // User triggered DLP in multiple systems
+| order by EventCount desc</code></pre>
+          </div>
+          
+          <div class="lesson-box">
+            <h4 style="margin-top: 0; color: var(--success);">✅ Key Lessons</h4>
+            <ul style="margin-bottom: 0;">
+              <li><strong>Normalization is critical</strong> — Each vendor uses different field names</li>
+              <li><strong>Correlation catches what single tools miss</strong> — User copying to USB AND cloud = higher risk</li>
+              <li><strong>Automation reduces fatigue</strong> — 80% of alerts auto-triaged, analysts focus on real issues</li>
+              <li><strong>Regulatory drivers matter</strong> — Bank couldn't go single-vendor due to audit requirements</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="lessons-summary">📝 Common Lessons Across All Cases</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">🎯 Start with Audit Mode</h4>
+            <p>Every successful project ran in audit/test mode for 2-4 weeks minimum before enforcement.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">👥 Business User Buy-in</h4>
+            <p>Early engagement with Finance, HR, Legal prevents post-launch firefighting.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">📊 Measure Before & After</h4>
+            <p>Track false positive rates, user complaints, detection rates to prove value.</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">🔄 Iterate Continuously</h4>
+            <p>DLP is never "done" — weekly tuning in first month, monthly thereafter.</p>
           </div>
         </div>
         
         <nav class="page-nav">
-          <a href="index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
-          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+          <a href="hands-on-labs.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Hands-on Labs</span>
+          </a>
+          <a href="certification-guide.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Certification Guide</span>
+          </a>
         </nav>
       </div>
     </main>
   </div>
+  
   <script>
 /**
  * DLP Documentation - Interactive Components

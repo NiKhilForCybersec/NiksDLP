@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <meta name="description" content="DLP Maturity Model for assessing and improving your organization's data loss prevention program.">
+  <title>DLP Maturity Model | DLP Documentation Hub</title>
   <style>
 /* DLP Documentation - Dark Cyberpunk Aesthetic
    Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
@@ -1657,10 +1658,65 @@ li::marker {
 }
 
 </style>
+  <style>
+    .maturity-level {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      border-left: 4px solid var(--border-color);
+    }
+    .maturity-level.level-1 { border-left-color: var(--error); }
+    .maturity-level.level-2 { border-left-color: var(--warning); }
+    .maturity-level.level-3 { border-left-color: var(--info); }
+    .maturity-level.level-4 { border-left-color: var(--success); }
+    .maturity-level.level-5 { border-left-color: var(--symantec); }
+    .level-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-md);
+    }
+    .level-number {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-display);
+    }
+    .level-1 .level-number { color: var(--error); }
+    .level-2 .level-number { color: var(--warning); }
+    .level-3 .level-number { color: var(--info); }
+    .level-4 .level-number { color: var(--success); }
+    .level-5 .level-number { color: var(--symantec); }
+    .assessment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-md);
+      margin: var(--space-lg) 0;
+    }
+    .assessment-item {
+      background: var(--bg-tertiary);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+    .assessment-score {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--purview);
+    }
+  </style>
 </head>
 <body>
-  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="sidebar-overlay"></div>
+  
   <div class="page-wrapper">
     <aside class="sidebar">
       <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
@@ -1898,76 +1954,338 @@ li::marker {
         </div>
       </nav>
     </aside>
+    
     <main class="main-content">
       <div class="content-wrapper">
-        <nav class="breadcrumbs"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
-        <h1>Endpoint DLP Concepts</h1>
-        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        <nav class="breadcrumbs">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>DLP Maturity Model</span>
+        </nav>
         
-        <h2>Why Endpoint DLP?</h2>
-        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
-        <ul>
-          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
-          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
-          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
-          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
-          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
-        </ul>
+        <h1>📊 DLP Maturity Model</h1>
         
-        <h2>How Endpoint DLP Works</h2>
+        <p>Assess where your DLP program stands today and create a roadmap for improvement. This model helps you communicate progress to leadership and prioritize investments.</p>
+        
+        <h2 id="overview">Maturity Levels Overview</h2>
+        
         <div class="ascii-diagram">
           <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      ENDPOINT DLP OPERATION FLOW                                 │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
-│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
-│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
-│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
-│    │ file to USB │        │ hooks file  │        │ engine runs │               │
-│    │             │        │ system ops  │        │ SITs/rules  │               │
-│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
-│                                                         │                       │
-│    4. POLICY EVAL         5. ACTION                    │                       │
-│    ┌─────────────┐        ┌─────────────┐              │                       │
-│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
-│    │ Check rules │───────▶│ response    │                                      │
-│    └─────────────┘        │ (block/warn)│                                      │
-│                           └─────────────┘                                      │
-│                                                                                  │
-└─────────────────────────────────────────────────────────────────────────────────┘
+     MATURITY PROGRESSION
+     
+     Level 5: OPTIMIZED ──────────────────────────► AI/ML, Zero-touch
+          ▲
+     Level 4: MANAGED ────────────────────────────► Metrics-driven
+          ▲
+     Level 3: DEFINED ────────────────────────────► Standardized
+          ▲
+     Level 2: DEVELOPING ─────────────────────────► Basic policies
+          ▲
+     Level 1: INITIAL ────────────────────────────► Ad-hoc, reactive
+
+     <span class="accent-cyan">Most organizations are at Level 2-3. Level 4+ requires dedicated investment.</span>
           </pre>
         </div>
         
-        <h2>Key Components</h2>
-        <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
-            </div></div>
+        <h2 id="levels">Detailed Maturity Levels</h2>
+        
+        <div class="maturity-level level-1">
+          <div class="level-header">
+            <div>
+              <span class="level-number">1</span>
+              <h3 style="margin: 0; display: inline-block; margin-left: var(--space-sm);">Initial / Ad-hoc</h3>
+            </div>
+            <span style="color: var(--error);">🔴 High Risk</span>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
-            </div></div>
+          
+          <h4>Characteristics</h4>
+          <ul>
+            <li>No formal DLP program or tools</li>
+            <li>Data classification is undefined</li>
+            <li>Reactive response to incidents only</li>
+            <li>No visibility into data flows</li>
+            <li>Compliance is assumed, not verified</li>
+          </ul>
+          
+          <h4>Typical Indicators</h4>
+          <ul>
+            <li>❌ No DLP policies in place</li>
+            <li>❌ Data breaches discovered externally</li>
+            <li>❌ No sensitive data inventory</li>
+            <li>❌ Users can email/upload anything</li>
+          </ul>
+          
+          <h4>Next Steps to Level 2</h4>
+          <ol>
+            <li>Conduct data discovery scan</li>
+            <li>Define top 3-5 sensitive data types</li>
+            <li>Deploy basic DLP tool in audit mode</li>
+            <li>Identify executive sponsor</li>
+          </ol>
+        </div>
+        
+        <div class="maturity-level level-2">
+          <div class="level-header">
+            <div>
+              <span class="level-number">2</span>
+              <h3 style="margin: 0; display: inline-block; margin-left: var(--space-sm);">Developing</h3>
+            </div>
+            <span style="color: var(--warning);">🟡 Moderate Risk</span>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
-            </div></div>
+          
+          <h4>Characteristics</h4>
+          <ul>
+            <li>Basic DLP tool deployed</li>
+            <li>Initial policies for obvious data (PII, PCI)</li>
+            <li>Mostly audit/monitor mode</li>
+            <li>Manual incident review</li>
+            <li>Limited business engagement</li>
+          </ul>
+          
+          <h4>Typical Indicators</h4>
+          <ul>
+            <li>✅ DLP tool deployed to some locations</li>
+            <li>✅ 1-5 active policies</li>
+            <li>⚠️ High false positive rate (>30%)</li>
+            <li>⚠️ No endpoint coverage</li>
+            <li>⚠️ Limited reporting</li>
+          </ul>
+          
+          <h4>Next Steps to Level 3</h4>
+          <ol>
+            <li>Expand to all data locations (email, cloud, endpoint)</li>
+            <li>Tune policies to reduce false positives</li>
+            <li>Enable blocking for high-risk scenarios</li>
+            <li>Implement user notifications and training</li>
+            <li>Establish regular review cadence</li>
+          </ol>
+        </div>
+        
+        <div class="maturity-level level-3">
+          <div class="level-header">
+            <div>
+              <span class="level-number">3</span>
+              <h3 style="margin: 0; display: inline-block; margin-left: var(--space-sm);">Defined</h3>
+            </div>
+            <span style="color: var(--info);">🔵 Controlled Risk</span>
           </div>
+          
+          <h4>Characteristics</h4>
+          <ul>
+            <li>Comprehensive policy coverage</li>
+            <li>Standardized processes documented</li>
+            <li>Mixed audit/block enforcement</li>
+            <li>Regular policy tuning</li>
+            <li>Business unit engagement</li>
+            <li>Integrated with incident response</li>
+          </ul>
+          
+          <h4>Typical Indicators</h4>
+          <ul>
+            <li>✅ 10-20 active policies</li>
+            <li>✅ False positive rate <15%</li>
+            <li>✅ Endpoint DLP deployed</li>
+            <li>✅ Monthly metrics reporting</li>
+            <li>✅ User training program</li>
+          </ul>
+          
+          <h4>Next Steps to Level 4</h4>
+          <ol>
+            <li>Implement data classification labels</li>
+            <li>Integrate DLP with SIEM/SOAR</li>
+            <li>Develop risk-based response playbooks</li>
+            <li>Automate common response actions</li>
+            <li>Establish SLAs for incident response</li>
+          </ol>
+        </div>
+        
+        <div class="maturity-level level-4">
+          <div class="level-header">
+            <div>
+              <span class="level-number">4</span>
+              <h3 style="margin: 0; display: inline-block; margin-left: var(--space-sm);">Managed</h3>
+            </div>
+            <span style="color: var(--success);">🟢 Low Risk</span>
+          </div>
+          
+          <h4>Characteristics</h4>
+          <ul>
+            <li>Metrics-driven program management</li>
+            <li>Automated incident response</li>
+            <li>Sensitivity labels widely adopted</li>
+            <li>Cross-platform integration</li>
+            <li>Proactive threat hunting</li>
+            <li>Executive dashboard and reporting</li>
+          </ul>
+          
+          <h4>Typical Indicators</h4>
+          <ul>
+            <li>✅ 20+ policies with <5% false positive</li>
+            <li>✅ SIEM/SOAR integration complete</li>
+            <li>✅ Automated remediation for common issues</li>
+            <li>✅ Quarterly executive reporting</li>
+            <li>✅ Continuous policy optimization</li>
+          </ul>
+          
+          <h4>Next Steps to Level 5</h4>
+          <ol>
+            <li>Implement ML-based detection</li>
+            <li>Deploy user behavior analytics</li>
+            <li>Enable predictive risk scoring</li>
+            <li>Achieve near-real-time response</li>
+          </ol>
+        </div>
+        
+        <div class="maturity-level level-5">
+          <div class="level-header">
+            <div>
+              <span class="level-number">5</span>
+              <h3 style="margin: 0; display: inline-block; margin-left: var(--space-sm);">Optimized</h3>
+            </div>
+            <span style="color: var(--symantec);">🟣 Minimal Risk</span>
+          </div>
+          
+          <h4>Characteristics</h4>
+          <ul>
+            <li>AI/ML-driven detection and response</li>
+            <li>Predictive analytics for insider threats</li>
+            <li>Self-tuning policies</li>
+            <li>Zero-trust data architecture</li>
+            <li>Industry leadership</li>
+            <li>Continuous improvement culture</li>
+          </ul>
+          
+          <h4>Typical Indicators</h4>
+          <ul>
+            <li>✅ Trainable classifiers actively learning</li>
+            <li>✅ User risk scoring integrated</li>
+            <li>✅ <1% false positive rate</li>
+            <li>✅ Minutes to detect, seconds to respond</li>
+            <li>✅ DLP integrated into DevSecOps</li>
+          </ul>
+        </div>
+        
+        <h2 id="assessment">🎯 Quick Self-Assessment</h2>
+        
+        <p>Rate your organization on each dimension (1-5 scale):</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Dimension</th><th>1 (None)</th><th>3 (Partial)</th><th>5 (Complete)</th><th>Your Score</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Data Discovery</strong></td>
+                <td>No inventory</td>
+                <td>Key systems scanned</td>
+                <td>Continuous discovery</td>
+                <td>___</td>
+              </tr>
+              <tr>
+                <td><strong>Classification</strong></td>
+                <td>No labels</td>
+                <td>Manual labeling</td>
+                <td>Auto-labeling + ML</td>
+                <td>___</td>
+              </tr>
+              <tr>
+                <td><strong>Policy Coverage</strong></td>
+                <td>0-2 policies</td>
+                <td>10-15 policies</td>
+                <td>25+ risk-based</td>
+                <td>___</td>
+              </tr>
+              <tr>
+                <td><strong>Enforcement</strong></td>
+                <td>Audit only</td>
+                <td>Mixed audit/block</td>
+                <td>Risk-based actions</td>
+                <td>___</td>
+              </tr>
+              <tr>
+                <td><strong>Incident Response</strong></td>
+                <td>Manual/ad-hoc</td>
+                <td>Defined process</td>
+                <td>Automated SOAR</td>
+                <td>___</td>
+              </tr>
+              <tr>
+                <td><strong>Metrics & Reporting</strong></td>
+                <td>None</td>
+                <td>Monthly reports</td>
+                <td>Real-time dashboards</td>
+                <td>___</td>
+              </tr>
+              <tr>
+                <td><strong>User Awareness</strong></td>
+                <td>No training</td>
+                <td>Annual training</td>
+                <td>Continuous + just-in-time</td>
+                <td>___</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <div class="callout callout-info">
+          <strong>Scoring Guide:</strong>
+          <ul style="margin-bottom: 0;">
+            <li><strong>7-14 points:</strong> Level 1-2 (Developing)</li>
+            <li><strong>15-21 points:</strong> Level 2-3 (Defined)</li>
+            <li><strong>22-28 points:</strong> Level 3-4 (Managed)</li>
+            <li><strong>29-35 points:</strong> Level 4-5 (Optimized)</li>
+          </ul>
+        </div>
+        
+        <h2 id="roadmap">🗺️ Sample Improvement Roadmap</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Quarter</th><th>Focus Area</th><th>Key Deliverables</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Q1</td>
+                <td>Foundation</td>
+                <td>Data discovery, top 5 policies, audit mode deployment</td>
+              </tr>
+              <tr>
+                <td>Q2</td>
+                <td>Expansion</td>
+                <td>Endpoint DLP, enable blocking, user training</td>
+              </tr>
+              <tr>
+                <td>Q3</td>
+                <td>Integration</td>
+                <td>SIEM integration, sensitivity labels, cloud apps</td>
+              </tr>
+              <tr>
+                <td>Q4</td>
+                <td>Optimization</td>
+                <td>Automation, advanced detection, executive dashboards</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         
         <nav class="page-nav">
-          <a href="index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
-          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+          <a href="reporting-metrics.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Reporting & Metrics</span>
+          </a>
+          <a href="policy-templates.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Policy Templates</span>
+          </a>
         </nav>
       </div>
     </main>
   </div>
+  
   <script>
 /**
  * DLP Documentation - Interactive Components

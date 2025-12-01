@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <meta name="description" content="DLP Career Path from entry-level to architect including roles, skills, and progression strategies.">
+  <title>Career Path | DLP Documentation Hub</title>
   <style>
 /* DLP Documentation - Dark Cyberpunk Aesthetic
    Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
@@ -1657,10 +1658,76 @@ li::marker {
 }
 
 </style>
+  <style>
+    .career-level {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-lg);
+      position: relative;
+    }
+    .career-level::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -20px;
+      width: 2px;
+      height: 20px;
+      background: var(--border-color);
+    }
+    .career-level:last-of-type::before {
+      display: none;
+    }
+    .level-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+    }
+    .level-entry { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .level-mid { background: rgba(59, 130, 246, 0.2); color: var(--purview); }
+    .level-senior { background: rgba(168, 85, 247, 0.2); color: var(--symantec); }
+    .level-lead { background: rgba(249, 115, 22, 0.2); color: var(--network); }
+    .salary-range {
+      background: var(--bg-tertiary);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      display: inline-block;
+      margin: var(--space-sm) 0;
+    }
+    .skill-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      margin: 2px;
+    }
+    .skill-tag.required { border-color: var(--success); color: var(--success); }
+    .skill-tag.preferred { border-color: var(--info); color: var(--info); }
+    .progression-arrow {
+      text-align: center;
+      padding: var(--space-md) 0;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+    }
+  </style>
 </head>
 <body>
-  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="sidebar-overlay"></div>
+  
   <div class="page-wrapper">
     <aside class="sidebar">
       <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
@@ -1898,76 +1965,331 @@ li::marker {
         </div>
       </nav>
     </aside>
+    
     <main class="main-content">
       <div class="content-wrapper">
-        <nav class="breadcrumbs"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
-        <h1>Endpoint DLP Concepts</h1>
-        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        <nav class="breadcrumbs">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Career Path</span>
+        </nav>
         
-        <h2>Why Endpoint DLP?</h2>
-        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
-        <ul>
-          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
-          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
-          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
-          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
-          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
-        </ul>
+        <h1>🚀 DLP Career Path</h1>
         
-        <h2>How Endpoint DLP Works</h2>
-        <div class="ascii-diagram">
-          <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      ENDPOINT DLP OPERATION FLOW                                 │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
-│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
-│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
-│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
-│    │ file to USB │        │ hooks file  │        │ engine runs │               │
-│    │             │        │ system ops  │        │ SITs/rules  │               │
-│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
-│                                                         │                       │
-│    4. POLICY EVAL         5. ACTION                    │                       │
-│    ┌─────────────┐        ┌─────────────┐              │                       │
-│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
-│    │ Check rules │───────▶│ response    │                                      │
-│    └─────────────┘        │ (block/warn)│                                      │
-│                           └─────────────┘                                      │
-│                                                                                  │
-└─────────────────────────────────────────────────────────────────────────────────┘
-          </pre>
+        <p>Your roadmap from entry-level to DLP architect. Each level builds on the previous with specific skills, responsibilities, and growth opportunities.</p>
+        
+        <h2 id="career-ladder">📈 The DLP Career Ladder</h2>
+        
+        <div class="career-level">
+          <span class="level-badge level-entry">Entry Level</span>
+          <h3>SOC Analyst / Junior Security Analyst</h3>
+          <div class="salary-range">💰 CAD $55,000 - $75,000</div>
+          <p>⏱️ Experience: 0-2 years</p>
+          
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Monitor DLP alerts and triage incidents</li>
+            <li>Escalate true positives to senior analysts</li>
+            <li>Document false positives for policy tuning</li>
+            <li>Basic user support for DLP-related issues</li>
+            <li>Generate weekly DLP reports</li>
+          </ul>
+          
+          <h4>Required Skills</h4>
+          <p>
+            <span class="skill-tag required">Security fundamentals</span>
+            <span class="skill-tag required">Basic networking</span>
+            <span class="skill-tag required">Ticketing systems</span>
+            <span class="skill-tag required">Communication</span>
+          </p>
+          
+          <h4>Preferred Skills</h4>
+          <p>
+            <span class="skill-tag preferred">Security+ certification</span>
+            <span class="skill-tag preferred">Basic scripting</span>
+            <span class="skill-tag preferred">SIEM familiarity</span>
+          </p>
+          
+          <h4>How to Get Here</h4>
+          <ul>
+            <li>Complete Security+ certification</li>
+            <li>Build home lab with security tools</li>
+            <li>Apply for SOC analyst positions</li>
+            <li>Express interest in DLP during interviews</li>
+          </ul>
         </div>
         
-        <h2>Key Components</h2>
-        <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
-            </div></div>
+        <div class="progression-arrow">↓</div>
+        
+        <div class="career-level">
+          <span class="level-badge level-mid">Mid Level</span>
+          <h3>DLP Analyst / Security Engineer</h3>
+          <div class="salary-range">💰 CAD $75,000 - $100,000</div>
+          <p>⏱️ Experience: 2-5 years</p>
+          
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Create and tune DLP policies</li>
+            <li>Investigate complex DLP incidents</li>
+            <li>Build custom Sensitive Info Types</li>
+            <li>Manage endpoint DLP deployments</li>
+            <li>Coordinate with business units on requirements</li>
+            <li>Develop automation scripts for DLP operations</li>
+          </ul>
+          
+          <h4>Required Skills</h4>
+          <p>
+            <span class="skill-tag required">DLP platform expertise</span>
+            <span class="skill-tag required">Regex patterns</span>
+            <span class="skill-tag required">PowerShell scripting</span>
+            <span class="skill-tag required">Incident response</span>
+            <span class="skill-tag required">Policy development</span>
+          </p>
+          
+          <h4>Preferred Skills</h4>
+          <p>
+            <span class="skill-tag preferred">SC-400 certification</span>
+            <span class="skill-tag preferred">Multiple DLP platforms</span>
+            <span class="skill-tag preferred">SIEM integration</span>
+            <span class="skill-tag preferred">Project management</span>
+          </p>
+          
+          <h4>How to Progress</h4>
+          <ul>
+            <li>Volunteer for DLP-specific projects</li>
+            <li>Get SC-400 certified</li>
+            <li>Learn both Purview AND Symantec</li>
+            <li>Build relationships with business stakeholders</li>
+            <li>Document your wins (policies created, FP reduction, etc.)</li>
+          </ul>
+        </div>
+        
+        <div class="progression-arrow">↓</div>
+        
+        <div class="career-level">
+          <span class="level-badge level-senior">Senior Level</span>
+          <h3>Senior DLP Engineer / DLP Specialist</h3>
+          <div class="salary-range">💰 CAD $100,000 - $130,000</div>
+          <p>⏱️ Experience: 5-8 years</p>
+          
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Design enterprise DLP architecture</li>
+            <li>Lead DLP migration projects</li>
+            <li>Mentor junior team members</li>
+            <li>Define DLP standards and best practices</li>
+            <li>Present to leadership on DLP metrics and ROI</li>
+            <li>Evaluate and recommend new DLP technologies</li>
+            <li>Integrate DLP with SIEM, SOAR, and CASB</li>
+          </ul>
+          
+          <h4>Required Skills</h4>
+          <p>
+            <span class="skill-tag required">Multi-platform DLP expertise</span>
+            <span class="skill-tag required">Architecture design</span>
+            <span class="skill-tag required">Project leadership</span>
+            <span class="skill-tag required">Executive communication</span>
+            <span class="skill-tag required">Vendor management</span>
+          </p>
+          
+          <h4>Preferred Skills</h4>
+          <p>
+            <span class="skill-tag preferred">CISSP or equivalent</span>
+            <span class="skill-tag preferred">Cloud security (Azure, AWS)</span>
+            <span class="skill-tag preferred">Data governance frameworks</span>
+            <span class="skill-tag preferred">Budget management</span>
+          </p>
+          
+          <h4>How to Progress</h4>
+          <ul>
+            <li>Lead a major DLP project (migration, new deployment)</li>
+            <li>Pursue CISSP certification</li>
+            <li>Develop cross-functional relationships</li>
+            <li>Present at internal/external conferences</li>
+            <li>Build expertise in adjacent areas (IAM, cloud security)</li>
+          </ul>
+        </div>
+        
+        <div class="progression-arrow">↓</div>
+        
+        <div class="career-level">
+          <span class="level-badge level-lead">Leadership Level</span>
+          <h3>DLP Architect / Data Protection Manager</h3>
+          <div class="salary-range">💰 CAD $130,000 - $170,000+</div>
+          <p>⏱️ Experience: 8+ years</p>
+          
+          <h4>Responsibilities</h4>
+          <ul>
+            <li>Define enterprise data protection strategy</li>
+            <li>Manage DLP team and budget</li>
+            <li>Report to CISO on data protection posture</li>
+            <li>Drive regulatory compliance programs</li>
+            <li>Architect zero-trust data security</li>
+            <li>Vendor selection and contract negotiation</li>
+            <li>Board-level reporting on data risk</li>
+          </ul>
+          
+          <h4>Required Skills</h4>
+          <p>
+            <span class="skill-tag required">Strategic thinking</span>
+            <span class="skill-tag required">People management</span>
+            <span class="skill-tag required">Budget ownership</span>
+            <span class="skill-tag required">Risk management</span>
+            <span class="skill-tag required">Executive presence</span>
+          </p>
+          
+          <h4>Preferred Skills</h4>
+          <p>
+            <span class="skill-tag preferred">MBA or security masters</span>
+            <span class="skill-tag preferred">CISM/CRISC</span>
+            <span class="skill-tag preferred">Industry speaking experience</span>
+            <span class="skill-tag preferred">Board communication</span>
+          </p>
+        </div>
+        
+        <h2 id="alternative-paths">🔀 Alternative Career Paths</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">🔍 GRC Specialist</h4>
+            <p>Focus on compliance frameworks, audits, and policy development.</p>
+            <ul style="margin-bottom: 0;">
+              <li>PIPEDA, GDPR, PCI-DSS expertise</li>
+              <li>Audit preparation and response</li>
+              <li>Policy writing and governance</li>
+            </ul>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
-            </div></div>
+          <div class="card">
+            <h4 style="margin-top: 0;">☁️ Cloud Security Architect</h4>
+            <p>Expand from DLP to broader cloud security.</p>
+            <ul style="margin-bottom: 0;">
+              <li>Azure/AWS/GCP security</li>
+              <li>CASB and SASE architecture</li>
+              <li>Zero trust implementation</li>
+            </ul>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
-            </div></div>
+          <div class="card">
+            <h4 style="margin-top: 0;">🎓 Security Consultant</h4>
+            <p>Help multiple organizations with DLP implementations.</p>
+            <ul style="margin-bottom: 0;">
+              <li>Big 4 or boutique consulting</li>
+              <li>Variety of industries/challenges</li>
+              <li>Higher compensation potential</li>
+            </ul>
           </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">🛠️ Security Tooling/DevSecOps</h4>
+            <p>Build and automate security solutions.</p>
+            <ul style="margin-bottom: 0;">
+              <li>SOAR playbook development</li>
+              <li>Security automation</li>
+              <li>API integrations</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="skills-matrix">🎯 Skills Development Matrix</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Skill Category</th>
+                <th>Entry</th>
+                <th>Mid</th>
+                <th>Senior</th>
+                <th>Lead</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Technical Depth</strong></td>
+                <td>Single tool basics</td>
+                <td>Deep expertise in 1-2 tools</td>
+                <td>Multi-platform architecture</td>
+                <td>Industry-wide perspective</td>
+              </tr>
+              <tr>
+                <td><strong>Scripting</strong></td>
+                <td>Read scripts</td>
+                <td>Write automation</td>
+                <td>Design frameworks</td>
+                <td>Evaluate solutions</td>
+              </tr>
+              <tr>
+                <td><strong>Communication</strong></td>
+                <td>Team updates</td>
+                <td>Stakeholder reports</td>
+                <td>Executive presentations</td>
+                <td>Board reporting</td>
+              </tr>
+              <tr>
+                <td><strong>Leadership</strong></td>
+                <td>Self-management</td>
+                <td>Project contributions</td>
+                <td>Team mentorship</td>
+                <td>Org leadership</td>
+              </tr>
+              <tr>
+                <td><strong>Business Acumen</strong></td>
+                <td>Understand workflows</td>
+                <td>Balance security/productivity</td>
+                <td>ROI articulation</td>
+                <td>Strategy development</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="action-plan">📋 Your Action Plan</h2>
+        
+        <div class="callout callout-info">
+          <h4 style="margin-top: 0;">Next 30 Days</h4>
+          <ol style="margin-bottom: 0;">
+            <li>Complete this documentation site (you're almost there!)</li>
+            <li>Set up a Microsoft 365 developer tenant for practice</li>
+            <li>Complete Labs 1-2 from <a href="hands-on-labs.html">Hands-on Labs</a></li>
+            <li>Review <a href="interview-prep.html">Interview Prep</a> questions</li>
+          </ol>
+        </div>
+        
+        <div class="callout callout-warning">
+          <h4 style="margin-top: 0;">Next 90 Days</h4>
+          <ol style="margin-bottom: 0;">
+            <li>Complete SC-400 certification</li>
+            <li>Document 3 DLP projects for your portfolio</li>
+            <li>Build relationships with 2 business stakeholders</li>
+            <li>Present DLP metrics to your manager</li>
+          </ol>
+        </div>
+        
+        <div class="callout callout-success">
+          <h4 style="margin-top: 0;">Next 12 Months</h4>
+          <ol style="margin-bottom: 0;">
+            <li>Lead or co-lead a DLP project</li>
+            <li>Expand to second DLP platform (Symantec if you know Purview, vice versa)</li>
+            <li>Mentor a junior team member</li>
+            <li>Present at an internal security forum</li>
+            <li>Evaluate your next career level move</li>
+          </ol>
         </div>
         
         <nav class="page-nav">
-          <a href="index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
-          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+          <a href="certification-guide.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Certification Guide</span>
+          </a>
+          <a href="index.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Home</span>
+          </a>
         </nav>
       </div>
     </main>
   </div>
+  
   <script>
 /**
  * DLP Documentation - Interactive Components

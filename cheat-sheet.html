@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <meta name="description" content="DLP Cheat Sheet - Quick reference guide with mnemonics, memory aids, and essential commands for Data Loss Prevention.">
+  <title>DLP Cheat Sheet | DLP Documentation Hub</title>
   <style>
 /* DLP Documentation - Dark Cyberpunk Aesthetic
    Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
@@ -1659,8 +1660,16 @@ li::marker {
 </style>
 </head>
 <body>
-  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="sidebar-overlay"></div>
+  
   <div class="page-wrapper">
     <aside class="sidebar">
       <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
@@ -1898,76 +1907,421 @@ li::marker {
         </div>
       </nav>
     </aside>
+    
     <main class="main-content">
       <div class="content-wrapper">
-        <nav class="breadcrumbs"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
-        <h1>Endpoint DLP Concepts</h1>
-        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        <nav class="breadcrumbs">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>DLP Cheat Sheet</span>
+        </nav>
         
-        <h2>Why Endpoint DLP?</h2>
-        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
-        <ul>
-          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
-          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
-          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
-          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
-          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
-        </ul>
+        <h1>🚀 DLP Cheat Sheet</h1>
         
-        <h2>How Endpoint DLP Works</h2>
+        <p>Your one-page quick reference for everything DLP. Print this, bookmark it, tattoo it on your arm.</p>
+        
+        <div class="callout callout-info">
+          <strong>💡 Pro Tip:</strong> Use Ctrl+F to quickly find what you need on this page!
+        </div>
+        
+        <h2 id="core-concepts">🧠 Core Concepts (The Big Picture)</h2>
+        
+        <div class="card" style="background: linear-gradient(135deg, var(--bg-card) 0%, rgba(59, 130, 246, 0.1) 100%);">
+          <h3 style="margin-top: 0;">The DLP Trinity</h3>
+          <div class="ascii-diagram">
+            <pre>
+     ┌─────────────────┐
+     │   <span class="accent-cyan">DISCOVER</span>      │  ← Find sensitive data
+     └────────┬────────┘
+              │
+     ┌────────▼────────┐
+     │   <span class="accent-green">CLASSIFY</span>      │  ← Label & categorize
+     └────────┬────────┘
+              │
+     ┌────────▼────────┐
+     │   <span class="accent-purple">PROTECT</span>       │  ← Apply policies
+     └─────────────────┘
+            </pre>
+          </div>
+          <p style="text-align: center; margin-bottom: 0;"><strong>Remember: DCP = "Don't Copy Please"</strong></p>
+        </div>
+        
+        <h3>The 3 States of Data</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>State</th><th>Where</th><th>Protection Method</th><th>Memory Aid</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Data at Rest</strong></td>
+                <td>Stored (DB, files, backups)</td>
+                <td>Encryption, Access Controls</td>
+                <td>🛏️ "Sleeping in bed"</td>
+              </tr>
+              <tr>
+                <td><strong>Data in Motion</strong></td>
+                <td>Network transfer (email, web)</td>
+                <td>TLS, DLP policies</td>
+                <td>🚗 "Driving on highway"</td>
+              </tr>
+              <tr>
+                <td><strong>Data in Use</strong></td>
+                <td>Active processing (RAM, apps)</td>
+                <td>Endpoint DLP, DRM</td>
+                <td>🏃 "Running a marathon"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="confidence-levels">📊 Confidence Levels (Know These Cold!)</h2>
+        
+        <div class="card-grid">
+          <div class="card" style="border-left: 4px solid var(--warning);">
+            <h4 style="margin-top: 0; color: var(--warning);">🟡 Low: 65%</h4>
+            <p>Pattern match only. High false positives.</p>
+            <p><em>"Maybe it's a credit card, maybe it's a phone number"</em></p>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--info);">
+            <h4 style="margin-top: 0; color: var(--info);">🔵 Medium: 75%</h4>
+            <p>Pattern + some corroborating evidence.</p>
+            <p><em>"Probably a credit card, found 'Visa' nearby"</em></p>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--success);">
+            <h4 style="margin-top: 0; color: var(--success);">🟢 High: 85%</h4>
+            <p>Pattern + checksum + keywords.</p>
+            <p><em>"Definitely a credit card with expiry date"</em></p>
+          </div>
+        </div>
+        
+        <div class="callout callout-warning">
+          <strong>🎯 Interview Gold:</strong> "We set High confidence for Block actions to minimize business disruption, Medium for Warn, and Low for Audit-only in test mode."
+        </div>
+        
+        <h2 id="detection-methods">🔍 Detection Methods</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Method</th><th>How It Works</th><th>Best For</th><th>Mnemonic</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Regex</strong></td>
+                <td>Pattern matching</td>
+                <td>Structured data (SSN, CC#)</td>
+                <td><strong>R</strong>eally <strong>E</strong>asy <strong>G</strong>rep <strong>EX</strong>pressions</td>
+              </tr>
+              <tr>
+                <td><strong>Keywords</strong></td>
+                <td>Word lists + proximity</td>
+                <td>Context validation</td>
+                <td>"Looking for friends nearby"</td>
+              </tr>
+              <tr>
+                <td><strong>Fingerprinting</strong></td>
+                <td>Document hashing</td>
+                <td>Exact document matching</td>
+                <td>🖐️ "Unique like your fingerprint"</td>
+              </tr>
+              <tr>
+                <td><strong>EDM</strong></td>
+                <td>Database lookup</td>
+                <td>Customer lists, employee data</td>
+                <td><strong>E</strong>xact <strong>D</strong>ata <strong>M</strong>atch = "Phone book lookup"</td>
+              </tr>
+              <tr>
+                <td><strong>ML/AI</strong></td>
+                <td>Trainable classifiers</td>
+                <td>Unstructured content</td>
+                <td>🤖 "Teach the robot"</td>
+              </tr>
+              <tr>
+                <td><strong>OCR</strong></td>
+                <td>Image text extraction</td>
+                <td>Scanned documents, screenshots</td>
+                <td>👁️ "Reading pictures"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="action-hierarchy">⚡ Action Hierarchy</h2>
+        
         <div class="ascii-diagram">
           <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      ENDPOINT DLP OPERATION FLOW                                 │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
-│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
-│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
-│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
-│    │ file to USB │        │ hooks file  │        │ engine runs │               │
-│    │             │        │ system ops  │        │ SITs/rules  │               │
-│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
-│                                                         │                       │
-│    4. POLICY EVAL         5. ACTION                    │                       │
-│    ┌─────────────┐        ┌─────────────┐              │                       │
-│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
-│    │ Check rules │───────▶│ response    │                                      │
-│    └─────────────┘        │ (block/warn)│                                      │
-│                           └─────────────┘                                      │
-│                                                                                  │
-└─────────────────────────────────────────────────────────────────────────────────┘
+SEVERITY:   LOW ────────────────────────────────────► HIGH
+
+            ┌────────┐   ┌────────┐   ┌────────┐   ┌────────┐
+            │ AUDIT  │ → │ NOTIFY │ → │  WARN  │ → │ BLOCK  │
+            └────────┘   └────────┘   └────────┘   └────────┘
+               │            │            │            │
+               ▼            ▼            ▼            ▼
+            Log only    Policy tip    Override     Hard stop
+                        to user      with reason   no exceptions
+
+<span class="accent-cyan">MNEMONIC: "A Naughty Wolf Bites" = Audit → Notify → Warn → Block</span>
           </pre>
         </div>
         
-        <h2>Key Components</h2>
+        <h2 id="purview-essentials">🔷 Microsoft Purview Essentials</h2>
+        
+        <h3>License Requirements (E3 vs E5)</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Feature</th><th>E3</th><th>E5</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Basic DLP (Exchange, SharePoint, OneDrive)</td><td>✅</td><td>✅</td></tr>
+              <tr><td>Endpoint DLP</td><td>❌</td><td>✅</td></tr>
+              <tr><td>Auto-labeling</td><td>❌</td><td>✅</td></tr>
+              <tr><td>Trainable Classifiers</td><td>❌</td><td>✅</td></tr>
+              <tr><td>Exact Data Match</td><td>❌</td><td>✅</td></tr>
+              <tr><td>Defender for Cloud Apps</td><td>❌</td><td>✅</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <p><strong>Memory Aid:</strong> "E3 = Email/SharePoint/OneDrive basics. E5 = Everything Else (Endpoint, EDM, Exact match)"</p>
+        
+        <h3>Key PowerShell Commands</h3>
+        
+        <div class="code-block" data-language="powershell">
+          <div class="code-header">
+            <span class="code-lang">PowerShell - Daily Commands</span>
+            <button class="code-copy">Copy</button>
+          </div>
+          <pre><code># Connect
+Connect-IPPSSession
+
+# List all policies
+Get-DlpCompliancePolicy | Select Name, Mode, Enabled
+
+# Check policy details
+Get-DlpComplianceRule -Policy "Policy Name" | FL
+
+# Test mode → Enforce
+Set-DlpCompliancePolicy -Identity "Policy Name" -Mode Enable
+
+# Export policy for backup
+Get-DlpCompliancePolicy | Export-Clixml "DLP_Backup.xml"</code></pre>
+        </div>
+        
+        <h3>Purview Portals Quick Reference</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Portal</th><th>URL</th><th>Used For</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Compliance</td><td>compliance.microsoft.com</td><td>DLP policies, labels, eDiscovery</td></tr>
+              <tr><td>Security</td><td>security.microsoft.com</td><td>Alerts, incidents, Defender</td></tr>
+              <tr><td>Purview (New)</td><td>purview.microsoft.com</td><td>Unified portal (preview)</td></tr>
+              <tr><td>Admin</td><td>admin.microsoft.com</td><td>Licensing, users</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="symantec-essentials">🟣 Symantec DLP Essentials</h2>
+        
+        <h3>Component Architecture</h3>
+        <div class="ascii-diagram">
+          <pre>
+┌─────────────────────────────────────────────────────────────┐
+│                    SYMANTEC DLP STACK                        │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│   <span class="accent-purple">ENFORCE SERVER</span>          ← Brain (Oracle DB, policies)     │
+│         │                                                    │
+│         ├── Detection Servers                                │
+│         │     ├── Network Monitor   ← Passive sniffing       │
+│         │     ├── Network Prevent   ← Inline blocking        │
+│         │     ├── Discover Server   ← Scanning repos         │
+│         │     └── Email Prevent     ← MTA integration        │
+│         │                                                    │
+│         └── <span class="accent-green">Endpoint Agents</span>      ← Windows/Mac clients     │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+
+<span class="accent-cyan">MNEMONIC: "ENDED" = Enforce, Network, Discover, Endpoint, Database</span>
+          </pre>
+        </div>
+        
+        <h3>Symantec Detection Technologies</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Symantec Term</th><th>What It Does</th><th>Purview Equivalent</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>DCM (Described Content)</td><td>Regex + keywords</td><td>Sensitive Info Types</td></tr>
+              <tr><td>IDM (Indexed Document)</td><td>Document fingerprinting</td><td>Document fingerprinting</td></tr>
+              <tr><td>EDM (Exact Data Match)</td><td>Database matching</td><td>Exact Data Match</td></tr>
+              <tr><td>VML (Vector ML)</td><td>Machine learning</td><td>Trainable Classifiers</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="endpoint-channels">💻 Endpoint DLP Channels</h2>
+        
+        <p><strong>Mnemonic: "CUPS-NB"</strong> = Clipboard, USB, Print, Screen, Network, Browser</p>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Channel</th><th>Risk Level</th><th>Common Action</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>📋 Clipboard</td><td>🔴 High</td><td>Block copy of sensitive data</td></tr>
+              <tr><td>🔌 USB/Removable</td><td>🔴 High</td><td>Block or encrypt</td></tr>
+              <tr><td>🖨️ Print</td><td>🟡 Medium</td><td>Audit + watermark</td></tr>
+              <tr><td>📸 Screen Capture</td><td>🟡 Medium</td><td>Block on labeled docs</td></tr>
+              <tr><td>🌐 Network Share</td><td>🟡 Medium</td><td>Warn on sensitive</td></tr>
+              <tr><td>☁️ Browser Upload</td><td>🔴 High</td><td>Block personal cloud</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2 id="canadian-compliance">🍁 Canadian Compliance Quick Ref</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Data Type</th><th>Format</th><th>Validation</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>SIN</td><td>XXX-XXX-XXX (9 digits)</td><td>Luhn algorithm</td></tr>
+              <tr><td>OHIP</td><td>XXXX-XXX-XXX (10 digits)</td><td>Pattern + province keyword</td></tr>
+              <tr><td>Postal Code</td><td>A1A 1A1</td><td>Valid FSA ranges</td></tr>
+              <tr><td>Driver's License</td><td>Varies by province</td><td>Province-specific regex</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <p><strong>PIPEDA Applies To:</strong> Private sector organizations in provinces without equivalent laws (all except AB, BC, QC for private health info)</p>
+        
+        <h2 id="troubleshooting">🔧 Troubleshooting Quick Fixes</h2>
+        
         <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
-            </div></div>
-          </div>
           <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
-            </div></div>
+            <button class="accordion-header">Policy not detecting content</button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ol>
+                  <li>Check policy is <strong>Enabled</strong> (not Test mode)</li>
+                  <li>Verify location is included (Exchange, SharePoint, etc.)</li>
+                  <li>Wait 24-48 hours for sync</li>
+                  <li>Test with known-good content (use test credit card: 4111-1111-1111-1111)</li>
+                  <li>Check confidence level isn't too high</li>
+                </ol>
+              </div>
+            </div>
           </div>
+          
           <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
-            </div></div>
+            <button class="accordion-header">Too many false positives</button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ol>
+                  <li>Increase confidence level (Low → Medium → High)</li>
+                  <li>Add keyword requirements</li>
+                  <li>Raise instance count threshold</li>
+                  <li>Exclude specific locations/users</li>
+                  <li>Use "except if" conditions</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          
+          <div class="accordion-item">
+            <button class="accordion-header">Endpoint DLP not working</button>
+            <div class="accordion-content">
+              <div class="accordion-body">
+                <ol>
+                  <li>Verify device is onboarded: <code>mdatp health</code></li>
+                  <li>Check MDE license assigned</li>
+                  <li>Confirm user is in scope (AAD group)</li>
+                  <li>Review local policy: <code>MpCmdRun.exe -getfiles</code></li>
+                  <li>Check for conflicting Symantec agent</li>
+                </ol>
+              </div>
+            </div>
           </div>
         </div>
         
+        <h2 id="numbers-to-know">🔢 Numbers to Know</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">Time Delays</h4>
+            <ul style="margin-bottom: 0;">
+              <li>Policy sync: <strong>24-48 hours</strong></li>
+              <li>Label propagation: <strong>24 hours</strong></li>
+              <li>Activity Explorer: <strong>1-24 hours</strong></li>
+              <li>Audit log retention: <strong>90 days (E3)</strong></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Limits</h4>
+            <ul style="margin-bottom: 0;">
+              <li>Policies per tenant: <strong>50</strong></li>
+              <li>Rules per policy: <strong>150</strong></li>
+              <li>SITs per rule: <strong>100</strong></li>
+              <li>Keywords per list: <strong>2,048</strong></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">Confidence Thresholds</h4>
+            <ul style="margin-bottom: 0;">
+              <li>Low: <strong>65%</strong></li>
+              <li>Medium: <strong>75%</strong></li>
+              <li>High: <strong>85%</strong></li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="acronyms">📚 Acronym Quick Reference</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Acronym</th><th>Meaning</th><th>Context</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>DLP</td><td>Data Loss Prevention</td><td>The whole thing!</td></tr>
+              <tr><td>SIT</td><td>Sensitive Information Type</td><td>Purview detection patterns</td></tr>
+              <tr><td>EDM</td><td>Exact Data Match</td><td>Database-based detection</td></tr>
+              <tr><td>MDE</td><td>Microsoft Defender for Endpoint</td><td>Endpoint DLP foundation</td></tr>
+              <tr><td>MDCA</td><td>Microsoft Defender for Cloud Apps</td><td>CASB solution</td></tr>
+              <tr><td>CASB</td><td>Cloud Access Security Broker</td><td>Cloud app control</td></tr>
+              <tr><td>AIP</td><td>Azure Information Protection</td><td>Legacy labeling client</td></tr>
+              <tr><td>MIP</td><td>Microsoft Information Protection</td><td>Current labeling framework</td></tr>
+              <tr><td>ICAP</td><td>Internet Content Adaptation Protocol</td><td>Proxy integration</td></tr>
+              <tr><td>DCM</td><td>Described Content Matching</td><td>Symantec regex</td></tr>
+              <tr><td>IDM</td><td>Indexed Document Matching</td><td>Symantec fingerprinting</td></tr>
+              <tr><td>VML</td><td>Vector Machine Learning</td><td>Symantec ML</td></tr>
+            </tbody>
+          </table>
+        </div>
+        
         <nav class="page-nav">
-          <a href="index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
-          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+          <a href="index.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Home</span>
+          </a>
+          <a href="mnemonics.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Memory Aids & Mnemonics</span>
+          </a>
         </nav>
       </div>
     </main>
   </div>
+  
   <script>
 /**
  * DLP Documentation - Interactive Components

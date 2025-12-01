@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <meta name="description" content="Ready-to-use DLP policy templates for common scenarios including PII, financial data, healthcare, and intellectual property.">
+  <title>Policy Templates | DLP Documentation Hub</title>
   <style>
 /* DLP Documentation - Dark Cyberpunk Aesthetic
    Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
@@ -1659,8 +1660,16 @@ li::marker {
 </style>
 </head>
 <body>
-  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="sidebar-overlay"></div>
+  
   <div class="page-wrapper">
     <aside class="sidebar">
       <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
@@ -1898,76 +1907,381 @@ li::marker {
         </div>
       </nav>
     </aside>
+    
     <main class="main-content">
       <div class="content-wrapper">
-        <nav class="breadcrumbs"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
-        <h1>Endpoint DLP Concepts</h1>
-        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        <nav class="breadcrumbs">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Policy Templates</span>
+        </nav>
         
-        <h2>Why Endpoint DLP?</h2>
-        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
-        <ul>
-          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
-          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
-          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
-          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
-          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
-        </ul>
+        <h1>📋 DLP Policy Templates</h1>
         
-        <h2>How Endpoint DLP Works</h2>
-        <div class="ascii-diagram">
-          <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      ENDPOINT DLP OPERATION FLOW                                 │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
-│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
-│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
-│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
-│    │ file to USB │        │ hooks file  │        │ engine runs │               │
-│    │             │        │ system ops  │        │ SITs/rules  │               │
-│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
-│                                                         │                       │
-│    4. POLICY EVAL         5. ACTION                    │                       │
-│    ┌─────────────┐        ┌─────────────┐              │                       │
-│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
-│    │ Check rules │───────▶│ response    │                                      │
-│    └─────────────┘        │ (block/warn)│                                      │
-│                           └─────────────┘                                      │
-│                                                                                  │
-└─────────────────────────────────────────────────────────────────────────────────┘
-          </pre>
+        <p>Production-ready policy templates you can customize for your environment. Each template includes detection logic, actions, and tuning recommendations.</p>
+        
+        <div class="callout callout-warning">
+          <strong>⚠️ Important:</strong> Always deploy in Test mode first! These templates are starting points — tune thresholds and exceptions for your environment.
         </div>
         
-        <h2>Key Components</h2>
-        <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
-            </div></div>
+        <h2 id="canadian-pii">🍁 Canadian PII Protection</h2>
+        
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 style="margin-top: 0;">Template: Canadian Personal Information</h3>
+          <p>Protects SIN, driver's licenses, health cards, and passport numbers.</p>
+          
+          <div class="code-block" data-language="powershell">
+            <div class="code-header">
+              <span class="code-lang">PowerShell - Complete Policy</span>
+              <button class="code-copy">Copy</button>
+            </div>
+            <pre><code># Canadian PII Protection Policy
+# Deploy in Test mode first, then enable after 2 weeks validation
+
+# Create the policy
+New-DlpCompliancePolicy -Name "Canadian PII Protection" `
+    -Comment "Protects Canadian personal information per PIPEDA" `
+    -Mode TestWithNotifications `
+    -ExchangeLocation All `
+    -SharePointLocation All `
+    -OneDriveLocation All `
+    -TeamsLocation All
+
+# Rule 1: SIN Detection (High Priority)
+New-DlpComplianceRule -Name "Block External SIN Sharing" `
+    -Policy "Canadian PII Protection" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Canada Social Insurance Number"
+        minCount = 1
+        confidenceLevel = "High"
+    } `
+    -ExceptIfRecipientDomainIs @("trustedpartner.com", "auditor.com") `
+    -BlockAccess $true `
+    -BlockAccessScope NotInOrganization `
+    -NotifyUser Owner `
+    -NotifyPolicyTipCustomText "This message contains a Canadian SIN. External sharing is blocked. Use the secure portal for legitimate transfers." `
+    -GenerateAlert $true `
+    -AlertProperties @{Severity = "High"}
+
+# Rule 2: Health Card Numbers
+New-DlpComplianceRule -Name "Warn on Health Card External" `
+    -Policy "Canadian PII Protection" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Canada Health Service Number"  
+        minCount = 1
+        confidenceLevel = "Medium"
+    } `
+    -BlockAccess $false `
+    -NotifyUser Owner `
+    -NotifyUserType "NotifyUser", "NotifyPolicyTip" `
+    -NotifyPolicyTipCustomText "This content may contain health card information. Please verify you have authorization to share."
+
+# Rule 3: Multiple PII Types (Bulk Detection)
+New-DlpComplianceRule -Name "Block Bulk PII Export" `
+    -Policy "Canadian PII Protection" `
+    -ContentContainsSensitiveInformation @(
+        @{Name = "Canada Social Insurance Number"; minCount = 5},
+        @{Name = "Canada Passport Number"; minCount = 5},
+        @{Name = "Canada Driver's License Number"; minCount = 5}
+    ) `
+    -BlockAccess $true `
+    -BlockAccessScope All `
+    -GenerateIncidentReport SiteAdmin, GlobalAdmin `
+    -IncidentReportContent All `
+    -AlertProperties @{Severity = "Critical"}</code></pre>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
-            </div></div>
+          
+          <h4>Tuning Recommendations</h4>
+          <ul>
+            <li><strong>False Positives:</strong> Increase minCount to 2 if phone numbers trigger SIN detection</li>
+            <li><strong>Exceptions:</strong> Add HR and Payroll groups to exception list</li>
+            <li><strong>Keywords:</strong> Add "SIN", "Social Insurance" as corroborating keywords</li>
+          </ul>
+        </div>
+        
+        <h2 id="financial-data">💳 Financial Data Protection</h2>
+        
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 style="margin-top: 0;">Template: PCI-DSS Compliance</h3>
+          <p>Protects credit card numbers, bank accounts, and financial routing numbers.</p>
+          
+          <div class="code-block" data-language="powershell">
+            <div class="code-header">
+              <span class="code-lang">PowerShell - Financial Policy</span>
+              <button class="code-copy">Copy</button>
+            </div>
+            <pre><code># PCI-DSS Financial Data Protection
+New-DlpCompliancePolicy -Name "PCI-DSS Compliance" `
+    -Comment "Protects cardholder data per PCI-DSS requirements" `
+    -Mode TestWithNotifications `
+    -ExchangeLocation All `
+    -SharePointLocation All `
+    -OneDriveLocation All `
+    -EndpointDlpLocation All
+
+# Rule 1: Credit Card Numbers - Block External
+New-DlpComplianceRule -Name "Block Credit Card External Sharing" `
+    -Policy "PCI-DSS Compliance" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Credit Card Number"
+        minCount = 1
+        confidenceLevel = "High"
+    } `
+    -BlockAccess $true `
+    -BlockAccessScope NotInOrganization `
+    -NotifyUser Owner `
+    -NotifyPolicyTipCustomText "Credit card data detected. External sharing is prohibited by PCI-DSS. Remove card numbers before sharing." `
+    -GenerateAlert $true
+
+# Rule 2: Credit Card - Warn Internal
+New-DlpComplianceRule -Name "Warn Credit Card Internal" `
+    -Policy "PCI-DSS Compliance" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Credit Card Number"
+        minCount = 1
+        confidenceLevel = "High"
+    } `
+    -AccessScope InOrganization `
+    -NotifyUser Owner `
+    -NotifyPolicyTipCustomText "This content contains credit card data. Handle according to PCI-DSS requirements."
+
+# Rule 3: Endpoint USB Block for Financial Data
+New-DlpComplianceRule -Name "Block Financial Data to USB" `
+    -Policy "PCI-DSS Compliance" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Credit Card Number"
+        minCount = 1
+        confidenceLevel = "Medium"
+    } `
+    -EndpointDlpRestrictions @{
+        CopyToRemovableMedia = "Block"
+        CopyToNetworkShare = "Warn"
+        Print = "Audit"
+    }</code></pre>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
-            </div></div>
+        </div>
+        
+        <h2 id="healthcare">🏥 Healthcare Data Protection</h2>
+        
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 style="margin-top: 0;">Template: Healthcare PHI Protection</h3>
+          <p>Protects patient health information with clinician-friendly overrides.</p>
+          
+          <div class="code-block" data-language="powershell">
+            <div class="code-header">
+              <span class="code-lang">PowerShell - Healthcare Policy</span>
+              <button class="code-copy">Copy</button>
+            </div>
+            <pre><code># Healthcare PHI Protection Policy
+New-DlpCompliancePolicy -Name "Healthcare PHI Protection" `
+    -Comment "Protects patient health information with clinician workflows" `
+    -Mode TestWithNotifications `
+    -ExchangeLocation All `
+    -SharePointLocation "https://contoso.sharepoint.com/sites/Clinical" `
+    -OneDriveLocation All
+
+# Rule 1: PHI External - Block with Override
+New-DlpComplianceRule -Name "PHI External Sharing - Override Allowed" `
+    -Policy "Healthcare PHI Protection" `
+    -ContentContainsSensitiveInformation @(
+        @{Name = "Canada Health Service Number"; minCount = 1; confidenceLevel = "High"},
+        @{Name = "All Medical Terms And Conditions"; minCount = 1; confidenceLevel = "Medium"}
+    ) `
+    -BlockAccess $true `
+    -BlockAccessScope NotInOrganization `
+    -NotifyUser Owner `
+    -AllowOverride "WithJustification" `
+    -NotifyPolicyTipCustomText "This contains patient health information. External sharing requires justification. Click 'Override' for urgent patient care needs." `
+    -GenerateAlert $true
+
+# Rule 2: Bulk PHI Detection
+New-DlpComplianceRule -Name "Block Bulk PHI Export" `
+    -Policy "Healthcare PHI Protection" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Canada Health Service Number"
+        minCount = 10
+    } `
+    -BlockAccess $true `
+    -BlockAccessScope All `
+    -AllowOverride "WithoutJustification" `
+    -NotifyUser Owner, SiteAdmin `
+    -GenerateIncidentReport SiteAdmin `
+    -AlertProperties @{Severity = "High"}</code></pre>
           </div>
+          
+          <div class="callout callout-info">
+            <strong>Healthcare Tip:</strong> Always allow override for PHI policies — blocking patient care is worse than a potential exposure. Use justification tracking to monitor.
+          </div>
+        </div>
+        
+        <h2 id="intellectual-property">🔐 Intellectual Property</h2>
+        
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 style="margin-top: 0;">Template: Source Code & Trade Secrets</h3>
+          <p>Protects proprietary code and confidential business information.</p>
+          
+          <div class="code-block" data-language="powershell">
+            <div class="code-header">
+              <span class="code-lang">PowerShell - IP Protection</span>
+              <button class="code-copy">Copy</button>
+            </div>
+            <pre><code># Intellectual Property Protection
+New-DlpCompliancePolicy -Name "Intellectual Property Protection" `
+    -Mode TestWithNotifications `
+    -ExchangeLocation All `
+    -SharePointLocation All `
+    -OneDriveLocation All `
+    -EndpointDlpLocation All
+
+# Rule 1: Source Code Detection
+New-DlpComplianceRule -Name "Block Source Code External" `
+    -Policy "Intellectual Property Protection" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Source Code"  # Built-in trainable classifier
+        minCount = 1
+        confidenceLevel = "High"
+    } `
+    -ContentExtensionMatchesWords @("py", "js", "java", "cpp", "cs", "go", "rb") `
+    -BlockAccess $true `
+    -BlockAccessScope NotInOrganization `
+    -NotifyUser Owner `
+    -NotifyPolicyTipCustomText "Source code sharing outside the organization is blocked. Use approved code sharing platforms."
+
+# Rule 2: Confidential Label Protection
+New-DlpComplianceRule -Name "Protect Confidential Labeled Content" `
+    -Policy "Intellectual Property Protection" `
+    -ContentContainsSensitiveInformation @{
+        operator = "And"
+        groups = @(@{
+            name = "Sensitivity Labels"
+            operator = "Or" 
+            labels = @(
+                @{name = "Confidential"; type = "Sensitivity"},
+                @{name = "Highly Confidential"; type = "Sensitivity"}
+            )
+        })
+    } `
+    -BlockAccess $true `
+    -BlockAccessScope NotInOrganization `
+    -GenerateAlert $true
+
+# Rule 3: Endpoint - Block Upload to Personal Cloud
+New-DlpComplianceRule -Name "Block IP to Personal Cloud" `
+    -Policy "Intellectual Property Protection" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Source Code"
+        minCount = 1
+    } `
+    -EndpointDlpRestrictions @{
+        CloudAppRestrictions = @{
+            "personal-dropbox.com" = "Block"
+            "personal-gdrive.com" = "Block"
+            "wetransfer.com" = "Block"
+        }
+    }</code></pre>
+          </div>
+        </div>
+        
+        <h2 id="executive">👔 Executive Communications</h2>
+        
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 style="margin-top: 0;">Template: M&A / Board Communications</h3>
+          <p>Protects highly sensitive strategic communications.</p>
+          
+          <div class="code-block" data-language="powershell">
+            <div class="code-header">
+              <span class="code-lang">PowerShell - Executive Policy</span>
+              <button class="code-copy">Copy</button>
+            </div>
+            <pre><code># Executive Communications Protection
+New-DlpCompliancePolicy -Name "Executive Communications Protection" `
+    -Mode Enable `
+    -ExchangeLocation All `
+    -SharePointLocation "https://contoso.sharepoint.com/sites/BoardMaterials"
+
+# Rule 1: M&A Keywords
+New-DlpComplianceRule -Name "Block M&A Content External" `
+    -Policy "Executive Communications Protection" `
+    -ContentContainsSensitiveInformation @{
+        Name = "Custom M&A Keywords"  # Create custom SIT first
+    } `
+    -From "executives@contoso.com" `
+    -BlockAccess $true `
+    -BlockAccessScope NotInOrganization `
+    -GenerateIncidentReport GlobalAdmin `
+    -AlertProperties @{Severity = "Critical"}</code></pre>
+          </div>
+          
+          <h4>Custom SIT for M&A Keywords</h4>
+          <div class="code-block" data-language="xml">
+            <div class="code-header">
+              <span class="code-lang">XML - M&A Keyword SIT</span>
+              <button class="code-copy">Copy</button>
+            </div>
+            <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;RulePackage xmlns="http://schemas.microsoft.com/office/2011/mce"&gt;
+  &lt;RulePack id="ma-keywords-pack"&gt;
+    &lt;Version major="1" minor="0" build="0" revision="0"/&gt;
+    &lt;Publisher id="contoso"/&gt;
+  &lt;/RulePack&gt;
+  &lt;Rules&gt;
+    &lt;Entity id="ma-keywords" patternsProximity="300" recommendedConfidence="85"&gt;
+      &lt;Pattern confidenceLevel="85"&gt;
+        &lt;Any minMatches="2"&gt;
+          &lt;Match idRef="Keywords_MA"/&gt;
+        &lt;/Any&gt;
+      &lt;/Pattern&gt;
+    &lt;/Entity&gt;
+    &lt;Keyword id="Keywords_MA"&gt;
+      &lt;Group matchStyle="word"&gt;
+        &lt;Term&gt;acquisition target&lt;/Term&gt;
+        &lt;Term&gt;merger agreement&lt;/Term&gt;
+        &lt;Term&gt;due diligence&lt;/Term&gt;
+        &lt;Term&gt;letter of intent&lt;/Term&gt;
+        &lt;Term&gt;Project [A-Z]+&lt;/Term&gt;
+        &lt;Term&gt;confidential transaction&lt;/Term&gt;
+        &lt;Term&gt;board approval&lt;/Term&gt;
+        &lt;Term&gt;valuation&lt;/Term&gt;
+      &lt;/Group&gt;
+    &lt;/Keyword&gt;
+  &lt;/Rules&gt;
+&lt;/RulePackage&gt;</code></pre>
+          </div>
+        </div>
+        
+        <h2 id="quick-reference">📌 Quick Reference Table</h2>
+        
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>Use Case</th><th>Primary SIT</th><th>Confidence</th><th>Internal Action</th><th>External Action</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Canadian PII</td><td>Canada SIN</td><td>High</td><td>Audit</td><td>Block</td></tr>
+              <tr><td>Credit Cards</td><td>Credit Card Number</td><td>High</td><td>Warn</td><td>Block</td></tr>
+              <tr><td>Healthcare</td><td>Health Service Number</td><td>Medium</td><td>Audit</td><td>Block + Override</td></tr>
+              <tr><td>Source Code</td><td>Source Code (TC)</td><td>High</td><td>Warn</td><td>Block</td></tr>
+              <tr><td>Labeled Content</td><td>Sensitivity Label</td><td>N/A</td><td>Audit</td><td>Block</td></tr>
+            </tbody>
+          </table>
         </div>
         
         <nav class="page-nav">
-          <a href="index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
-          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+          <a href="maturity-model.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Maturity Model</span>
+          </a>
+          <a href="index.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Home</span>
+          </a>
         </nav>
       </div>
     </main>
   </div>
+  
   <script>
 /**
  * DLP Documentation - Interactive Components

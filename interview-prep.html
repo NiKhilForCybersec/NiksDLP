@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endpoint DLP Concepts | DLP Documentation Hub</title>
+  <meta name="description" content="DLP Interview Preparation Guide with common questions, STAR method answers, and technical scenarios for Security Engineer roles.">
+  <title>Interview Preparation | DLP Documentation Hub</title>
   <style>
 /* DLP Documentation - Dark Cyberpunk Aesthetic
    Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
@@ -1657,10 +1658,75 @@ li::marker {
 }
 
 </style>
+  <style>
+    .interview-q {
+      background: linear-gradient(135deg, var(--bg-card) 0%, rgba(59, 130, 246, 0.1) 100%);
+      border-left: 4px solid var(--purview);
+      padding: var(--space-lg);
+      margin: var(--space-lg) 0;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    .interview-q h4 {
+      color: var(--purview);
+      margin-top: 0;
+      font-size: 1.1rem;
+    }
+    .answer-section {
+      background: var(--bg-tertiary);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin-top: var(--space-md);
+    }
+    .star-label {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: var(--space-sm);
+    }
+    .star-s { background: var(--purview); color: white; }
+    .star-t { background: var(--endpoint); color: white; }
+    .star-a { background: var(--symantec); color: white; }
+    .star-r { background: var(--cloud); color: white; }
+    .difficulty {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: var(--space-sm);
+    }
+    .diff-easy { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .diff-medium { background: rgba(234, 179, 8, 0.2); color: var(--warning); }
+    .diff-hard { background: rgba(239, 68, 68, 0.2); color: var(--error); }
+    .tip-box {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid var(--cloud);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+    }
+    .scenario-box {
+      background: var(--bg-card);
+      border: 1px dashed var(--border-color);
+      padding: var(--space-lg);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+    }
+  </style>
 </head>
 <body>
-  <button class="mobile-menu-btn" aria-label="Toggle navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+  <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+  
   <div class="sidebar-overlay"></div>
+  
   <div class="page-wrapper">
     <aside class="sidebar">
       <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
@@ -1898,76 +1964,386 @@ li::marker {
         </div>
       </nav>
     </aside>
+    
     <main class="main-content">
       <div class="content-wrapper">
-        <nav class="breadcrumbs"><a href="index.html">Home</a><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg><span>Endpoint DLP Concepts</span></nav>
-        <h1>Endpoint DLP Concepts</h1>
-        <p>Endpoint DLP protects data on user devices—laptops, desktops, and sometimes servers. Unlike network DLP which monitors traffic at network boundaries, endpoint DLP operates at the OS level to detect and prevent data exfiltration through local channels.</p>
+        <nav class="breadcrumbs">
+          <a href="index.html">Home</a>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          <span>Interview Preparation</span>
+        </nav>
         
-        <h2>Why Endpoint DLP?</h2>
-        <p>With remote work and cloud adoption, the traditional network perimeter has dissolved. Endpoint DLP addresses scenarios that network DLP cannot:</p>
-        <ul>
-          <li><strong>USB/Removable Media</strong> — Copy to flash drives doesn't cross the network</li>
-          <li><strong>Printing</strong> — Local and network printing from the endpoint</li>
-          <li><strong>Encrypted Traffic</strong> — Inspect before encryption, not at the proxy</li>
-          <li><strong>Off-Network Users</strong> — Protection when not on VPN</li>
-          <li><strong>Application-Level Control</strong> — Block specific apps from accessing data</li>
-        </ul>
+        <h1>🎯 DLP Interview Preparation</h1>
         
-        <h2>How Endpoint DLP Works</h2>
-        <div class="ascii-diagram">
-          <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      ENDPOINT DLP OPERATION FLOW                                 │
-├─────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                  │
-│    1. USER ACTION         2. AGENT INTERCEPT      3. CONTENT INSPECTION         │
-│    ┌─────────────┐        ┌─────────────┐        ┌─────────────┐               │
-│    │ User copies │───────▶│ DLP agent   │───────▶│ Detection   │               │
-│    │ file to USB │        │ hooks file  │        │ engine runs │               │
-│    │             │        │ system ops  │        │ SITs/rules  │               │
-│    └─────────────┘        └─────────────┘        └──────┬──────┘               │
-│                                                         │                       │
-│    4. POLICY EVAL         5. ACTION                    │                       │
-│    ┌─────────────┐        ┌─────────────┐              │                       │
-│    │ Match found?│◀───────│ Apply       │◀─────────────┘                       │
-│    │ Check rules │───────▶│ response    │                                      │
-│    └─────────────┘        │ (block/warn)│                                      │
-│                           └─────────────┘                                      │
-│                                                                                  │
-└─────────────────────────────────────────────────────────────────────────────────┘
-          </pre>
+        <p>Ace your security engineer interview with these real-world DLP questions, STAR method answers, and technical scenarios.</p>
+        
+        <div class="callout callout-info">
+          <strong>💡 STAR Method Reminder:</strong> Situation → Task → Action → Result. Use this framework for behavioral questions.
         </div>
         
-        <h2>Key Components</h2>
-        <div class="accordion">
-          <div class="accordion-item active">
-            <button class="accordion-header" aria-expanded="true">Endpoint Agent<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Software installed on endpoints that monitors user activity. Can be a dedicated agent or shared with EDR (like Microsoft Defender).</p>
-            </div></div>
+        <h2 id="fundamentals">📚 Fundamental Questions</h2>
+        
+        <div class="interview-q">
+          <h4>Q: What is DLP and why is it important? <span class="difficulty diff-easy">Easy</span></h4>
+          <div class="answer-section">
+            <p><strong>Strong Answer:</strong></p>
+            <p>"DLP, or Data Loss Prevention, is a set of technologies and processes designed to detect and prevent unauthorized access, use, or transmission of sensitive data. It's important because:</p>
+            <ol>
+              <li><strong>Regulatory Compliance</strong> — PIPEDA, PCI-DSS, HIPAA require data protection</li>
+              <li><strong>Breach Prevention</strong> — Average breach costs $4.45M (IBM 2023)</li>
+              <li><strong>Reputation Protection</strong> — Customer trust is hard to rebuild</li>
+              <li><strong>Insider Threat Mitigation</strong> — 60% of breaches involve insiders</li>
+            </ol>
+            <p>In my experience at [Company], DLP helped us reduce data exposure incidents by 75% in the first year."</p>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">Policy Cache<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Local copy of DLP policies enabling offline protection. Synchronized when connected to management server.</p>
-            </div></div>
+        </div>
+        
+        <div class="interview-q">
+          <h4>Q: Explain the three states of data. <span class="difficulty diff-easy">Easy</span></h4>
+          <div class="answer-section">
+            <p><strong>Strong Answer:</strong></p>
+            <ul>
+              <li><strong>Data at Rest</strong> — Stored in databases, file servers, backups. Protected with encryption and access controls.</li>
+              <li><strong>Data in Motion</strong> — Traveling over networks (email, web, file transfers). Protected with TLS and DLP policies.</li>
+              <li><strong>Data in Use</strong> — Actively being processed in memory or applications. Protected with endpoint DLP controls.</li>
+            </ul>
+            <p><em>Bonus:</em> "A comprehensive DLP strategy addresses all three states because attackers will target the weakest link."</p>
           </div>
-          <div class="accordion-item">
-            <button class="accordion-header" aria-expanded="false">File System Filter<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
-            <div class="accordion-content"><div class="accordion-body">
-              <p>Kernel-level driver that intercepts file operations (copy, move, open) before they complete.</p>
-            </div></div>
+        </div>
+        
+        <div class="interview-q">
+          <h4>Q: What's the difference between DLP and encryption? <span class="difficulty diff-easy">Easy</span></h4>
+          <div class="answer-section">
+            <p><strong>Strong Answer:</strong></p>
+            <p>"They're complementary, not competing technologies:</p>
+            <ul>
+              <li><strong>Encryption</strong> protects data confidentiality — even if stolen, it's unreadable</li>
+              <li><strong>DLP</strong> prevents data from leaving in the first place — stops the exfiltration attempt</li>
+            </ul>
+            <p>Think of it like a house: Encryption is a safe for your valuables. DLP is the alarm system that alerts you when someone tries to steal something."</p>
           </div>
+        </div>
+        
+        <h2 id="technical">🔧 Technical Questions</h2>
+        
+        <div class="interview-q">
+          <h4>Q: How do you reduce false positives in DLP? <span class="difficulty diff-medium">Medium</span></h4>
+          <div class="answer-section">
+            <p><strong>Strong Answer:</strong></p>
+            <p>"False positives are the #1 enemy of DLP adoption. Here's my approach:</p>
+            <ol>
+              <li><strong>Increase confidence levels</strong> — Start with High (85%) for block actions</li>
+              <li><strong>Add corroborating keywords</strong> — "Credit card" near 16-digit number</li>
+              <li><strong>Raise instance thresholds</strong> — 5+ matches vs single match</li>
+              <li><strong>Use exception conditions</strong> — Exclude test environments, IT admin groups</li>
+              <li><strong>Leverage Exact Data Match</strong> — Near-zero FP for known data sets</li>
+              <li><strong>Regular policy tuning</strong> — Weekly reviews during initial rollout</li>
+            </ol>
+            <p>In my Purview migration, we reduced false positives from 40% to under 5% using this approach."</p>
+          </div>
+        </div>
+        
+        <div class="interview-q">
+          <h4>Q: Explain the difference between Symantec and Microsoft Purview DLP. <span class="difficulty diff-medium">Medium</span></h4>
+          <div class="answer-section">
+            <p><strong>Strong Answer:</strong></p>
+            <table style="width: 100%; margin-top: var(--space-md);">
+              <tr>
+                <th>Aspect</th>
+                <th>Symantec</th>
+                <th>Microsoft Purview</th>
+              </tr>
+              <tr>
+                <td>Architecture</td>
+                <td>On-premises servers + agents</td>
+                <td>Cloud-native SaaS</td>
+              </tr>
+              <tr>
+                <td>Database</td>
+                <td>Oracle (self-managed)</td>
+                <td>Azure (managed)</td>
+              </tr>
+              <tr>
+                <td>Network DLP</td>
+                <td>Native (Monitor/Prevent)</td>
+                <td>Via Defender for Cloud Apps</td>
+              </tr>
+              <tr>
+                <td>Integration</td>
+                <td>Broad third-party</td>
+                <td>Deep Microsoft 365</td>
+              </tr>
+              <tr>
+                <td>Best For</td>
+                <td>Hybrid, multi-vendor</td>
+                <td>Microsoft-first orgs</td>
+              </tr>
+            </table>
+            <p style="margin-top: var(--space-md);"><em>"The choice depends on the organization's ecosystem and strategy. Cloud-first? Purview. Complex hybrid with legacy? Symantec might still fit."</em></p>
+          </div>
+        </div>
+        
+        <div class="interview-q">
+          <h4>Q: How would you implement endpoint DLP for a remote workforce? <span class="difficulty diff-hard">Hard</span></h4>
+          <div class="answer-section">
+            <p><strong>Strong Answer:</strong></p>
+            <p>"For remote workers, endpoint DLP becomes critical since you can't rely on network controls. My approach:</p>
+            <ol>
+              <li><strong>Agent Deployment</strong>
+                <ul>
+                  <li>Use MDM/Intune for managed devices</li>
+                  <li>Ensure MDE onboarding for Purview Endpoint DLP</li>
+                  <li>Validate with <code>mdatp health</code> command</li>
+                </ul>
+              </li>
+              <li><strong>Channel Prioritization</strong>
+                <ul>
+                  <li>USB/Removable — Block for sensitive, encrypt for others</li>
+                  <li>Browser upload — Block personal cloud (Dropbox, personal Gmail)</li>
+                  <li>Clipboard — Audit initially, warn for confidential</li>
+                  <li>Print — Watermark with user identity</li>
+                </ul>
+              </li>
+              <li><strong>Offline Considerations</strong>
+                <ul>
+                  <li>Policies cached locally for offline enforcement</li>
+                  <li>Sync when back online</li>
+                </ul>
+              </li>
+              <li><strong>User Experience</strong>
+                <ul>
+                  <li>Clear policy tips explaining why action was blocked</li>
+                  <li>Business justification override for edge cases</li>
+                </ul>
+              </li>
+            </ol>
+            <p>We implemented this for 500 remote users and maintained 99% compliance while reducing help desk tickets by providing clear policy tips."</p>
+          </div>
+        </div>
+        
+        <h2 id="behavioral">💬 Behavioral Questions (STAR Method)</h2>
+        
+        <div class="interview-q">
+          <h4>Q: Tell me about a time you dealt with a false positive that impacted business. <span class="difficulty diff-medium">Medium</span></h4>
+          <div class="answer-section">
+            <p><span class="star-label star-s">SITUATION</span> "During our Purview rollout, the Finance team reported that legitimate quarterly reports were being blocked from external auditors."</p>
+            
+            <p><span class="star-label star-t">TASK</span> "I needed to resolve the blocking within 4 hours before end of business day while maintaining security posture."</p>
+            
+            <p><span class="star-label star-a">ACTION</span> "I did three things:</p>
+            <ol>
+              <li>Analyzed Activity Explorer to identify the triggering SIT (it was detecting sample financial data used in the template)</li>
+              <li>Created a temporary exception for the specific SharePoint site while I developed a permanent fix</li>
+              <li>Modified the policy to exclude files with 'TEMPLATE' in metadata and added a custom SIT that required corroborating keywords</li>
+            </ol>
+            
+            <p><span class="star-label star-r">RESULT</span> "Finance completed their audit submission on time. The permanent fix reduced similar false positives by 90% across all departments."</p>
+          </div>
+        </div>
+        
+        <div class="interview-q">
+          <h4>Q: Describe a DLP project you led from start to finish. <span class="difficulty diff-hard">Hard</span></h4>
+          <div class="answer-section">
+            <p><span class="star-label star-s">SITUATION</span> "Our organization was migrating from Symantec DLP to Microsoft Purview as part of cloud transformation. We had 50+ policies protecting PII for 5,000 users across 3 countries."</p>
+            
+            <p><span class="star-label star-t">TASK</span> "I was responsible for planning and executing the migration with zero data protection gaps and minimal business disruption."</p>
+            
+            <p><span class="star-label star-a">ACTION</span></p>
+            <ol>
+              <li><strong>Discovery Phase (2 weeks)</strong>
+                <ul>
+                  <li>Documented all existing Symantec policies and their detection methods</li>
+                  <li>Mapped to equivalent Purview capabilities</li>
+                  <li>Identified gaps (Network Prevent needed MDCA)</li>
+                </ul>
+              </li>
+              <li><strong>Build Phase (3 weeks)</strong>
+                <ul>
+                  <li>Created custom SITs for country-specific PII</li>
+                  <li>Built policies in Test mode</li>
+                  <li>Developed PowerShell automation for deployment</li>
+                </ul>
+              </li>
+              <li><strong>Validation Phase (2 weeks)</strong>
+                <ul>
+                  <li>Parallel running with Symantec</li>
+                  <li>Compared detection rates</li>
+                  <li>Tuned for false positives</li>
+                </ul>
+              </li>
+              <li><strong>Cutover (1 week)</strong>
+                <ul>
+                  <li>Enabled Purview enforcement</li>
+                  <li>Disabled Symantec agents</li>
+                  <li>War room support for issues</li>
+                </ul>
+              </li>
+            </ol>
+            
+            <p><span class="star-label star-r">RESULT</span></p>
+            <ul>
+              <li>Migration completed on schedule with zero data protection gaps</li>
+              <li>Reduced licensing cost by 40% (eliminated Symantec)</li>
+              <li>Improved detection accuracy (false positives down 60%)</li>
+              <li>Simplified operations (single console vs. multiple)</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="scenarios">🎭 Technical Scenarios</h2>
+        
+        <div class="scenario-box">
+          <h4>Scenario 1: Policy Design Challenge</h4>
+          <p><strong>Interviewer:</strong> "Design a DLP policy to protect credit card data. What would you include?"</p>
+          
+          <div class="tip-box">
+            <strong>Strong Answer Framework:</strong>
+            <ol>
+              <li><strong>Detection:</strong> Credit card SIT (pattern + Luhn + keywords like "Visa", "expiry")</li>
+              <li><strong>Scope:</strong> Exchange, SharePoint, OneDrive, Endpoint devices</li>
+              <li><strong>Conditions:</strong> High confidence, 2+ instances</li>
+              <li><strong>Actions:</strong>
+                <ul>
+                  <li>Internal recipients: Warn with policy tip</li>
+                  <li>External recipients: Block with notification</li>
+                  <li>Endpoint USB: Block transfer</li>
+                </ul>
+              </li>
+              <li><strong>Exceptions:</strong> Finance team for legitimate processing, encrypted files</li>
+              <li><strong>Rollout:</strong> Test mode → Pilot group → All users</li>
+            </ol>
+          </div>
+        </div>
+        
+        <div class="scenario-box">
+          <h4>Scenario 2: Incident Response</h4>
+          <p><strong>Interviewer:</strong> "You receive an alert that an employee sent 50 credit card numbers via email. Walk me through your response."</p>
+          
+          <div class="tip-box">
+            <strong>Strong Answer Framework:</strong>
+            <ol>
+              <li><strong>Triage (0-15 min):</strong>
+                <ul>
+                  <li>Review alert in Security portal</li>
+                  <li>Check if email was blocked or sent</li>
+                  <li>Identify sender and recipient(s)</li>
+                </ul>
+              </li>
+              <li><strong>Containment (15-30 min):</strong>
+                <ul>
+                  <li>If sent: Recall email if possible, contact recipient</li>
+                  <li>Preserve evidence (don't delete)</li>
+                  <li>Temporarily restrict user if malicious</li>
+                </ul>
+              </li>
+              <li><strong>Investigation (30-60 min):</strong>
+                <ul>
+                  <li>Review user's recent DLP history</li>
+                  <li>Check Activity Explorer for pattern</li>
+                  <li>Interview user/manager if needed</li>
+                </ul>
+              </li>
+              <li><strong>Resolution:</strong>
+                <ul>
+                  <li>Document incident</li>
+                  <li>Update policy if gap found</li>
+                  <li>User training if accidental</li>
+                  <li>HR escalation if intentional</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+        
+        <div class="scenario-box">
+          <h4>Scenario 3: Stakeholder Communication</h4>
+          <p><strong>Interviewer:</strong> "The CFO says DLP is blocking too many legitimate emails. How do you handle this?"</p>
+          
+          <div class="tip-box">
+            <strong>Strong Answer Framework:</strong>
+            <ol>
+              <li><strong>Listen & Acknowledge:</strong> "I understand this is impacting productivity. Let me gather data to fix it."</li>
+              <li><strong>Investigate:</strong> Pull specific examples from Activity Explorer, identify patterns</li>
+              <li><strong>Present Options:</strong>
+                <ul>
+                  <li>Option A: Reduce policy sensitivity (faster but less protection)</li>
+                  <li>Option B: Create Finance-specific exception (balanced)</li>
+                  <li>Option C: Switch to Warn instead of Block (user self-service)</li>
+                </ul>
+              </li>
+              <li><strong>Recommend:</strong> "I recommend Option B with weekly monitoring. This maintains protection while eliminating false positives for your team."</li>
+              <li><strong>Follow Up:</strong> Schedule review in 2 weeks to validate improvement</li>
+            </ol>
+          </div>
+        </div>
+        
+        <h2 id="questions-to-ask">❓ Questions to Ask the Interviewer</h2>
+        
+        <div class="card-grid">
+          <div class="card">
+            <h4 style="margin-top: 0;">About the Role</h4>
+            <ul style="margin-bottom: 0;">
+              <li>"What DLP platform are you currently using?"</li>
+              <li>"What's the biggest DLP challenge you're facing?"</li>
+              <li>"How does DLP fit into your broader security strategy?"</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">About the Team</h4>
+            <ul style="margin-bottom: 0;">
+              <li>"How is the security team structured?"</li>
+              <li>"What's the relationship between DLP and SOC?"</li>
+              <li>"What tools integrate with your DLP solution?"</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h4 style="margin-top: 0;">About Growth</h4>
+            <ul style="margin-bottom: 0;">
+              <li>"What certifications do you support?"</li>
+              <li>"Are there opportunities to work on migration projects?"</li>
+              <li>"How do you measure DLP program success?"</li>
+            </ul>
+          </div>
+        </div>
+        
+        <h2 id="final-tips">🏆 Final Interview Tips</h2>
+        
+        <div class="callout callout-warning">
+          <h4 style="margin-top: 0;">Before the Interview</h4>
+          <ul style="margin-bottom: 0;">
+            <li>Review their job posting for specific tools mentioned</li>
+            <li>Research their industry for relevant compliance (healthcare = HIPAA, finance = PCI)</li>
+            <li>Prepare 2-3 STAR stories from your experience</li>
+            <li>Know the latest Purview/Defender updates</li>
+          </ul>
+        </div>
+        
+        <div class="callout callout-info">
+          <h4 style="margin-top: 0;">During the Interview</h4>
+          <ul style="margin-bottom: 0;">
+            <li>It's OK to say "I don't know, but here's how I'd find out"</li>
+            <li>Ask clarifying questions before answering scenarios</li>
+            <li>Use specific numbers (reduced FP by 40%, managed 50 policies)</li>
+            <li>Show business awareness, not just technical knowledge</li>
+          </ul>
         </div>
         
         <nav class="page-nav">
-          <a href="index.html" class="page-nav-link prev"><span class="page-nav-label">Previous</span><span class="page-nav-title">Home</span></a>
-          <a href="edlp-channels.html" class="page-nav-link next"><span class="page-nav-label">Next</span><span class="page-nav-title">Channels</span></a>
+          <a href="mnemonics.html" class="page-nav-link prev">
+            <span class="page-nav-label">Previous</span>
+            <span class="page-nav-title">Memory Aids & Mnemonics</span>
+          </a>
+          <a href="hands-on-labs.html" class="page-nav-link next">
+            <span class="page-nav-label">Next</span>
+            <span class="page-nav-title">Hands-on Labs</span>
+          </a>
         </nav>
       </div>
     </main>
   </div>
+  
   <script>
 /**
  * DLP Documentation - Interactive Components

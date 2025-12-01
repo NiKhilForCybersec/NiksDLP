@@ -4,8 +4,1660 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="DLP user training and awareness including policy communication, user guides, and reducing policy violations through education.">
-  <title>User Training | DLP Doc by NIK</title>
-  <link rel="stylesheet" href="main.css">
+  <title>User Training | DLP Documentation Hub</title>
+  <style>
+/* DLP Documentation - Dark Cyberpunk Aesthetic
+   Typography: Rajdhani (headers), Exo 2 (body), JetBrains Mono (code)
+   Product Colors:
+   - Symantec: Purple (#a855f7)
+   - Purview: Blue (#3b82f6)
+   - Endpoint: Green (#10b981)
+   - Network: Orange (#f97316)
+   - Cloud: Cyan (#06b6d4)
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ═══════════════════════════════════════════════════════════════════
+   CSS VARIABLES
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  /* Base Colors */
+  --bg-primary: #0a0e17;
+  --bg-secondary: #0f1420;
+  --bg-tertiary: #151c2c;
+  --bg-card: #1a2236;
+  --bg-elevated: #1f2940;
+  
+  /* Text Colors */
+  --text-primary: #e8ecf4;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-accent: #cbd5e1;
+  
+  /* Product Colors */
+  --symantec: #a855f7;
+  --symantec-dim: #7c3aed;
+  --symantec-glow: rgba(168, 85, 247, 0.3);
+  
+  --purview: #3b82f6;
+  --purview-dim: #2563eb;
+  --purview-glow: rgba(59, 130, 246, 0.3);
+  
+  --endpoint: #10b981;
+  --endpoint-dim: #059669;
+  --endpoint-glow: rgba(16, 185, 129, 0.3);
+  
+  --network: #f97316;
+  --network-dim: #ea580c;
+  --network-glow: rgba(249, 115, 22, 0.3);
+  
+  --cloud: #06b6d4;
+  --cloud-dim: #0891b2;
+  --cloud-glow: rgba(6, 182, 212, 0.3);
+  
+  /* Utility Colors */
+  --success: #22c55e;
+  --warning: #eab308;
+  --error: #ef4444;
+  --info: #3b82f6;
+  
+  /* Borders */
+  --border-color: #2d3a52;
+  --border-glow: #3b4d6b;
+  
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #0a0e17 0%, #1a1f35 50%, #0f1420 100%);
+  --gradient-card: linear-gradient(180deg, rgba(31, 41, 64, 0.8) 0%, rgba(26, 34, 54, 0.6) 100%);
+  --gradient-glow: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.2);
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 400ms ease;
+  
+  /* Typography Scale */
+  --font-display: 'Rajdhani', sans-serif;
+  --font-body: 'Exo 2', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  /* Sidebar */
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 60px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Background grid pattern */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════════════════════════════════ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: var(--space-lg);
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--purview) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  font-size: 1.875rem;
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--border-color);
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+
+h4 {
+  font-size: 1.25rem;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+p {
+  margin-bottom: var(--space-md);
+  color: var(--text-secondary);
+}
+
+a {
+  color: var(--purview);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--bg-tertiary);
+  padding: 0.2em 0.4em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════════════════════════ */
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 100;
+  transition: width var(--transition-normal), transform var(--transition-normal);
+}
+
+/* Sidebar Collapse Toggle Button */
+.sidebar-toggle {
+  position: absolute;
+  top: 50%;
+  right: -16px;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background: var(--purview);
+  border: 2px solid var(--bg-primary);
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 150;
+  transition: all var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-toggle:hover {
+  background: var(--purview-bright);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.sidebar-toggle svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-fast);
+}
+
+/* Collapsed Sidebar State */
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+.sidebar.collapsed .sidebar-toggle svg {
+  transform: rotate(180deg);
+}
+
+.sidebar.collapsed .sidebar-logo span,
+.sidebar.collapsed .search-container,
+.sidebar.collapsed .nav-section-title,
+.sidebar.collapsed .nav-link span,
+.sidebar.collapsed .nav-section-toggle {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.sidebar.collapsed .sidebar-header {
+  padding: var(--space-md);
+}
+
+.sidebar.collapsed .sidebar-logo {
+  justify-content: center;
+  padding: var(--space-sm);
+}
+
+.sidebar.collapsed .sidebar-logo svg {
+  width: 28px;
+  height: 28px;
+}
+
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+}
+
+.sidebar.collapsed .nav-link svg {
+  margin: 0;
+}
+
+.sidebar.collapsed .nav-section {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-xs);
+}
+
+.sidebar.collapsed .nav-section-header {
+  display: none;
+}
+
+.sidebar.collapsed .nav-section-content {
+  max-height: 1000px !important;
+}
+
+.sidebar.collapsed + .main-content {
+  margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Collapsible Nav Sections */
+.nav-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: var(--space-sm) var(--space-lg);
+  margin-top: var(--space-sm);
+  user-select: none;
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.nav-section-header:hover {
+  background: var(--bg-tertiary);
+}
+
+.nav-section-header:hover .nav-section-title {
+  color: var(--text-primary);
+}
+
+.nav-section-toggle {
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.nav-section-header:hover .nav-section-toggle {
+  color: var(--text-secondary);
+}
+
+.nav-section.collapsed .nav-section-toggle {
+  transform: rotate(-90deg);
+}
+
+.nav-section-content {
+  max-height: 1000px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.2s ease-out;
+  opacity: 1;
+}
+
+.nav-section.collapsed .nav-section-content {
+  max-height: 0;
+  opacity: 0;
+}
+
+.sidebar-header {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-tertiary);
+  position: relative;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.sidebar-logo svg {
+  width: 32px;
+  height: 32px;
+}
+
+.sidebar-nav {
+  padding: var(--space-md) 0;
+}
+
+.nav-section {
+  margin-bottom: var(--space-sm);
+}
+
+.nav-section-title {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  padding: var(--space-md) var(--space-lg) var(--space-sm);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
+  border-left: 3px solid transparent;
+  white-space: nowrap;
+}
+
+.nav-link span {
+  transition: opacity var(--transition-fast), width var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  border-left-color: var(--purview);
+  text-decoration: none;
+}
+
+.nav-link.active {
+  color: var(--purview);
+  background: rgba(59, 130, 246, 0.1);
+  border-left-color: var(--purview);
+}
+
+.nav-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Product-specific nav colors */
+.nav-link[data-product="purview"]:hover,
+.nav-link[data-product="purview"].active { 
+  border-left-color: var(--purview); 
+  color: var(--purview);
+}
+
+.nav-link[data-product="symantec"]:hover,
+.nav-link[data-product="symantec"].active { 
+  border-left-color: var(--symantec); 
+  color: var(--symantec);
+}
+
+.nav-link[data-product="endpoint"]:hover,
+.nav-link[data-product="endpoint"].active { 
+  border-left-color: var(--endpoint); 
+  color: var(--endpoint);
+}
+
+.nav-link[data-product="network"]:hover,
+.nav-link[data-product="network"].active { 
+  border-left-color: var(--network); 
+  color: var(--network);
+}
+
+.nav-link[data-product="cloud"]:hover,
+.nav-link[data-product="cloud"].active { 
+  border-left-color: var(--cloud); 
+  color: var(--cloud);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-xl);
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xl);
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.breadcrumbs a {
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.breadcrumbs a:hover {
+  color: var(--purview);
+  text-decoration: none;
+}
+
+.breadcrumbs span {
+  color: var(--text-secondary);
+}
+
+.breadcrumbs svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HERO SECTION
+   ═══════════════════════════════════════════════════════════════════ */
+.hero {
+  background: var(--gradient-hero);
+  padding: var(--space-3xl) var(--space-xl);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: var(--gradient-glow);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: var(--space-lg);
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--purview) 50%, var(--symantec) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+}
+
+.hero-badge svg {
+  width: 16px;
+  height: 16px;
+  color: var(--purview);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CARDS
+   ═══════════════════════════════════════════════════════════════════ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
+}
+
+.card {
+  background: var(--gradient-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--purview);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.card:hover {
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* Product-specific card accents */
+.card[data-product="purview"]::before { background: var(--purview); }
+.card[data-product="symantec"]::before { background: var(--symantec); }
+.card[data-product="endpoint"]::before { background: var(--endpoint); }
+.card[data-product="network"]::before { background: var(--network); }
+.card[data-product="cloud"]::before { background: var(--cloud); }
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon svg {
+  width: 28px;
+  height: 28px;
+  color: var(--purview);
+}
+
+.card[data-product="purview"] .card-icon svg { color: var(--purview); }
+.card[data-product="symantec"] .card-icon svg { color: var(--symantec); }
+.card[data-product="endpoint"] .card-icon svg { color: var(--endpoint); }
+.card[data-product="network"] .card-icon svg { color: var(--network); }
+.card[data-product="cloud"] .card-icon svg { color: var(--cloud); }
+
+.card h3 {
+  font-size: 1.25rem;
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+}
+
+.card p {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.card-link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-fast);
+}
+
+.card:hover .card-link svg {
+  transform: translateX(4px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CODE BLOCKS
+   ═══════════════════════════════════════════════════════════════════ */
+.code-block {
+  position: relative;
+  margin: var(--space-lg) 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+}
+
+.code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.code-lang {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.code-copy {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.code-copy:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-glow);
+}
+
+.code-copy.copied {
+  color: var(--success);
+  border-color: var(--success);
+}
+
+.code-copy svg {
+  width: 14px;
+  height: 14px;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: var(--space-md);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.code-block code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Syntax highlighting */
+.code-block .comment { color: var(--text-muted); }
+.code-block .keyword { color: var(--symantec); }
+.code-block .string { color: var(--endpoint); }
+.code-block .number { color: var(--network); }
+.code-block .function { color: var(--purview); }
+.code-block .variable { color: var(--cloud); }
+.code-block .operator { color: var(--text-secondary); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   ASCII DIAGRAMS
+   ═══════════════════════════════════════════════════════════════════ */
+.ascii-diagram {
+  margin: var(--space-xl) 0;
+  padding: var(--space-lg);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+}
+
+.ascii-diagram pre {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin: 0;
+  white-space: pre;
+}
+
+.ascii-diagram .highlight {
+  color: var(--purview);
+}
+
+.ascii-diagram .accent-purple { color: var(--symantec); }
+.ascii-diagram .accent-blue { color: var(--purview); }
+.ascii-diagram .accent-green { color: var(--endpoint); }
+.ascii-diagram .accent-orange { color: var(--network); }
+.ascii-diagram .accent-cyan { color: var(--cloud); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════════════════════════════════ */
+.tabs {
+  margin: var(--space-xl) 0;
+}
+
+.tab-list {
+  display: flex;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  overflow-x: auto;
+}
+
+.tab-button {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tab-button:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+.tab-button.active {
+  color: var(--text-primary);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-panel {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ACCORDIONS
+   ═══════════════════════════════════════════════════════════════════ */
+.accordion {
+  margin: var(--space-lg) 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-tertiary);
+  border: none;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.accordion-header:hover {
+  background: var(--bg-elevated);
+}
+
+.accordion-header svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  transition: transform var(--transition-normal);
+}
+
+.accordion-item.active .accordion-header svg {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-normal);
+}
+
+.accordion-item.active .accordion-content {
+  max-height: 2000px;
+}
+
+.accordion-body {
+  padding: var(--space-lg);
+  background: var(--bg-secondary);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CALLOUT BOXES
+   ═══════════════════════════════════════════════════════════════════ */
+.callout {
+  margin: var(--space-lg) 0;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  border-left: 4px solid;
+  background: var(--bg-tertiary);
+}
+
+.callout-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.callout-header svg {
+  width: 18px;
+  height: 18px;
+}
+
+.callout p {
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.callout.info {
+  border-color: var(--info);
+  background: rgba(59, 130, 246, 0.1);
+}
+.callout.info .callout-header { color: var(--info); }
+
+.callout.warning {
+  border-color: var(--warning);
+  background: rgba(234, 179, 8, 0.1);
+}
+.callout.warning .callout-header { color: var(--warning); }
+
+.callout.success {
+  border-color: var(--success);
+  background: rgba(34, 197, 94, 0.1);
+}
+.callout.success .callout-header { color: var(--success); }
+
+.callout.error {
+  border-color: var(--error);
+  background: rgba(239, 68, 68, 0.1);
+}
+.callout.error .callout-header { color: var(--error); }
+
+.callout.tip {
+  border-color: var(--symantec);
+  background: rgba(168, 85, 247, 0.1);
+}
+.callout.tip .callout-header { color: var(--symantec); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABLES
+   ═══════════════════════════════════════════════════════════════════ */
+.table-wrapper {
+  margin: var(--space-lg) 0;
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th {
+  background: var(--bg-tertiary);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: left;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 2px solid var(--border-color);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+td {
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover td {
+  background: var(--bg-tertiary);
+}
+
+/* Status indicators in tables */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-badge.supported {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--success);
+}
+
+.status-badge.partial {
+  background: rgba(234, 179, 8, 0.2);
+  color: var(--warning);
+}
+
+.status-badge.unsupported {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--error);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   COMPARISON TABLE
+   ═══════════════════════════════════════════════════════════════════ */
+.comparison-table th:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--bg-tertiary);
+  z-index: 1;
+}
+
+.comparison-table td:first-child {
+  position: sticky;
+  left: 0;
+  background: var(--bg-secondary);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.comparison-table tr:hover td:first-child {
+  background: var(--bg-tertiary);
+}
+
+/* Check/X icons for comparison */
+.check-icon {
+  color: var(--success);
+}
+
+.x-icon {
+  color: var(--error);
+}
+
+.partial-icon {
+  color: var(--warning);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LISTS
+   ═══════════════════════════════════════════════════════════════════ */
+ul, ol {
+  margin: var(--space-md) 0;
+  padding-left: var(--space-xl);
+  color: var(--text-secondary);
+}
+
+li {
+  margin-bottom: var(--space-sm);
+}
+
+li::marker {
+  color: var(--purview);
+}
+
+/* Numbered steps */
+.steps {
+  counter-reset: step;
+  list-style: none;
+  padding-left: 0;
+}
+
+.steps li {
+  position: relative;
+  padding-left: var(--space-2xl);
+  margin-bottom: var(--space-lg);
+}
+
+.steps li::before {
+  content: counter(step);
+  counter-increment: step;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 28px;
+  height: 28px;
+  background: var(--purview);
+  color: var(--bg-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--purview);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--purview-dim);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--purview-glow);
+  text-decoration: none;
+  color: white;
+}
+
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-glow);
+  text-decoration: none;
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SEARCH
+   ═══════════════════════════════════════════════════════════════════ */
+.search-container {
+  position: relative;
+  margin-bottom: var(--space-md);
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  padding-left: var(--space-2xl);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  transition: all var(--transition-fast);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--purview);
+  box-shadow: 0 0 0 3px var(--purview-glow);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-icon {
+  position: absolute;
+  left: var(--space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   QUICK LINKS / TAG PILLS
+   ═══════════════════════════════════════════════════════════════════ */
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin: var(--space-lg) 0;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.tag:hover {
+  background: var(--bg-elevated);
+  border-color: var(--purview);
+  color: var(--purview);
+  text-decoration: none;
+}
+
+.tag svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Product-colored tags */
+.tag.purview { border-color: var(--purview-dim); color: var(--purview); }
+.tag.symantec { border-color: var(--symantec-dim); color: var(--symantec); }
+.tag.endpoint { border-color: var(--endpoint-dim); color: var(--endpoint); }
+.tag.network { border-color: var(--network-dim); color: var(--network); }
+.tag.cloud { border-color: var(--cloud-dim); color: var(--cloud); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE NAVIGATION (PREV/NEXT)
+   ═══════════════════════════════════════════════════════════════════ */
+.page-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--border-color);
+}
+
+.page-nav-link {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.page-nav-link:hover {
+  border-color: var(--purview);
+  background: var(--bg-elevated);
+  text-decoration: none;
+}
+
+.page-nav-link.next {
+  text-align: right;
+}
+
+.page-nav-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.page-nav-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════ */
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: var(--space-md);
+  left: var(--space-md);
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 260px;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  /* Hide desktop sidebar toggle on mobile */
+  .sidebar-toggle {
+    display: none;
+  }
+  
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  /* Reset collapsed state on mobile */
+  .sidebar.collapsed {
+    width: var(--sidebar-width);
+  }
+  
+  .sidebar.collapsed .sidebar-logo span,
+  .sidebar.collapsed .search-container,
+  .sidebar.collapsed .nav-section-title,
+  .sidebar.collapsed .nav-link span,
+  .sidebar.collapsed .nav-section-toggle {
+    opacity: 1;
+    visibility: visible;
+    width: auto;
+  }
+  
+  .sidebar.collapsed .nav-section-header {
+    display: flex;
+  }
+  
+  .sidebar-overlay.open {
+    display: block;
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .sidebar.collapsed + .main-content {
+    margin-left: 0;
+  }
+  
+  .content-wrapper {
+    padding: var(--space-xl) var(--space-md);
+    padding-top: calc(var(--space-xl) + 60px);
+  }
+  
+  .hero {
+    padding: var(--space-2xl) var(--space-md);
+    padding-top: calc(var(--space-2xl) + 60px);
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-nav {
+    grid-template-columns: 1fr;
+  }
+  
+  .page-nav-link.next {
+    text-align: left;
+  }
+}
+
+@media (max-width: 640px) {
+  .tab-list {
+    flex-direction: column;
+  }
+  
+  .tab-button {
+    text-align: left;
+  }
+  
+  table {
+    font-size: 0.8rem;
+  }
+  
+  th, td {
+    padding: var(--space-sm) var(--space-md);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════ */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: slideIn 0.5s ease forwards;
+}
+
+/* Staggered animation delays */
+.animate-in:nth-child(1) { animation-delay: 0.1s; }
+.animate-in:nth-child(2) { animation-delay: 0.2s; }
+.animate-in:nth-child(3) { animation-delay: 0.3s; }
+.animate-in:nth-child(4) { animation-delay: 0.4s; }
+.animate-in:nth-child(5) { animation-delay: 0.5s; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTILITY CLASSES
+   ═══════════════════════════════════════════════════════════════════ */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.text-purview { color: var(--purview); }
+.text-symantec { color: var(--symantec); }
+.text-endpoint { color: var(--endpoint); }
+.text-network { color: var(--network); }
+.text-cloud { color: var(--cloud); }
+
+.bg-purview { background-color: var(--purview-glow); }
+.bg-symantec { background-color: var(--symantec-glow); }
+.bg-endpoint { background-color: var(--endpoint-glow); }
+.bg-network { background-color: var(--network-glow); }
+.bg-cloud { background-color: var(--cloud-glow); }
+
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.mt-lg { margin-top: var(--space-lg); }
+.mb-lg { margin-bottom: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mb-xl { margin-bottom: var(--space-xl); }
+
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+
+.hidden { display: none; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Print styles */
+@media print {
+  .sidebar,
+  .mobile-menu-btn,
+  .code-copy,
+  .page-nav {
+    display: none;
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .code-block {
+    border: 1px solid #ccc;
+    background: #f5f5f5;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SIDEBAR ENHANCEMENTS - Tooltip and Visual Feedback
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Tooltip for sidebar toggle */
+.sidebar-toggle::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  margin-left: 10px;
+  padding: 6px 12px;
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
+  pointer-events: none;
+  box-shadow: var(--shadow-md);
+}
+
+.sidebar-toggle:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Visual feedback on section collapse */
+.nav-section {
+  transition: opacity var(--transition-fast);
+}
+
+.nav-section.collapsed {
+  opacity: 0.9;
+}
+
+/* Expand all / Collapse all helper (optional) */
+.sidebar-nav-controls {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-nav-controls button {
+  flex: 1;
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 0.7rem;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sidebar-nav-controls button:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border-color: var(--purview);
+}
+
+/* Active link highlight */
+.nav-link.active {
+  background: var(--purview-glow);
+  color: var(--purview);
+  border-left: 3px solid var(--purview);
+  margin-left: -3px;
+}
+
+.nav-link.active svg {
+  color: var(--purview);
+}
+
+</style>
 </head>
 <body>
   <button class="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">
@@ -20,22 +1672,238 @@
   
   <div class="page-wrapper">
     <aside class="sidebar">
+      <button class="sidebar-toggle" aria-label="Toggle sidebar" title="Collapse/Expand Sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      
       <div class="sidebar-header">
         <a href="index.html" class="sidebar-logo">
           <svg viewBox="0 0 32 32" fill="none">
             <rect x="2" y="4" width="28" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
             <path d="M16 12L22 18L16 24" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
             <path d="M10 18H22" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="8" cy="8" r="2" fill="#ef4444"/>
+            <circle cx="14" cy="8" r="2" fill="#eab308"/>
+            <circle cx="20" cy="8" r="2" fill="#22c55e"/>
           </svg>
-          DLP by NIK
+          <span>DLP Docs</span>
         </a>
       </div>
       
+      <div class="search-container" style="padding: 1rem;">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" placeholder="Search docs... (Ctrl+K)">
+      </div>
+      
       <nav class="sidebar-nav">
-        <div class="nav-section">
-          <div class="nav-section-title">Operations</div>
-          <a href="dlp-operations.html" class="nav-link" data-product="operations">Operations Overview</a>
-          <a href="user-training.html" class="nav-link active" data-product="operations">User Training</a>
+        <div class="nav-section" data-section="getting-started">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Getting Started</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="index.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Home</span></a>
+            <a href="quick-start.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg><span>Quick Start</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="fundamentals">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Fundamentals</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="dlp-fundamentals.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>DLP Fundamentals</span></a>
+            <a href="data-classification.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg><span>Data Classification</span></a>
+            <a href="dlp-architecture.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg><span>DLP Architecture</span></a>
+            <a href="compliance-frameworks.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Compliance Frameworks</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="purview">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Microsoft Purview</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="purview-overview.html" class="nav-link" data-product="purview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg><span>Overview & Licensing</span></a>
+            <a href="purview-architecture.html" class="nav-link" data-product="purview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg><span>Architecture</span></a>
+            <a href="purview-endpoint-dlp.html" class="nav-link" data-product="purview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg><span>Endpoint DLP</span></a>
+            <a href="purview-sensitive-info-types.html" class="nav-link" data-product="purview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span>Sensitive Info Types</span></a>
+            <a href="purview-policies.html" class="nav-link" data-product="purview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg><span>DLP Policies</span></a>
+            <a href="purview-labels.html" class="nav-link" data-product="purview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg><span>Sensitivity Labels</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="symantec">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Symantec DLP</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="symantec-overview.html" class="nav-link" data-product="symantec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg><span>Overview</span></a>
+            <a href="symantec-architecture.html" class="nav-link" data-product="symantec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg><span>Architecture</span></a>
+            <a href="symantec-endpoint.html" class="nav-link" data-product="symantec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg><span>Endpoint Agents</span></a>
+            <a href="symantec-network.html" class="nav-link" data-product="symantec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg><span>Network DLP</span></a>
+            <a href="symantec-detection.html" class="nav-link" data-product="symantec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span>Detection Methods</span></a>
+            <a href="symantec-policies.html" class="nav-link" data-product="symantec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg><span>Policies & Rules</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="endpoint">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Endpoint DLP</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="edlp-concepts.html" class="nav-link" data-product="endpoint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>Core Concepts</span></a>
+            <a href="edlp-channels.html" class="nav-link" data-product="endpoint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="3" x2="6" y2="15"></line><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><path d="M18 9a9 9 0 0 1-9 9"></path></svg><span>Egress Channels</span></a>
+            <a href="edlp-comparison.html" class="nav-link" data-product="endpoint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg><span>Vendor Comparison</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="cloud">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Cloud DLP</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="cloud-dlp-overview.html" class="nav-link" data-product="cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg><span>Cloud DLP Overview</span></a>
+            <a href="cloud-casb-integration.html" class="nav-link" data-product="cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>CASB Integration</span></a>
+            <a href="cloud-saas-protection.html" class="nav-link" data-product="cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><span>SaaS Protection</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="discovery">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Discovery</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="data-discovery.html" class="nav-link" data-product="cloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg><span>Data Discovery</span></a>
+            <a href="content-explorer.html" class="nav-link" data-product="purview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg><span>Content Explorer</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="migration">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Migration</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="migration-planning.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg><span>Migration Planning</span></a>
+            <a href="migration-symantec-to-purview.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg><span>Symantec to Purview</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="operations">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Operations</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="dlp-operations.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Operations Overview</span></a>
+            <a href="user-training.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>User Training</span></a>
+            <a href="dlp-alerts.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span>DLP Alerts</span></a>
+            <a href="incident-response.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg><span>Incident Response</span></a>
+            <a href="audit-logging.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg><span>Audit Logging</span></a>
+            <a href="siem-integration.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg><span>SIEM Integration</span></a>
+            <a href="reporting-metrics.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg><span>Reporting & Metrics</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="troubleshooting">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Troubleshooting</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="troubleshooting-overview.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><span>Troubleshooting Guide</span></a>
+            <a href="troubleshooting-purview.html" class="nav-link" data-product="purview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg><span>Purview Issues</span></a>
+            <a href="troubleshooting-symantec.html" class="nav-link" data-product="symantec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg><span>Symantec Issues</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="reference">
+          <div class="nav-section-header">
+            <div class="nav-section-title">Reference</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="kql-library.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>KQL Query Library</span></a>
+            <a href="regex-patterns.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg><span>Regex Patterns</span></a>
+            <a href="powershell-scripts.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg><span>PowerShell Scripts</span></a>
+            <a href="glossary.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>Glossary</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="learning">
+          <div class="nav-section-header">
+            <div class="nav-section-title">🎓 Learning</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="cheat-sheet.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg><span>Cheat Sheet</span></a>
+            <a href="mnemonics.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg><span>Memory Aids</span></a>
+            <a href="interview-prep.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Interview Prep</span></a>
+            <a href="hands-on-labs.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg><span>Hands-on Labs</span></a>
+            <a href="case-studies.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg><span>Case Studies</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="career">
+          <div class="nav-section-header">
+            <div class="nav-section-title">🚀 Career</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="certification-guide.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg><span>Certification Guide</span></a>
+            <a href="career-path.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg><span>Career Path</span></a>
+          </div>
+        </div>
+        
+        <div class="nav-section" data-section="advanced">
+          <div class="nav-section-header">
+            <div class="nav-section-title">⚡ Advanced</div>
+            <svg class="nav-section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="nav-section-content">
+            <a href="maturity-model.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg><span>Maturity Model</span></a>
+            <a href="policy-templates.html" class="nav-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg><span>Policy Templates</span></a>
+          </div>
         </div>
       </nav>
     </aside>
@@ -385,6 +2253,547 @@ Thanks,
     </main>
   </div>
   
-  <script src="main.js"></script>
+  <script>
+/**
+ * DLP Documentation - Interactive Components
+ * Handles: Sidebar navigation, tabs, accordions, code copy, search
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+  initMobileMenu();
+  initTabs();
+  initAccordions();
+  initCodeCopy();
+  initSearch();
+  initSmoothScroll();
+  highlightCurrentNav();
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE MENU & SIDEBAR TOGGLE
+   ═══════════════════════════════════════════════════════════════════ */
+function initMobileMenu() {
+  const menuBtn = document.querySelector('.mobile-menu-btn');
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.sidebar-overlay');
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
+  
+  if (!sidebar) return;
+  
+  // Mobile menu toggle
+  if (menuBtn) {
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      overlay?.classList.toggle('open');
+      
+      const isOpen = sidebar.classList.contains('open');
+      menuBtn.setAttribute('aria-expanded', isOpen);
+    });
+  }
+  
+  if (overlay) {
+    overlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+      menuBtn?.setAttribute('aria-expanded', 'false');
+    });
+  }
+  
+  // Close on escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+      sidebar.classList.remove('open');
+      overlay?.classList.remove('open');
+      menuBtn?.setAttribute('aria-expanded', 'false');
+    }
+  });
+  
+  // Desktop sidebar collapse toggle
+  if (sidebarToggle) {
+    // Restore collapsed state from localStorage
+    const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (isCollapsed) {
+      sidebar.classList.add('collapsed');
+    }
+    
+    sidebarToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      sidebar.classList.toggle('collapsed');
+      const collapsed = sidebar.classList.contains('collapsed');
+      localStorage.setItem('sidebarCollapsed', collapsed);
+      
+      // Update button title
+      sidebarToggle.title = collapsed ? 'Expand Sidebar' : 'Collapse Sidebar';
+    });
+    
+    // Set initial title
+    sidebarToggle.title = sidebar.classList.contains('collapsed') ? 'Expand Sidebar' : 'Collapse Sidebar';
+  }
+  
+  // Initialize collapsible nav sections
+  initNavSections();
+}
+
+function initNavSections() {
+  const sectionHeaders = document.querySelectorAll('.nav-section-header');
+  
+  sectionHeaders.forEach(header => {
+    const section = header.closest('.nav-section');
+    const sectionId = section?.dataset.section;
+    
+    // Restore collapsed state from localStorage
+    if (sectionId) {
+      const isCollapsed = localStorage.getItem(`navSection_${sectionId}`) === 'true';
+      if (isCollapsed) {
+        section.classList.add('collapsed');
+      }
+    }
+    
+    header.addEventListener('click', (e) => {
+      e.preventDefault();
+      section?.classList.toggle('collapsed');
+      
+      // Save state to localStorage
+      if (sectionId) {
+        const collapsed = section.classList.contains('collapsed');
+        localStorage.setItem(`navSection_${sectionId}`, collapsed);
+      }
+    });
+  });
+  
+  // Expand section containing current page
+  const currentLink = document.querySelector('.nav-link.active');
+  if (currentLink) {
+    const currentSection = currentLink.closest('.nav-section');
+    if (currentSection) {
+      currentSection.classList.remove('collapsed');
+    }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════════════════════════════════ */
+function initTabs() {
+  const tabContainers = document.querySelectorAll('.tabs');
+  
+  tabContainers.forEach(container => {
+    const buttons = container.querySelectorAll('.tab-button');
+    const panels = container.querySelectorAll('.tab-panel');
+    
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        // Remove active from all
+        buttons.forEach(btn => btn.classList.remove('active'));
+        panels.forEach(panel => panel.classList.remove('active'));
+        
+        // Add active to clicked
+        button.classList.add('active');
+        panels[index]?.classList.add('active');
+        
+        // Update aria
+        button.setAttribute('aria-selected', 'true');
+        buttons.forEach((btn, i) => {
+          if (i !== index) {
+            btn.setAttribute('aria-selected', 'false');
+          }
+        });
+      });
+      
+      // Keyboard navigation
+      button.addEventListener('keydown', (e) => {
+        let targetIndex;
+        
+        if (e.key === 'ArrowRight') {
+          targetIndex = (index + 1) % buttons.length;
+        } else if (e.key === 'ArrowLeft') {
+          targetIndex = (index - 1 + buttons.length) % buttons.length;
+        } else if (e.key === 'Home') {
+          targetIndex = 0;
+        } else if (e.key === 'End') {
+          targetIndex = buttons.length - 1;
+        }
+        
+        if (targetIndex !== undefined) {
+          e.preventDefault();
+          buttons[targetIndex].click();
+          buttons[targetIndex].focus();
+        }
+      });
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ACCORDIONS
+   ═══════════════════════════════════════════════════════════════════ */
+function initAccordions() {
+  const accordions = document.querySelectorAll('.accordion');
+  
+  accordions.forEach(accordion => {
+    const items = accordion.querySelectorAll('.accordion-item');
+    
+    items.forEach(item => {
+      const header = item.querySelector('.accordion-header');
+      const content = item.querySelector('.accordion-content');
+      
+      header?.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        
+        // Close all items in this accordion (optional: remove for multi-open)
+        // items.forEach(i => i.classList.remove('active'));
+        
+        // Toggle clicked item
+        if (isActive) {
+          item.classList.remove('active');
+          header.setAttribute('aria-expanded', 'false');
+        } else {
+          item.classList.add('active');
+          header.setAttribute('aria-expanded', 'true');
+        }
+      });
+      
+      // Keyboard support
+      header?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          header.click();
+        }
+      });
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CODE COPY
+   ═══════════════════════════════════════════════════════════════════ */
+function initCodeCopy() {
+  const copyButtons = document.querySelectorAll('.code-copy');
+  
+  copyButtons.forEach(button => {
+    button.addEventListener('click', async () => {
+      const codeBlock = button.closest('.code-block');
+      const code = codeBlock?.querySelector('pre code, pre')?.textContent;
+      
+      if (!code) return;
+      
+      try {
+        await navigator.clipboard.writeText(code);
+        
+        // Update button state
+        const originalHTML = button.innerHTML;
+        button.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Copied!
+        `;
+        button.classList.add('copied');
+        
+        // Reset after delay
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+          button.classList.remove('copied');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+        button.textContent = 'Failed';
+        setTimeout(() => {
+          button.innerHTML = originalHTML;
+        }, 2000);
+      }
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SEARCH (SIDEBAR)
+   ═══════════════════════════════════════════════════════════════════ */
+function initSearch() {
+  const searchInput = document.querySelector('.search-input');
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  if (!searchInput) return;
+  
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    
+    navLinks.forEach(link => {
+      const text = link.textContent.toLowerCase();
+      const section = link.closest('.nav-section');
+      
+      if (query === '' || text.includes(query)) {
+        link.style.display = '';
+      } else {
+        link.style.display = 'none';
+      }
+    });
+    
+    // Show/hide section titles based on visible links
+    const sections = document.querySelectorAll('.nav-section');
+    sections.forEach(section => {
+      const visibleLinks = section.querySelectorAll('.nav-link:not([style*="display: none"])');
+      const title = section.querySelector('.nav-section-title');
+      
+      if (visibleLinks.length === 0) {
+        if (title) title.style.display = 'none';
+      } else {
+        if (title) title.style.display = '';
+      }
+    });
+  });
+  
+  // Keyboard shortcut to focus search (Ctrl/Cmd + K)
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SMOOTH SCROLL
+   ═══════════════════════════════════════════════════════════════════ */
+function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return;
+      
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+        
+        // Update URL without scrolling
+        history.pushState(null, null, href);
+      }
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HIGHLIGHT CURRENT NAV
+   ═══════════════════════════════════════════════════════════════════ */
+function highlightCurrentNav() {
+  const currentPath = window.location.pathname;
+  const navLinks = document.querySelectorAll('.nav-link');
+  
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href');
+    if (href && currentPath.endsWith(href.replace('./', ''))) {
+      link.classList.add('active');
+    }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SYNTAX HIGHLIGHTING (BASIC)
+   ═══════════════════════════════════════════════════════════════════ */
+function highlightSyntax(code, language) {
+  // Basic syntax highlighting patterns
+  const patterns = {
+    powershell: [
+      { regex: /#.*/g, class: 'comment' },
+      { regex: /\b(Get|Set|New|Remove|Import|Export|Invoke|Start|Stop|Test|Write|Read|Add|Clear|Copy|Move|Select|Where|ForEach|If|Else|ElseIf|Switch|While|Do|For|Try|Catch|Finally|Return|Break|Continue|Function|Param)\b/gi, class: 'keyword' },
+      { regex: /"[^"]*"|'[^']*'/g, class: 'string' },
+      { regex: /\$[\w]+/g, class: 'variable' },
+      { regex: /\b\d+\b/g, class: 'number' },
+    ],
+    sql: [
+      { regex: /--.*$/gm, class: 'comment' },
+      { regex: /\b(SELECT|FROM|WHERE|AND|OR|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER|TABLE|INDEX|JOIN|LEFT|RIGHT|INNER|OUTER|ON|AS|IN|NOT|NULL|IS|LIKE|ORDER|BY|GROUP|HAVING|LIMIT|OFFSET|UNION|ALL|DISTINCT|COUNT|SUM|AVG|MAX|MIN)\b/gi, class: 'keyword' },
+      { regex: /'[^']*'/g, class: 'string' },
+      { regex: /\b\d+\b/g, class: 'number' },
+    ],
+    kql: [
+      { regex: /\/\/.*/g, class: 'comment' },
+      { regex: /\b(let|where|project|extend|summarize|by|join|on|union|sort|top|take|count|render|search|parse|mv-expand|evaluate|datatable|print|range|ago|now|datetime|timespan|between|contains|startswith|endswith|matches|regex|in|has|has_any|has_all|isempty|isnotempty|isnull|isnotnull|case|iff|coalesce|strcat|split|substring|strlen|toupper|tolower|trim|replace|extract|tostring|toint|tolong|todouble|tobool|todatetime|totimespan|bin|floor|ceiling|round|abs|log|log10|exp|pow|sqrt|sign|min|max|sum|avg|count|dcount|percentile|stdev|variance|make_list|make_set|arg_max|arg_min)\b/gi, class: 'keyword' },
+      { regex: /"[^"]*"|'[^']*'/g, class: 'string' },
+      { regex: /\b\d+[dhms]?\b/g, class: 'number' },
+    ],
+    bash: [
+      { regex: /#.*/g, class: 'comment' },
+      { regex: /\b(if|then|else|elif|fi|for|while|do|done|case|esac|function|return|exit|echo|read|export|source|alias|cd|ls|mv|cp|rm|mkdir|chmod|chown|grep|awk|sed|cat|head|tail|find|xargs|curl|wget)\b/g, class: 'keyword' },
+      { regex: /"[^"]*"|'[^']*'/g, class: 'string' },
+      { regex: /\$[\w{}]+/g, class: 'variable' },
+    ],
+    json: [
+      { regex: /"[^"]*"(?=\s*:)/g, class: 'variable' },
+      { regex: /"[^"]*"/g, class: 'string' },
+      { regex: /\b(true|false|null)\b/g, class: 'keyword' },
+      { regex: /\b-?\d+\.?\d*\b/g, class: 'number' },
+    ],
+    xml: [
+      { regex: /&lt;!--[\s\S]*?--&gt;/g, class: 'comment' },
+      { regex: /&lt;\/?[\w-]+/g, class: 'keyword' },
+      { regex: /[\w-]+(?==)/g, class: 'variable' },
+      { regex: /"[^"]*"/g, class: 'string' },
+      { regex: /&gt;/g, class: 'keyword' },
+    ]
+  };
+  
+  const langPatterns = patterns[language.toLowerCase()];
+  if (!langPatterns) return code;
+  
+  let highlighted = code;
+  
+  // Escape HTML first
+  highlighted = highlighted
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  
+  // Apply patterns
+  langPatterns.forEach(({ regex, class: className }) => {
+    highlighted = highlighted.replace(regex, match => 
+      `<span class="${className}">${match}</span>`
+    );
+  });
+  
+  return highlighted;
+}
+
+// Apply syntax highlighting to code blocks
+document.querySelectorAll('.code-block[data-language]').forEach(block => {
+  const language = block.dataset.language;
+  const codeEl = block.querySelector('pre code, pre');
+  
+  if (codeEl) {
+    codeEl.innerHTML = highlightSyntax(codeEl.textContent, language);
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABLE OF CONTENTS GENERATION
+   ═══════════════════════════════════════════════════════════════════ */
+function generateTOC(containerSelector = '.content-wrapper', tocSelector = '.toc') {
+  const container = document.querySelector(containerSelector);
+  const toc = document.querySelector(tocSelector);
+  
+  if (!container || !toc) return;
+  
+  const headings = container.querySelectorAll('h2, h3');
+  
+  if (headings.length === 0) {
+    toc.style.display = 'none';
+    return;
+  }
+  
+  const list = document.createElement('ul');
+  
+  headings.forEach((heading, index) => {
+    // Add ID if not present
+    if (!heading.id) {
+      heading.id = `section-${index}`;
+    }
+    
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    
+    a.href = `#${heading.id}`;
+    a.textContent = heading.textContent;
+    
+    if (heading.tagName === 'H3') {
+      li.style.paddingLeft = '1rem';
+    }
+    
+    li.appendChild(a);
+    list.appendChild(li);
+  });
+  
+  toc.appendChild(list);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCROLL SPY (FOR TOC)
+   ═══════════════════════════════════════════════════════════════════ */
+function initScrollSpy() {
+  const headings = document.querySelectorAll('h2[id], h3[id]');
+  const tocLinks = document.querySelectorAll('.toc a');
+  
+  if (headings.length === 0 || tocLinks.length === 0) return;
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === `#${id}`) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, {
+    rootMargin: '-20% 0px -80% 0px'
+  });
+  
+  headings.forEach(heading => observer.observe(heading));
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   DARK/LIGHT MODE TOGGLE (Future enhancement)
+   ═══════════════════════════════════════════════════════════════════ */
+function initThemeToggle() {
+  const toggle = document.querySelector('.theme-toggle');
+  if (!toggle) return;
+  
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  
+  toggle.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTILITY FUNCTIONS
+   ═══════════════════════════════════════════════════════════════════ */
+
+// Debounce function
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Get path depth for relative links
+function getPathDepth() {
+  const path = window.location.pathname;
+  const segments = path.split('/').filter(s => s && !s.includes('.'));
+  return segments.length;
+}
+
+// Adjust relative links based on current page depth
+function adjustRelativeLinks() {
+  const depth = getPathDepth();
+  const prefix = '../'.repeat(depth);
+  
+  document.querySelectorAll('a[href^="./"]').forEach(link => {
+    const href = link.getAttribute('href');
+    link.setAttribute('href', prefix + href.slice(2));
+  });
+}
+
+</script>
 </body>
 </html>
